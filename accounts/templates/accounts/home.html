@@ -1,0 +1,7 @@
+<title>Home</title>
+<h1>Home / Dashboard</h1>
+<h2>Admin Access Only</h2>
+<nav>
+    <span>hello, {{ request.user }}</span>
+    <span><a href="{% url 'logout' %}">Logout</a></span>
+</nav>

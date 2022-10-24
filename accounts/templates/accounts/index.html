@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>EMS for EMU</title>
+    <link rel="stylesheet" href="{% static 'accounts/styles.css' %}">
+  </head>
+
+  <body>
+    <h1>EMS for EMU</h1>
+<div class="container">
+  <div class="forms-container">
+    <div class="login">
+      <form method="POST" class="login-form" action=""> {% csrf_token %}
+
+        <h2 class="title">Login</h2>
+        <div class="input-field">
+          <i class="fas fa-envelope"></i>
+          <input type="text" name="username" placeholder="Username...">
+        </div>
+        
+        <div class="input-field">
+          <i class="fas fa-lock"></i>
+          <input type="password" name="password" placeholder="Password...">
+        </div>
+        
+        <input type="submit" class="btn solid" value="Login">
+        <div style="font-family: Sans-serif; font-size: small; color:red;">
+        {% for message in messages %}
+          {{message}}!
+        {% endfor %}
+        </div>
+        <p class="social-text">Forgot password?</p>
+        <p id="register">Don't have an account? <a href="{% url 'register' %}">Sign Up!</a></p>
+        
+      </form>
+    </div>
+  </div>
+
+
+  <div class="panels-container">
+  <div class="panel left">
+    <!--<div class="content">
+      <h3>Facing problem while Logging In?</h3>
+      <p>Please contact your Administrator to solve this issue.</p>
+      <button class="btn transparent" id="signup-button" type="button" name="button"> Back to Login</button>
+    </div>-->
+    <img src="{% static 'images/emu1.jpg' %}" class="image">
+  </div>
+  </div>
+</div>
+
+    <!-- <script src="app.js"> </script> -->
+  </body>
+</html>
