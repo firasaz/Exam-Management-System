@@ -1,7 +1,80 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        
+        {% comment %} i had to make sure i added the style element below the bootstrap link otherwise 
+        the bootstrap css will override my style tag {% endcomment %}
+         <style>
+            .btn-link {
+                text-decoration: none
+            }
+        </style>
+    </head>
     <body>
         
+        <!-- Modal -->
+        <div class="modal fade" id="ExamModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Start?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" id="modal-body-confirm">
+                        <!--this is filled by the js file-->
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-success" id="start-button">Yes</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class='h1'>Available Exams</div>
+        {% for exam in object_list %}
+            <button 
+                class='btn btn-link modal-button' 
+                data-pk="{{exam.pk}}"
+                data-name="{{exam.name}}"
+                data-noOfQuestions="{{exam.number_of_questions}}"
+                data-time="{{exam.time}}"
+                data-bs-toggle="modal"
+                data-bs-target="#ExamModal">
+                {{exam}}
+            </button>
+            <br>
+            {% comment %} <hr> {% endcomment %}
+        {% endfor %}
+
+        
+        <script src="{% static "exams/app.js" %}"></script>
+
+        {% comment %} <form method="post">{% csrf_token %}
+            {% for q in exam %}
+            <p>{{ q.question }}</p>
+            <input type='radio' name="{{ q.id }}" id='option1'>
+            <label for="option1">{{ q.option1 }}</label>
+            <br>
+            <input type='radio' name="{{ q.id }}" id='option2'>
+            <label for="option2">{{ q.option2 }}</label>
+            <br>
+            <input type='radio' name="{{ q.id }}" id='option3'>
+            <label for="option3">{{ q.option3 }}</label>
+            <br>
+            <input type='radio' name="{{ q.id }}" id='option4'>
+            <label for="option4">{{ q.option4 }}</label>
+            <br>
+            
+            <br>
+            <input type="submit" value="submit">
+        </form> {% endcomment %}
     </body>
 </html>

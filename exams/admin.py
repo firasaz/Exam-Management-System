@@ -1,5 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import ClassicalExam
-admin.site.register(ClassicalExam)
+from .models import MCQExam, CourseCategory, MCQ_Exam
+
+# admin.site.register(MCQExam)
+admin.site.register(CourseCategory)
+admin.site.register(MCQ_Exam)

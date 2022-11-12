@@ -56,6 +56,7 @@ def logoutPage(request):
     logout(request)
     return redirect('login')
 
+@login_required(login_url='login')
 def studentPage(request):
     context = {}
     return render(request, 'accounts/student.html',context)

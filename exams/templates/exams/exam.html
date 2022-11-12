@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        {% for q,a in obj.items %}
+            <ul>
+                <li>
+                    {{q}}
+                    <ol>
+                    {% for choice in a %}
+                    
+                        <li><b>{{choice}}</b></li>
+                    
+                    {% endfor %}
+                    </ol>
+                </li>
+            </ul>
+        {% endfor %}
+        <hr>
+    </body>
+</html>
