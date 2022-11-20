@@ -15,7 +15,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ("text", "exam","type", "created", "answers")
 
 class ExamSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True)
+    questions = QuestionSerializer(many=True) # this field should match the related name specified in the model connected to this model
     class Meta:
         model = MCQ_Exam
-        fields = ("name", "description", "number_of_questions", "time", "questions")
+        fields = ("id","name", "description", "number_of_questions", "time", "questions")

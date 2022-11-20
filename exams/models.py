@@ -31,7 +31,7 @@ class MCQ_Exam(models.Model):
         # return "Exam "+str(self.id)
     
     def get_questions(self):
-        return self.question_set.all()[:self.number_of_questions]
+        return self.questions.all()[:self.number_of_questions]
     
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file

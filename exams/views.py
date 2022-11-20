@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from .models import MCQ_Exam
 from questions.models import Question, Answer, ClassicalAnswer
 from results.models import Result
+from accounts.decorators import unauthenticated_user
 
 # def Exams_List_View(request):
 #     Exam=MCQ_Exam.objects.all()
@@ -97,7 +98,7 @@ def submitExamView(request,id=None):
 
             print(selected_ans)
             if q.get_type() == "Classical Question":
-                ClassicalAnswer.objects.create(text=selected_ans, question=q)
+                ClassicalAnswer.objects.create(text=selected_ans, question=q, user=user)
                 results.append(
                     {
                         str(q): selected_ans

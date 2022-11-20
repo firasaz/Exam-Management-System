@@ -25,8 +25,8 @@ urlpatterns = [
     
     path('', homePage, name='home'),
     path('account/',include('accounts.urls')),
-    path('api/exam', getExamData, name='examAPI'),
-    path('api/question', getQuestionsData, name='questionAPI'),
-    path('api/answer', getAnswerData, name='answerAPI'),
+    path('api/exam/', getExamData, name='examAPI'),
+    path('api/question/', getQuestionsData, name='questionAPI'),
+    path('api/answer/', getAnswerData, name='answerAPI'),
     # path("user/exam/", include('exams.urls'))
 ]
