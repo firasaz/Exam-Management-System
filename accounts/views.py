@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Teacher
 from .forms import CreateUserForm
 from .decorators import unauthenticated_user, allowed_users, admin_only
 # Create your views here.
@@ -60,3 +63,20 @@ def logoutPage(request):
 def studentPage(request):
     context = {}
     return render(request, 'accounts/student.html',context)
+
+@csrf_exempt
+def teacher_login(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    print("email: ", email)
+    print("password: ", password)
+    try:
+        teacherData = Teacher.objects.get(
+            email=email, password=password)
+    except Teacher.DoesNotExist:
+        teacherData = None
+    print("teacherData: ", teacherData)
+    if teacherData:
+        return JsonResponse({'bool': True, 'teacher_id': teacherData.id})
+    else:
+        return JsonResponse({'bool': False})
