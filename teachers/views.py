@@ -127,20 +127,19 @@ class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    course = Course.objects.get(id=1)
-    print(course)
 
 def CourseView(request,id):
     course = Course.objects.get(id=id)
     counter=0
-    for i in course.course_teacher():
+    exams_lst=[]
+    for i in course.course_exams():
         counter+=1
+        exams_lst.append(i)
         print(i)
-    print(counter)
+    print(exams_lst)
     return HttpResponse("orawri\n")
     
 
-    print(course)
 
 # 4)
 # Course exam list

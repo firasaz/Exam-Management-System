@@ -1,7 +1,7 @@
 from django.db import models
 
 from teachers.models import Teacher
-from students.models import Student, StudentCourseEnrollment
+from students.models import Student
 
 # Chairman
 class Chairman(models.Model):

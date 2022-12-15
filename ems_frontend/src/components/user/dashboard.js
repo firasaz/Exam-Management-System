@@ -12,9 +12,21 @@ function Dashboard() {
   const [dashboardData, setdashboardData] = useState([]);
   const studentId = localStorage.getItem("studentId");
 
+  // let total_exams = () => {
+  //   // counter=0
+  //   console.log(dashboardData.get_exams)
+  //   for(var key in dashboardData.get_exams) {
+  //     console.log(key)
+  //     var value = dashboardData.get_exams[key];
+      
+  //   }
+  //   console.log(value)
+  //   // return value.length
+  // };
+
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/student/dashboard/" + studentId + "/").then((res) => {
+      axios.get(`${baseUrl}/student/dashboard/${studentId}/`).then((res) => {
         console.log(res);
         setdashboardData(res.data);
       });
@@ -39,7 +51,7 @@ function Dashboard() {
                 <div className="card-body">
                   <h3>
                     <Link to="/teacher-courses">
-                      {dashboardData.enrolled_courses}
+                       {dashboardData.enrolled_courses?.length} {/* the question mark is a temporary fix */}
                     </Link>
                   </h3>
                 </div>
@@ -68,7 +80,7 @@ function Dashboard() {
                 <div className="card-body">
                   <h3>
                     <Link to="/my-exams">
-                      {dashboardData.total_student_exams}
+                      {dashboardData.get_exams}
                     </Link>
                   </h3>
                 </div>

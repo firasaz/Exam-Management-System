@@ -8,8 +8,8 @@ from teachers.views import (
     CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView
     )
 from students.views import (
-    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password, StudentEnrollCourseList,
-    fetch_enroll_status, EnrolledStudentList
+    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password #, StudentEnrollCourseList,
+    # fetch_enroll_status, EnrolledStudentList
 )
 
 from exams.views import ExamDetailView
@@ -49,9 +49,9 @@ urlpatterns = [
     path('student/<int:pk>/', StudentDetail.as_view()),
     path('student/dashboard/<int:pk>/', StudentDashboard.as_view()),
     path('student/change-password/<int:student_id>/', student_change_password),
-    path('student-enroll-course/', StudentEnrollCourseList.as_view()),
-    path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
-    path('fetch-enrolled-students/<int:course_id>/', EnrolledStudentList.as_view()),
-    path('fetch-all-enrolled-students/<int:teacher_id>/', EnrolledStudentList.as_view()),
-    path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
+    # path('student-enroll-course/', StudentEnrollCourseList.as_view()),
+    # path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
+    # path('fetch-enrolled-students/<int:course_id>/', EnrolledStudentList.as_view()),
+    # path('fetch-all-enrolled-students/<int:teacher_id>/', EnrolledStudentList.as_view()),
+    # path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
 ]

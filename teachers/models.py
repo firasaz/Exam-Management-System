@@ -3,6 +3,7 @@ from django.db import models
 # from accounts.models import Course
 # from students.models import StudentCourseEnrollment
 # from exams.models import MCQ_Exam
+from students.models import Student
 
 
 # Teacher
@@ -48,16 +49,20 @@ class CourseCategory(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def courses(self):
+        return self.course_category.all()
 
 
 # Course model
 class Course(models.Model):
-    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     description = models.TextField()
     # featured_img = models.ImageField(upload_to='course_imgs/', null=True)
     prerequisites = models.TextField(null=True,blank=True)
+    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE, related_name='course_category')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='course_teacher')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='course_student', null=True)
 
     class Meta:
         verbose_name_plural = "4. Course"
