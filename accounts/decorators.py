@@ -41,7 +41,7 @@ def admin_only(view_func):
             if 'admin' in group:
                 return view_func(request, *args, **kwargs)
             elif 'student' in group:
-                return redirect('student')
+                return redirect('accounts:student')
         else:
             return HttpResponse(
                 'User does not belong to any group <a href="/logout/">logout</a>'

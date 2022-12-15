@@ -23,7 +23,7 @@ function Login() {
     studentFormData.append("email", studentLoginData.email);
     studentFormData.append("password", studentLoginData.password);
     try {
-      axios.post(baseUrl + "/student-login", studentFormData).then((res) => {
+      axios.post(baseUrl + "/student-login/", studentFormData).then((res) => {
         if (res.data.bool === true) {
           localStorage.setItem("studentLoginStatus", true);
           localStorage.setItem("studentteacherId", res.data.student_id);

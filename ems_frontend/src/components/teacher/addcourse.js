@@ -15,15 +15,6 @@ function AddCourse() {
     prerequisites: "",
   });
 
-  useEffect(() => {
-    try {
-      axios.get(baseUrl + "/category").then((res) => {
-        setCats(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
 
   const handleChange = (event) => {
     setCourseData({
@@ -39,7 +30,8 @@ function AddCourse() {
     });
   };
 
-  const formSubmit = () => {
+  function formSubmit() {
+    console.log('orawri')
     const teacherId = localStorage.getItem("teacherId");
     const formData = new FormData();
     formData.append("category", courseData.category);
@@ -49,8 +41,9 @@ function AddCourse() {
     formData.append("featured_img", courseData.f_img, courseData.f_img.name);
     formData.append("prerequisites", courseData.prerequisites);
     try {
-      axios
-        .post(baseUrl + "/course/", formData, {
+      console.log("trying to post")
+      console.log(formData)
+      axios.post(baseUrl + "/course/", formData, {
           headers: {
             "content-type": "multipart/form-data",
           },
@@ -60,9 +53,22 @@ function AddCourse() {
           // console.log(res.data);
         });
     } catch (error) {
+      console.log("error:")
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    try {
+      axios.get(baseUrl + "/category/").then((res) => {
+        console.log(res)
+        setCats(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
 
   useEffect(() => {
     document.title = "Add Course";
@@ -146,8 +152,8 @@ function AddCourse() {
 
                 <hr />
                 <button
-                  type="submit"
                   onClick={formSubmit}
+                  type="submit"
                   className="btn btn-primary"
                 >
                   Submit

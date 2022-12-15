@@ -6,8 +6,8 @@ from rest_framework import generics
 from API.serializer import StudentSerializer, StudentDashboardSerializer, StudentCourseEnrollSerializer
 
 from .models import Student, StudentCourseEnrollment
-from teachers.models import Teacher
-from accounts.models import Course
+from teachers.models import Teacher, Course
+# from accounts.models import Course
 # Create your views here.
 
 # Students' list

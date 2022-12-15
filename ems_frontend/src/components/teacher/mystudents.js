@@ -11,14 +11,14 @@ function MyStudents() {
   useEffect(() => {
     try {
       axios
-        .get(baseUrl + "/fetch-all-enrolled-students/" + teacherId)
+        .get(baseUrl + "/fetch-all-enrolled-students/" + teacherId + "/")
         .then((res) => {
           setStudentData(res.data);
         });
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
 
   useEffect(() => {
     document.title = "My Students";

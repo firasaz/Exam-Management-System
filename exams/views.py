@@ -7,6 +7,11 @@ from questions.models import Question, Answer, ClassicalAnswer
 from results.models import Result
 from accounts.decorators import unauthenticated_user
 
+from rest_framework import generics
+# from rest_framework import RetrieveUpdateDestroyAPIView
+
+from API.serializer import ExamSerializer
+
 # def Exams_List_View(request):
 #     Exam=MCQ_Exam.objects.all()
 #     context={
@@ -17,6 +22,10 @@ from accounts.decorators import unauthenticated_user
 class ExamsListView(ListView):
     model=MCQ_Exam
     template_name="exams/index.html"
+
+class ExamDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MCQ_Exam.objects.all()
+    serializer_class = ExamSerializer
 
 # url: <id>/
 def examView(request,id):
@@ -132,7 +141,5 @@ def submitExamView(request,id=None):
     return JsonResponse({
         "results": results,
         "score": score_,
-
-    }
-
+        }
     )

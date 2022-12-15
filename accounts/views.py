@@ -12,7 +12,7 @@ from .forms import CreateUserForm
 from .decorators import unauthenticated_user, allowed_users, admin_only
 # Create your views here.
 
-@login_required(login_url='login') # to allow logged in users only to go to home page
+@login_required(login_url='accounts:login') # to allow logged in users only to go to home page
 @admin_only
 def homePage(request):
     context = {}
@@ -44,6 +44,7 @@ def loginPage(request):
         password = request.POST.get('password') # "password" is retreived from the html file where the name of the input tag is "password"
 
         user = authenticate(request, username=username, password=password)
+        print(user.id)
         # print(user)
         if user is not None:
             login(request, user)
@@ -57,7 +58,7 @@ def loginPage(request):
 
 def logoutPage(request):
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 @login_required(login_url='login')
 def studentPage(request):

@@ -7,10 +7,11 @@ const baseUrl = "http://127.0.0.1:8000/api";
 
 function AddExam() {
   const [examData, setExamData] = useState({
-    title: "",
+    name: "",
     description: "",
-    f_img: "",
-    remarks: "",
+    // f_img: "",
+    number_of_questions: "",
+    duration: ""
   });
 
   const handleChange = (event) => {
@@ -29,20 +30,22 @@ function AddExam() {
 
   const { course_id } = useParams();
 
-  const formSubmit = () => {
+  const formSubmit = (event) => {
+    event.preventDefault()
     const _formData = new FormData();
 
     _formData.append("course", course_id);
-    _formData.append("title", examData.title);
+    _formData.append("name", examData.name);
     _formData.append("description", examData.description);
-    _formData.append("featured_img", examData.f_img, examData.f_img.name);
-    _formData.append("remarks", examData.remarks);
+    // _formData.append("featured_img", examData.f_img, examData.f_img.name);
+    _formData.append("Number of questions", examData.number_of_questions);
+    _formData.append("Duration", examData.duration);
 
     try {
       axios
-        .post(baseUrl + "/course-exams/", course_id, _formData, {
+        .post(`${baseUrl}/course-exams/${course_id}/`, _formData, {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         })
         .then((res) => {
@@ -79,14 +82,14 @@ function AddExam() {
             <div className="card-body">
               <form>
                 <div className="mb-3 ">
-                  <label for="title" className="form-label">
-                    Exam Title
+                  <label for="name" className="form-label">
+                    Exam Name
                   </label>
                   <input
                     type="text"
                     onChange={handleChange}
-                    name="title"
-                    id="title"
+                    name="name"
+                    id="name"
                     className="form-control"
                   />
                 </div>
@@ -101,7 +104,7 @@ function AddExam() {
                     name="description"
                   ></textarea>
                 </div>
-                <div className="mb-3 row">
+                {/* <div className="mb-3 row">
                   <label for="image" className="form-label">
                     Course Image
                   </label>
@@ -113,17 +116,31 @@ function AddExam() {
                     type="file"
                     className="form-control"
                   />
-                </div>
+                </div> */}
                 <div className="mb-3">
-                  <label for="remarks" className="form-label">
-                    Remarks
+                  <label for="number_of_questions" className="form-label">
+                    Number of Questions
                   </label>
-                  <textarea
+                  <input
+                    type="number"
                     onChange={handleChange}
                     className="form-control"
-                    id="remarks"
-                    name="remarks"
-                  ></textarea>
+                    id="number_of_questions"
+                    name="number_of_questions"
+                  ></input>
+                </div>
+
+                <div className="mb-3">
+                  <label for="number_of_questions" className="form-label">
+                    Duration
+                  </label>
+                  <input
+                    type="number"
+                    onChange={handleChange}
+                    className="form-control"
+                    id="duration"
+                    name="duration"
+                  ></input>
                 </div>
 
                 <hr />

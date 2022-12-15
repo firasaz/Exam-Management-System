@@ -15,14 +15,15 @@ function TeacherDashboard() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/teacher/dashboard/" + teacherId).then((res) => {
+      axios.get(baseUrl + "/teacher/dashboard/" + teacherId + "/").then((res) => {
         console.log(res);
         setdashboardData(res.data);
       });
     } catch (error) {
+      console.log("error:")
       console.log(error);
     }
-  });
+  }, []);
 
   return (
     <div className="container mt-4">

@@ -12,69 +12,39 @@ function EditCourse() {
     category: "",
     title: "",
     description: "",
-    prev_img: "",
-    f_img: "",
+    // prev_img: "",
+    // f_img: "",
     prerequisites: "",
   });
 
   const { course_id } = useParams();
 
-  useEffect(() => {
+  const formSubmit = (event) => {
+    event.preventDefault()
+    console.log("form")
+    // const _formData = new FormData();
+    // _formData.append("category", courseData.category);
+    // _formData.append("teacher", 1);
+    // _formData.append("title", courseData.title);
+    // _formData.append("description", courseData.description);
+    // // if (courseData.f_img !== "") {
+    // //   _formData.append("featured_img", courseData.f_img, courseData.f_img.name);
+    // // }
+    // _formData.append("prerequisites", courseData.prerequisites);
+
+    
     try {
-      axios.get(baseUrl + "/category").then((res) => {
-        setCats(res.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    //fetch current course data
-    try {
-      axios.get(baseUrl + "/teacher-course-detail/" + course_id).then((res) => {
-        setCourseData({
-          category: res.data.category,
-          title: res.data.title,
-          description: res.data.description,
-          prev_img: res.data.featured_img,
-          f_img: "",
-          prerequisites: res.data.prerequisites,
-        });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-
-  const handleChange = (event) => {
-    setCourseData({
-      ...courseData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const handleFileChange = (event) => {
-    setCourseData({
-      ...courseData,
-      [event.target.name]: event.target.files[0],
-    });
-  };
-
-  const formSubmit = () => {
-    const _formData = new FormData();
-    _formData.append("category", courseData.category);
-    _formData.append("teacher", 1);
-    _formData.append("title", courseData.title);
-    _formData.append("description", courseData.description);
-    if (courseData.f_img !== "") {
-      _formData.append("featured_img", courseData.f_img, courseData.f_img.name);
-    }
-    _formData.append("prerequisites", courseData.prerequisites);
-
-    try {
+      // console.log(_formData)
       axios
-        .put(baseUrl + "/teacher-course-detail/" + course_id, _formData, {
+        .put(baseUrl + "/teacher-course-detail/" + course_id + "/", {
+          category: courseData.category.id,
+          teacher: 1,
+          title: courseData.title,
+          description: courseData.description,
+          prerequisites: courseData.prerequisites
+        }, {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         })
         .then((res) => {
@@ -94,10 +64,53 @@ function EditCourse() {
       console.log(error);
     }
   };
+  
+  useEffect(() => {
+    try {
+      axios.get(baseUrl + "/category/").then((res) => {
+        console.log(res)
+        setCats(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    //fetch current course data
+    try {
+      axios.get(baseUrl + "/teacher-course-detail/" + course_id + "/").then((res) => {
+        console.log(res)
+        setCourseData({
+          category: res.data.category,
+          title: res.data.title,
+          description: res.data.description,
+          prev_img: res.data.featured_img,
+          f_img: "",
+          prerequisites: res.data.prerequisites,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const handleChange = (event) => {
+    setCourseData({
+      ...courseData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleFileChange = (event) => {
+    setCourseData({
+      ...courseData,
+      [event.target.name]: event.target.files[0],
+    });
+  };
 
   useEffect(() => {
     document.title = "Edit Course";
   });
+
   return (
     <div className="container mt-4">
       <div className="row">
@@ -116,8 +129,7 @@ function EditCourse() {
                   <select
                     name="category"
                     value={courseData.category}
-                    className="form-control"
-                  >
+                    className="form-control">
                     {cats.map((category, index) => {
                       return (
                         <option key={index} value={category.id}>
@@ -153,7 +165,7 @@ function EditCourse() {
                     // rows="3"
                   ></textarea>
                 </div>
-                <div className="mb-3 row">
+                {/* <div className="mb-3 row">
                   <label for="image" className="form-label">
                     Course Image
                   </label>
@@ -174,7 +186,7 @@ function EditCourse() {
                       />
                     </p>
                   )}
-                </div>
+                </div> */}
                 <div className="mb-3">
                   <label for="prerequisites" className="form-label">
                     Prerequisites

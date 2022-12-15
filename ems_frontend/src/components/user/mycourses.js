@@ -9,15 +9,14 @@ function MyCourses() {
   const studentId = localStorage.getItem("studentId");
   useEffect(() => {
     try {
-      axios
-        .get(baseUrl + "/fetch-enrolled-courses/" + studentId)
-        .then((res) => {
-          setCourseData(res.data);
+      axios.get(baseUrl + "/fetch-enrolled-courses/" + studentId + "/").then((res) => {
+        console.log(res)
+        setCourseData(res.data);
         });
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
 
   useEffect(() => {
     document.title = "My Courses";

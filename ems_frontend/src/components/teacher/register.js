@@ -23,8 +23,7 @@ function TeacherRegister() {
   };
 
   //submit form
-  const submitForm = () => {
-    console.log("line 30")
+  function submitForm () {
     const teacherFormData = new FormData();
     teacherFormData.append("full_name", teacherData.full_name);
     teacherFormData.append("email", teacherData.email);
@@ -32,7 +31,6 @@ function TeacherRegister() {
     teacherFormData.append("qualification", teacherData.qualification);
     teacherFormData.append("department", teacherData.department);
     try {
-      console.log(baseUrl)
       axios.post(baseUrl, teacherFormData).then((response) => {
         setTeacherData({
           full_name: "",
@@ -43,20 +41,22 @@ function TeacherRegister() {
           status: "success",
         });
       });
+      console.log(baseUrl)
     } catch (error) {
       console.log(error);
       setTeacherData({ status: "error" });
     }
   
   }
+  
   // const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
   // if (teacherLoginStatus === "true") {
   //   window.location.href = "/teacher-dashboard";
   // }
 
-  // useEffect(() => {
-  //   document.title = "Teacher Register";
-  // }, []);
+  useEffect(() => {
+    document.title = "Teacher Register";
+  }, []);
   return (
     <div className="container mt-4">
       <div className="row">

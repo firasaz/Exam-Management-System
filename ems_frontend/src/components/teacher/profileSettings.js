@@ -20,7 +20,7 @@ function TeacherProfileSettings() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/teacher/" + teacherId).then((res) => {
+      axios.get(baseUrl + "/teacher/" + teacherId + "/").then((res) => {
         setTeacherData({
           full_name: res.data.full_name,
           email: res.data.email,

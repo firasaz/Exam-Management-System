@@ -14,14 +14,14 @@ function Dashboard() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/student/dashboard/" + studentId).then((res) => {
+      axios.get(baseUrl + "/student/dashboard/" + studentId + "/").then((res) => {
         console.log(res);
         setdashboardData(res.data);
       });
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
 
   return (
     <div className="container mt-4">
@@ -39,7 +39,7 @@ function Dashboard() {
                 <div className="card-body">
                   <h3>
                     <Link to="/teacher-courses">
-                      {dashboardData.my_courses}
+                      {dashboardData.enrolled_courses}
                     </Link>
                   </h3>
                 </div>

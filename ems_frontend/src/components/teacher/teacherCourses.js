@@ -10,13 +10,13 @@ function TeacherCourses() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/teacher-courses/" + teacherId).then((res) => {
+      axios.get(baseUrl + "/teacher-courses/" + teacherId + "/").then((res) => {
         setCourseData(res.data);
       });
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
 
   useEffect(() => {
     document.title = "Teacher courses";

@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-const baseUrl = "http://127.0.0.1/8000/api";
+const baseUrl = "http://127.0.0.1:8000/api";
 // const siteUrl = "http://127.0.0.1/8000/";
 
 function CourseDetail() {
@@ -23,7 +23,9 @@ function CourseDetail() {
   useEffect(() => {
     //fetch courses
     try {
-      axios.get(baseUrl + "/course/" + course_id).then((res) => {
+      console.log("yolo")
+      console.log(baseUrl + "/course/" + course_id + "/")
+      axios.get(baseUrl + "/course/" + course_id + "/").then((res) => {
         console.log(res);
         setCourseData(res.data);
         setExamData(res.data.course_exams);
@@ -35,9 +37,8 @@ function CourseDetail() {
 
     //fetch enroll status
     try {
-      axios
-        .get(baseUrl + "/fetch-enroll-status/" + studentId + "/" + course_id)
-        .then((res) => {
+      axios.get(baseUrl + "/fetch-enroll-status/" + studentId + "/" + course_id + "/").then((res) => {
+        console.log(res)
           if (res.data.bool === true) {
             setEnrollStatus("success");
           }
@@ -58,29 +59,27 @@ function CourseDetail() {
     formData.append("student", studentId);
 
     try {
-      axios
-        .post(baseUrl + "/student-enroll-course/", formData, {
-          headers: {
-            "content-type": "multipart/form-data",
-          },
-        })
-        .then((res) => {
-          if (res.status === 200 || res.status === 201) {
-            Swal.fire({
-              title: "You have successfully enrolled in this course",
-              icon: "success",
-              toast: true,
-              timer: 5000,
-              position: "top-right",
-              timerProgressBar: true,
-              showConfirmButton: false,
+      axios.post(baseUrl + "/student-enroll-course/", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }).then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          Swal.fire({
+            title: "You have successfully enrolled in this course",
+            icon: "success",
+            toast: true,
+            timer: 5000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
             });
             setEnrollStatus("success");
-          }
-        });
+        }
+      });
     } catch (error) {
       console.log(error);
-    }
+      }
   };
 
   return (

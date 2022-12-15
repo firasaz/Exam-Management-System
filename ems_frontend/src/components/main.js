@@ -77,7 +77,7 @@ function Main() {
         <Route path="/teacher-calendar" element={<TeacherCalendar />} />
         <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
         <Route path="/all-courses" element={<AllCourses />} />
-        <Route path="/all-exams:course_id" element={<CourseExams />} />
+        <Route path="/all-exams/:course_id" element={<CourseExams />} />
         <Route path="/add-exam/:course_id" element={<AddExam />} />
         <Route
           path="/add-assignment/:student_id/:teacher_id"
@@ -88,7 +88,7 @@ function Main() {
           element={<ShowAssignment />}
         />
         <Route path="/my-assignments/" element={<StudentAssignments />} />
-        <Route path="/edit-exam:exam_id" element={<EditExam />} />
+        <Route path="/edit-exam/:exam_id" element={<EditExam />} />
 
         {/* <Route path="/category/:category_slug" element={<CategoryCourses />} /> */}
       </Routes>

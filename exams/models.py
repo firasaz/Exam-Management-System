@@ -19,7 +19,7 @@ class MCQExam(models.Model):
         verbose_name_plural="MCQ Exams"
 
 class MCQ_Exam(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True,related_name="examss")
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
     number_of_questions = models.IntegerField()
@@ -38,10 +38,10 @@ class MCQ_Exam(models.Model):
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file
 
-class CourseCategory(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, default="")
-    title = models.CharField(max_length=100)
-    description = models.CharField(max_length=500)
+# class CourseCategory(models.Model):
+#     course = models.ForeignKey(Course, on_delete=models.CASCADE, default="")
+#     title = models.CharField(max_length=100)
+#     description = models.CharField(max_length=500)
 
-    class Meta:
-        verbose_name_plural="Course Categories"
+#     class Meta:
+#         verbose_name_plural="Course Categories"

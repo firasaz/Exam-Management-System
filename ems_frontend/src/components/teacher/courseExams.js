@@ -12,7 +12,8 @@ function CourseExams() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/course-exams/" + course_id).then((res) => {
+      axios.get(baseUrl + "/course-exams/" + course_id + "/").then((res) => {
+        console.log(res.data)
         setTotalResult(res.data.length);
         setExamData(res.data);
       });
@@ -32,10 +33,10 @@ function CourseExams() {
     }).then((result) => {
       if (result.isConfirmed) {
         try {
-          axios.delete(baseUrl + "/exam/" + exam_id).then((res) => {
+          axios.delete(baseUrl + "/exam/" + exam_id + "/").then((res) => {
             Swal.fire("success", "Data has been deleted");
             try {
-              axios.get(baseUrl + "/course-exams/" + course_id).then((res) => {
+              axios.get(baseUrl + "/course-exams/" + course_id + "/").then((res) => {
                 setTotalResult(res.data.length);
                 setExamData(res.data);
               });
@@ -86,7 +87,7 @@ function CourseExams() {
                   {examData.map((exam, index) => (
                     <tr>
                       <td>
-                        <Link to={"/edit-exam/" + exam.id}>{exam.title}</Link>
+                        <Link to={"/edit-exam/" + exam.id}>{exam.name}</Link>
                       </td>
                       <td>{exam.description}</td>
                       <td>

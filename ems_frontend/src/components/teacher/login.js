@@ -18,13 +18,14 @@ function TeacherLogin() {
     });
   };
 
-  const submitForm = () => {
+  const submitForm = (e) => {
+    e.preventDefault()
     const teacherFormData = new FormData();
     teacherFormData.append("email", teacherLoginData.email);
     teacherFormData.append("password", teacherLoginData.password);
-    console.log(teacherFormData)
+    console.log(teacherFormData) // this didn't show any data in the console
     try {
-      axios.post(baseUrl + "/teacher-login", teacherFormData).then((res) => {
+      axios.post(baseUrl + "/teacher-login/", teacherFormData).then((res) => {
         if (res.data.bool === true) {
           localStorage.setItem("teacherLoginStatus", true);
           localStorage.setItem("teacherId", res.data.teacher_id);

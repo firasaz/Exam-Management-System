@@ -7,12 +7,15 @@ import Swal from "sweetalert2";
 const baseUrl = "http://127.0.0.1:8000/api";
 
 function EditExam() {
+  const [cats, setCats] = useState([]);
   const [examData, setExamData] = useState({
     course: "",
-    title: "",
+    name: "",
     description: "",
-    f_img: "",
-    remarks: "",
+    // f_img: "",
+    number_of_questions: "",
+    time: "",
+    questions: ""
   });
   const handleChange = (event) => {
     setExamData({
@@ -30,20 +33,21 @@ function EditExam() {
 
   const { exam_id } = useParams();
 
-  const formSubmit = () => {
-    const _formData = new FormData();
+  const formSubmit = (event) => {
+    event.preventDefault()
+    // const _formData = new FormData();
 
-    _formData.append("course", examData.course);
-    _formData.append("title", examData.title);
-    _formData.append("description", examData.description);
-    _formData.append("featured_img", examData.f_img, examData.f_img.name);
-    _formData.append("remarks", examData.remarks);
+    // _formData.append("course", examData.course);
+    // _formData.append("title", examData.title);
+    // _formData.append("description", examData.description);
+    // _formData.append("featured_img", examData.f_img, examData.f_img.name);
+    // _formData.append("remarks", examData.remarks);
 
     try {
       axios
-        .put(baseUrl + "/exam/" + exam_id, _formData, {
+        .put(baseUrl + "/exam/" + exam_id + "/", examData, {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         })
         .then((res) => {
@@ -65,27 +69,39 @@ function EditExam() {
     }
   };
 
-  useEffect(() => {
-    document.title = "Edit Exam";
-  });
-
   //fetch courses when page load
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/exam/" + exam_id).then((res) => {
+      axios.get(baseUrl + "/exam/" + exam_id + "/").then((res) => {
+        console.log(res)
         setExamData({
-          course: res.data.course,
-          title: res.data.title,
+          // course: res.data.course,
+          name: res.data.name,
           description: res.data.description,
-          f_img: res.data.f_img,
-          remarks: res.data.remarks,
+          // f_img: res.data.f_img,
+          number_of_questions: res.data.number_of_questions,
+          time: res.data.time,
+          questions: res.data.questions
         });
       });
     } catch (error) {
       console.log(error);
     }
+
+    try {
+      axios.get(baseUrl + "/question/").then((res) => {
+        console.log(res)
+        setCats(res.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
+
+  useEffect(() => {
+    document.title = "Edit Exam";
+  });
 
   return (
     <div className="container mt-4">
@@ -97,17 +113,17 @@ function EditExam() {
           <div className="card">
             <h5 className="card-header">Update Exam</h5>
             <div className="card-body">
-              <form>
+              <form onSubmit={formSubmit}>
                 <div className="mb-3 ">
                   <label for="title" className="form-label">
                     Exam Title
                   </label>
                   <input
-                    value={examData.title}
+                    value={examData.name}
                     type="text"
                     onChange={handleChange}
-                    name="title"
-                    id="title"
+                    name="name"
+                    id="name"
                     className="form-control"
                   />
                 </div>
@@ -123,7 +139,7 @@ function EditExam() {
                     name="description"
                   ></textarea>
                 </div>
-                <div className="mb-3 row">
+                {/* <div className="mb-3 row">
                   <label for="image" className="form-label">
                     Course Image
                   </label>
@@ -136,26 +152,56 @@ function EditExam() {
                     type="file"
                     className="form-control"
                   />
-                </div>
+                </div> */}
                 <div className="mb-3">
-                  <label for="remarks" className="form-label">
-                    Remarks
+                  <label for="number_of_questions" className="form-label">
+                  Number of Questions
                   </label>
                   <textarea
-                    value={examData.remarks}
+                    value={examData.number_of_questions}
                     onChange={handleChange}
                     className="form-control"
-                    id="remarks"
-                    name="remarks"
+                    id="number_of_questions"
+                    name="number_of_questions"
                   ></textarea>
+                </div>
+
+                <div className="mb-3">
+                  <label for="duration" className="form-label">
+                  Exam Duration
+                  </label>
+                  <input
+                  type={"number"}
+                    value={examData.time}
+                    onChange={handleChange}
+                    className="form-control"
+                    id="duration"
+                    name="duration"
+                  ></input>
+                </div>
+
+                <div className="mb-3 ">
+                  <label for="questions" className="form-label">
+                    Questions
+                  </label>
+                  <select
+                    name="questions"
+                    value={examData.questions}
+                    className="form-control">
+                    {cats.map((questions, index) => {
+                      return (
+                        <option key={index} value={questions.id}>
+                          {questions.text}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
 
                 <hr />
                 <button
                   type="submit"
-                  onClick={formSubmit}
-                  className="btn btn-primary"
-                >
+                  className="btn btn-primary">
                   Submit
                 </button>
               </form>
