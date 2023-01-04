@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";
 
+// import CSRFToken from "../csrftoken";
+
 function TeacherLogin() {
   const [teacherLoginData, setTeacherLoginData] = useState({
     email: "",
@@ -25,10 +27,11 @@ function TeacherLogin() {
     teacherFormData.append("password", teacherLoginData.password);
     console.log(teacherFormData) // this didn't show any data in the console
     try {
-      axios.post(baseUrl + "/teacher-login/", teacherFormData).then((res) => {
+      axios.post(`${baseUrl}/teacher-login/`, teacherFormData).then((res) => {
         if (res.data.bool === true) {
           localStorage.setItem("teacherLoginStatus", true);
           localStorage.setItem("teacherId", res.data.teacher_id);
+          localStorage.setItem("teacherName", res.data.teacher_name);
           window.location.href = "/teacher-dashboard";
         } else {
           setErrorMsg("Invalid Email or Password!");
@@ -52,44 +55,47 @@ function TeacherLogin() {
       <div className="row">
         <div className="col-6 offset-3">
           <div className="card">
-            <h5 className="card-header">Teacher Login</h5>
-            <div className="card-body">
-              {errorMsg && <p className="text-danger">{errorMsg}</p>}
+            <form method="POST" class="login-form" action="">
+              {/* <CSRFToken /> */} {/* this is not giving a csrf token for the reason mentioned in that component's file */}
+              <h5 className="card-header">Teacher Login</h5>
+              <div className="card-body">
+                {errorMsg && <p className="text-danger">{errorMsg}</p>}
 
-              <div className="mb-3">
-                <label for="exampleInputEmail1" className="form-label">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={teacherLoginData.email}
-                  name="email"
-                  onChange={handleChange}
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <label for="exampleInputPassword1" className="form-label">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  value={teacherLoginData.password}
-                  name="password"
-                  onChange={handleChange}
-                  className="form-control"
-                  id="exampleInputPassword1"
-                />
-              </div>
+                <div className="mb-3">
+                  <label for="exampleInputEmail1" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={teacherLoginData.email}
+                    name="email"
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label for="exampleInputPassword1" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    value={teacherLoginData.password}
+                    name="password"
+                    onChange={handleChange}
+                    className="form-control"
+                    id="exampleInputPassword1"
+                  />
+                </div>
 
-              <button
-                type="submit"
-                onClick={submitForm}
-                className="btn btn-primary"
-              >
-                Login
-              </button>
-            </div>
+                <button
+                  type="submit"
+                  onClick={submitForm}
+                  className="btn btn-primary"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

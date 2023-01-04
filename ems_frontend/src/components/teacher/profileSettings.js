@@ -20,7 +20,7 @@ function TeacherProfileSettings() {
 
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/teacher/" + teacherId + "/").then((res) => {
+      axios.get(baseUrl + "/teacher/" + teacherId).then((res) => {
         setTeacherData({
           full_name: res.data.full_name,
           email: res.data.email,
@@ -33,7 +33,7 @@ function TeacherProfileSettings() {
     } catch (error) {
       console.log(error);
     }
-  });
+  }, []);
 
   const handleChange = (event) => {
     setTeacherData({
@@ -111,41 +111,45 @@ function TeacherProfileSettings() {
                 <label for="staticEmail" className="col-sm-2 col-form-label">
                   Full Name
                 </label>
-
-                <input
-                  value={teacherData.full_name}
-                  onChange={handleChange}
-                  name="full_name"
-                  type="text"
-                  className="form-control"
-                  id="staticEmail"
-                />
+                <div className="col-sm-10">
+                  <input
+                    value={teacherData.full_name}
+                    onChange={handleChange}
+                    name="full_name"
+                    type="text"
+                    className="form-control"
+                    id="staticEmail"
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label for="staticEmail" className="col-sm-2 col-form-label">
                   Email
                 </label>
-
-                <input
-                  id="staticEmail"
-                  value={teacherData.email}
-                  onChange={handleChange}
-                  name="email"
-                  type="email"
-                  className="form-control"
-                />
+                <div className="col-sm-10">
+                  <input
+                    id="staticEmail"
+                    value={teacherData.email}
+                    onChange={handleChange}
+                    name="email"
+                    type="email"
+                    className="form-control"
+                  />
+                </div>
               </div>
               <div className="mb-3 row">
                 <label for="image" className="col-sm-2 col-form-label ">
                   Profile Image
                 </label>
-                <input
-                  name="p_img"
-                  id="image"
-                  onChange={handleFileChange}
-                  type="file"
-                  className="form-control"
-                />
+                <div className="col-sm-10">
+                  <input
+                    name="p_img"
+                    id="image"
+                    onChange={handleFileChange}
+                    type="file"
+                    className="form-control"
+                  />
+                </div>
                 {teacherData.profile_img && (
                   <p className="mt-2">
                     <img
@@ -161,27 +165,29 @@ function TeacherProfileSettings() {
                 <label for="staticEmail" className="col-sm-2 col-form-label">
                   Qualification
                 </label>
-
-                <textarea
-                  value={teacherData.qualification}
-                  onChange={handleChange}
-                  name="qualification"
-                  type="text"
-                  className="form-control"
-                />
+                <div className="col-sm-10">
+                  <textarea
+                    value={teacherData.qualification}
+                    onChange={handleChange}
+                    name="qualification"
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label for="staticEmail" className="col-sm-2 col-form-label">
                   Department
                 </label>
-
-                <input
-                  value={teacherData.department}
-                  onChange={handleChange}
-                  name="department"
-                  type="text"
-                  className="form-control"
-                />
+                <div className="col-sm-10">
+                  <input
+                    value={teacherData.department}
+                    onChange={handleChange}
+                    name="department"
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
               </div>
               <hr />
               <button

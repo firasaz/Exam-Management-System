@@ -68,7 +68,7 @@ def teacher_login(request):
     # teacherData = authenticate(request, username=email, password=password)
     # print(teacherData)
     if teacherData:
-        return JsonResponse({'bool': True, 'teacher_id': teacherData.id})
+        return JsonResponse({'bool': True, 'teacher_id': teacherData.id, 'teacher_name': teacherData.full_name})
     else:
         return JsonResponse({'bool': False})
 

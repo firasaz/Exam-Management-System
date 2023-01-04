@@ -6,10 +6,14 @@ from .views import getExamData, getQuestionsData, getAnswerData
 from teachers.views import (
     TeacherList, TeacherDetail, TeacherDashboard, teacher_login, teacher_change_password, TeacherCourseList, TeacherView, TeacherCourseDetail,
     CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView
-    )
+)
 from students.views import (
-    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password #, StudentEnrollCourseList,
+    # , StudentEnrollCourseList,
+    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password
     # fetch_enroll_status, EnrolledStudentList
+)
+from chairman.views import (
+    ChairmanList, ChairmanDetail, ChairmanDashboard, chairman_login, chairman_change_password
 )
 
 from exams.views import ExamDetailView
@@ -20,7 +24,7 @@ urlpatterns = [
     path('exam/<int:pk>/', ExamDetailView.as_view()),
     path('question/', getQuestionsData, name='questionAPI'),
     path('answer/', getAnswerData, name='answerAPI'),
-    
+
     path('teacher/', TeacherList.as_view()),
     path('teacher/<int:pk>/', TeacherDetail.as_view()),
     path('teacher/<int:id>/orawri/', TeacherView),
@@ -39,7 +43,7 @@ urlpatterns = [
     path('course/<int:id>/orawri/', CourseView),
 
     # #exam
-    # path('exam/', views.ExamList.as_view()),
+    # path('exam/', ExamList.as_view()),
 
     # specific course exam
     path('course-exams/<int:course_id>/', CourseExamList.as_view()),
@@ -54,4 +58,12 @@ urlpatterns = [
     # path('fetch-enrolled-students/<int:course_id>/', EnrolledStudentList.as_view()),
     # path('fetch-all-enrolled-students/<int:teacher_id>/', EnrolledStudentList.as_view()),
     # path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
+
+    # chairman
+    path('chairman/', ChairmanList.as_view()),
+    path('chairman/<int:pk>/', ChairmanDetail.as_view()),
+    path('chairman/dashboard/<int:pk>/', ChairmanDashboard.as_view()),
+    path('chair-login', chairman_login),
+    path('chairman/change-password/<int:chairman_id>',
+         chairman_change_password),
 ]

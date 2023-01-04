@@ -5,7 +5,6 @@ import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api/teacher/";
 
 function TeacherRegister() {
-
   const [teacherData, setTeacherData] = useState({
     full_name: "",
     email: "",
@@ -23,7 +22,8 @@ function TeacherRegister() {
   };
 
   //submit form
-  function submitForm () {
+  function submitForm(e) {
+    e.preventDefault();
     const teacherFormData = new FormData();
     teacherFormData.append("full_name", teacherData.full_name);
     teacherFormData.append("email", teacherData.email);
@@ -32,6 +32,7 @@ function TeacherRegister() {
     teacherFormData.append("department", teacherData.department);
     try {
       axios.post(baseUrl, teacherFormData).then((response) => {
+        console.log(response);
         setTeacherData({
           full_name: "",
           email: "",
@@ -41,14 +42,12 @@ function TeacherRegister() {
           status: "success",
         });
       });
-      console.log(baseUrl)
     } catch (error) {
       console.log(error);
       setTeacherData({ status: "error" });
     }
-  
   }
-  
+
   // const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
   // if (teacherLoginStatus === "true") {
   //   window.location.href = "/teacher-dashboard";

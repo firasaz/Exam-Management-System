@@ -8,10 +8,11 @@ const baseUrl = "http://127.0.0.1:8000/api";
 function AddCourse() {
   const [cats, setCats] = useState([]);
   const [courseData, setCourseData] = useState({
+    teacher: "",
     category: "",
     title: "",
     description: "",
-    f_img: "",
+    // f_img: "",
     prerequisites: "",
   });
 
@@ -30,22 +31,33 @@ function AddCourse() {
     });
   };
 
-  function formSubmit() {
+  function formSubmit(e) {
+    e.preventDefault()
     console.log('orawri')
     const teacherId = localStorage.getItem("teacherId");
-    const formData = new FormData();
-    formData.append("category", courseData.category);
-    formData.append("teacher", teacherId);
-    formData.append("title", courseData.title);
-    formData.append("description", courseData.description);
-    formData.append("featured_img", courseData.f_img, courseData.f_img.name);
-    formData.append("prerequisites", courseData.prerequisites);
+    const teacherName = localStorage.getItem("teacherName");
+    console.log(teacherId)
+    console.log(teacherName)
+    // const formData = new FormData();
+    // formData.append("category", courseData.category);
+    // formData.append("teacher", teacherId);
+    // formData.append("title", courseData.title);
+    // formData.append("description", courseData.description);
+    // // formData.append("featured_img", courseData.f_img);
+    // formData.append("prerequisites", courseData.prerequisites);
     try {
       console.log("trying to post")
-      console.log(formData)
-      axios.post(baseUrl + "/course/", formData, {
+      // console.log(formData)
+      console.log(courseData)
+      axios.post(`${baseUrl}/course/`, {
+        category: courseData.category,
+        teacher: courseData.teacher,
+        title: courseData.title,
+        description: courseData.description,
+        prerequisites: courseData.prerequisites
+      }, {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         })
         .then((res) => {
@@ -62,7 +74,13 @@ function AddCourse() {
     try {
       axios.get(baseUrl + "/category/").then((res) => {
         console.log(res)
+        const teacherId = localStorage.getItem("teacherId");
         setCats(res.data);
+        setCourseData({
+          ...courseData,
+          ['category']: res.data[0].title, // this always sets the category to be the first element which is 'CMPE' in this case
+          ['teacher']: teacherId,
+        });
       });
     } catch (error) {
       console.log(error);
@@ -90,7 +108,7 @@ function AddCourse() {
                   </label>
                   <select
                     name="category"
-                    onChange={handleChange}
+                    onClick={handleChange}
                     className="form-control"
                   >
                     {cats.map((category, index) => {
@@ -125,7 +143,7 @@ function AddCourse() {
                     name="description"
                   ></textarea>
                 </div>
-                <div className="mb-3 row">
+                {/* <div className="mb-3 row">
                   <label for="image" className="form-label">
                     Course Image
                   </label>
@@ -137,7 +155,7 @@ function AddCourse() {
                     type="file"
                     className="form-control"
                   />
-                </div>
+                </div> */}
                 <div className="mb-3">
                   <label for="prerequisites" className="form-label">
                     Prerequisites

@@ -35,13 +35,12 @@ function EditCourse() {
     
     try {
       // console.log(_formData)
-      axios
-        .put(baseUrl + "/teacher-course-detail/" + course_id + "/", {
-          category: courseData.category.id,
-          teacher: 1,
-          title: courseData.title,
-          description: courseData.description,
-          prerequisites: courseData.prerequisites
+      axios.put(`${baseUrl}/teacher-course-detail/${course_id}/`, {
+        category: courseData.category.id,
+        teacher: 1, // need to check why the teacher id is set to 1 here
+        title: courseData.title,
+        description: courseData.description,
+        prerequisites: courseData.prerequisites
         }, {
           headers: {
             "Content-Type": "application/json",

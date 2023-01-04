@@ -2,6 +2,9 @@ import Header from "./header";
 import Home from "./home";
 import About from "./about";
 import CourseDetail from "./courseDetail";
+import Search from "./search";
+import CategoryCourses from "./CategoryCourses";
+import Category from "./Category";
 
 import Login from "./user/login";
 import Register from "./user/register";
@@ -15,6 +18,9 @@ import Footer from "./footer";
 import { Routes, Route } from "react-router-dom";
 import UserCalendar from "./user/calendar";
 
+import CourseExamList from "./user/courseExamList";
+import TakeExam from "./user/takeExam";
+
 //Teachers
 import TeacherLogin from "./teacher/login";
 import TeacherRegister from "./teacher/register";
@@ -23,8 +29,10 @@ import TeacherCourses from "./teacher/teacherCourses";
 import TeacherProfileSettings from "./teacher/profileSettings";
 import TeacherChangePasswords from "./teacher/changePassword";
 import AddCourse from "./teacher/addcourse";
-import AddExam from "./teacher/addexam";
+import AddExam from "./teacher/addExam";
+import AllExams from "./teacher/allexams";
 import EditCourse from "./teacher/editcourse";
+import AssignExam from "./teacher/assignexam";
 import CourseExams from "./teacher/courseExams";
 import EditExam from "./teacher/editExam";
 import EnrolledStudents from "./teacher/enrolledstudents";
@@ -34,9 +42,18 @@ import ShowAssignment from "./teacher/showAssignment";
 import TeacherCalendar from "./teacher/calendar";
 import TeacherDetail from "./teacher/teacherdetail";
 import TeacherLogout from "./teacher/TeacherLogout";
+import AttemptedStudents from "./teacher/attemptedStudents";
 
 //List pages
 import AllCourses from "./allcourses";
+import ExamQuestions from "./teacher/examquestions";
+
+//chairman
+import ChairLogin from "./chairman/login";
+import ChairLogout from "./chairman/chairLogout";
+import ChairDashboard from "./chairman/dashboard";
+import ChairRegister from "./chairman/register";
+import AddQuestion from "./teacher/addquestion";
 
 function Main() {
   return (
@@ -44,7 +61,9 @@ function Main() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/about" element={<About />} />
+        <Route path="/search/:searchString" element={<Search />} />
         <Route path="/detail/:course_id" element={<CourseDetail />} />
         <Route path="/student-login" element={<Login />} />
         <Route path="/student-register" element={<Register />} />
@@ -78,7 +97,16 @@ function Main() {
         <Route path="/teacher-detail/:teacher_id" element={<TeacherDetail />} />
         <Route path="/all-courses" element={<AllCourses />} />
         <Route path="/all-exams/:course_id" element={<CourseExams />} />
-        <Route path="/add-exam/:course_id" element={<AddExam />} />
+        <Route path="/all-questions/:exam_id" element={<ExamQuestions />} />
+        <Route path="/add-exam-question/:exam_id" element={<AddQuestion />} />
+
+        <Route path="/add-exam" element={<AddExam />} />
+        <Route path="/edit-exam/:exam_id" element={<EditExam />} />
+        <Route path="/assign-exam/:course_id" element={<AssignExam />} />
+        <Route path="/course-exam/:course_id" element={<CourseExamList />} />
+        <Route path="/take-exam/:exam_id" element={<TakeExam />} />
+
+        <Route path="/exam" element={<AllExams />} />
         <Route
           path="/add-assignment/:student_id/:teacher_id"
           element={<AddAssignment />}
@@ -89,8 +117,21 @@ function Main() {
         />
         <Route path="/my-assignments/" element={<StudentAssignments />} />
         <Route path="/edit-exam/:exam_id" element={<EditExam />} />
+        <Route
+          path="/attempted-students/:exam_id"
+          element={<AttemptedStudents />}
+        />
 
-        {/* <Route path="/category/:category_slug" element={<CategoryCourses />} /> */}
+        <Route path="/category" element={<Category />} />
+        <Route
+          path="/course/:category_id/:category_slug"
+          element={<CategoryCourses />}
+        />
+
+        <Route path="/chair-login" element={<ChairLogin />} />
+        <Route path="/chair-logout" element={<ChairLogout />} />
+        <Route path="/chair-register" element={<ChairRegister />} />
+        <Route path="/chair-dashboard" element={<ChairDashboard />} />
       </Routes>
       <Footer />
     </div>

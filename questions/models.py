@@ -1,6 +1,7 @@
 from django.db import models
 from exams.models import MCQ_Exam
 from django.contrib.auth.models import User
+from django.conf import settings
 
 class Question(models.Model):
     qtype = (
