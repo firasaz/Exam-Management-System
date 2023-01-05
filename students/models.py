@@ -4,10 +4,12 @@ from django.db import models
 # from teachers.models import Teacher, Course
 
 # Student
+
+
 class Student(models.Model):
     full_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=100, blank=True ,null=True)
+    password = models.CharField(max_length=100, blank=True, null=True)
     username = models.CharField(max_length=200)
     # profile_img = models.ImageField(upload_to='student_imgs/', null=True)
 
@@ -16,15 +18,15 @@ class Student(models.Model):
 
     def __str__(self):
         return self.full_name
-    
+
     def get_teachers(self):
         courses = self.enrolled_courses()
-        teachers=[]
+        teachers = []
         for course in courses:
             _teacher = getattr(course, 'teacher')
             teachers.append(_teacher)
         return teachers
-    
+
     # def get_exams(self):
     #     courses = self.enrolled_courses() # get all courses for student
     #     exams={}
@@ -33,29 +35,32 @@ class Student(models.Model):
     #         for exam in course.course_exams(): # iterate over every exam in every course
     #             exams[course] = exam_lst.append(exam) # store a key/value pair of course and exam list for that course
     #     return exams
-    
+
     def get_exams(self):
-        courses = self.enrolled_courses() # get all courses for student
+        courses = self.enrolled_courses()  # get all courses for student
         # print("get_exams:",courses)
-        exams=[]
-        for course in courses: # iterate over every course
+        exams = []
+        for course in courses:  # iterate over every course
             for exam in course.course_exams():
                 exams.append(exam)
         return len(exams)
-    
+
     def enrolled_courses(self):
-        return self.course_student.all() # course_student is the related name for the Student-Course relation
+        # course_student is the related name for the Student-Course relation
+        return self.course_student.all()
 
     # def enrolled_courses(self):
     #     enrolled_courses=StudentCourseEnrollment.objects.filter(student=self).count()
     #     return enrolled_courses
 
     def completed_assignments(self):
-        completed_assignments=StudentAssignment.objects.filter(student=self, student_status=True).count()
+        completed_assignments = StudentAssignment.objects.filter(
+            student=self, student_status=True).count()
         return completed_assignments
-    
+
     def pending_assignments(self):
-        pending_assignments=StudentAssignment.objects.filter(student=self, student_status=False).count()
+        pending_assignments = StudentAssignment.objects.filter(
+            student=self, student_status=False).count()
         return pending_assignments
 
 # student course enrollment
@@ -72,19 +77,19 @@ class Student(models.Model):
 #     class Meta:
 #         verbose_name_plural = "6. Enrolled Courses"
 
+
 class StudentAssignment(models.Model):
-    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
-    title=models.CharField(max_length=200)
-    detail=models.TextField(null=True)
-    student_status=models.BooleanField(default=False, null=True)
-    add_time=models.DateTimeField(auto_now_add=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
+    title = models.CharField(max_length=200)
+    detail = models.TextField(null=True)
+    student_status = models.BooleanField(default=False, null=True)
+    add_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural="7. Student Assignments"
+        verbose_name_plural = "7. Student Assignments"
 
     def __str__(self):
         return self.title
-    
+
     def teacher(self):
         return self.get_teachers()
-

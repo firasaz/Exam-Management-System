@@ -103,10 +103,11 @@ class StudentDashboardSerializer(serializers.ModelSerializer):
                   'pending_assignments', 'get_exams']
     # total_student_exams
 
-# class StudentCourseEnrollSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = StudentCourseEnrollment
-#         fields = ['id','course','student','enrolled_time']
+
+class StudentCourseEnrollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['title', 'total_enrolled_students']
 
 #     def __init__(self, *args, **kwargs):
 #         super(StudentCourseEnrollSerializer, self).__init__(*args, **kwargs)

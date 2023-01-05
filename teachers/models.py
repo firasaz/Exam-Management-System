@@ -21,9 +21,9 @@ from students.models import Student
 #             raise ValueError(
 #                 "Superuser must be assigned to is_superuser=True."
 #             )
-        
+
 #         return self.create_user(full_name, email, password, **other_fields)
-    
+
 #     def create_user(self, full_name, email, password, **other_fields):
 #         if not email:
 #             raise ValueError(gettext_lazy("You must provide an email address"))
@@ -51,7 +51,7 @@ from students.models import Student
 
 #     class Meta:
 #         verbose_name_plural = "Teacherss"
-    
+
 #     def __str__(self):
 #         return f"{self.full_name}"
 
@@ -72,6 +72,8 @@ from students.models import Student
 #     #     return total_students
 
 # Teacher
+
+
 class Teacher(models.Model):
     full_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
@@ -80,23 +82,22 @@ class Teacher(models.Model):
     department = models.CharField(max_length=50)
     # profile_img = models.ImageField(upload_to='teacher_imgs/', null=True)
 
-
     class Meta:
         verbose_name_plural = "Teachers"
-    
+
     def __str__(self):
         return f"{self.full_name}"
 
     def total_teacher_courses(self):
-        total_courses=Course.objects.filter(teacher=self).count()
+        total_courses = Course.objects.filter(teacher=self).count()
         return total_courses
 
     def total_teacher_exams(self):
-        counter=0
-        courses=Course.objects.filter(teacher=self)
+        counter = 0
+        courses = Course.objects.filter(teacher=self)
         for course in courses:
             for exam in course.course_exams():
-                counter+=1
+                counter += 1
         return counter
 
     # def total_teacher_courses(self):
@@ -114,7 +115,7 @@ class CourseCategory(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def courses(self):
         return self.course_category.all()
 
@@ -124,10 +125,13 @@ class Course(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField()
     # featured_img = models.ImageField(upload_to='course_imgs/', null=True)
-    prerequisites = models.TextField(null=True,blank=True)
-    category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE, related_name='course_category')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='course_teacher')
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='course_student', null=True)
+    prerequisites = models.TextField(null=True, blank=True)
+    category = models.ForeignKey(
+        CourseCategory, on_delete=models.CASCADE, related_name='course_category')
+    teacher = models.ForeignKey(
+        Teacher, on_delete=models.CASCADE, related_name='course_teacher')
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name='course_student', null=True)
 
     class Meta:
         verbose_name_plural = "4. Course"
@@ -139,7 +143,27 @@ class Course(models.Model):
     def course_exams(self):
         return self.examss.all()
 
+    def total_enrolled_students(self):
+        total_enrolled_students = self.student
+        return total_enrolled_students
+
     # def total_enrolled_students(self):
     #     total_enrolled_students = StudentCourseEnrollment.objects.filter(
     #         course=self).count()
     #     return total_enrolled_students
+
+# student course enrollment
+
+
+class StudentCourseEnrollment(models.Model):
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name='enrolled_courses')
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name='student_courses')
+    enrolled_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.course}-{self.student}"
+
+    class Meta:
+        verbose_name_plural = "6. Enrolled Courses"

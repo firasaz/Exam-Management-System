@@ -9,8 +9,8 @@ from teachers.views import (
 )
 from students.views import (
     # , StudentEnrollCourseList,
-    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password
-    # fetch_enroll_status, EnrolledStudentList
+    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password,
+    fetch_enroll_status, EnrolledStudentList, StudentEnrollCourseList
 )
 from chairman.views import (
     ChairmanList, ChairmanDetail, ChairmanDashboard, chairman_login, chairman_change_password
@@ -53,11 +53,14 @@ urlpatterns = [
     path('student/<int:pk>/', StudentDetail.as_view()),
     path('student/dashboard/<int:pk>/', StudentDashboard.as_view()),
     path('student/change-password/<int:student_id>/', student_change_password),
-    # path('student-enroll-course/', StudentEnrollCourseList.as_view()),
-    # path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
-    # path('fetch-enrolled-students/<int:course_id>/', EnrolledStudentList.as_view()),
-    # path('fetch-all-enrolled-students/<int:teacher_id>/', EnrolledStudentList.as_view()),
-    # path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
+    path('student-enroll-course/', StudentEnrollCourseList.as_view()),
+    path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
+    path('fetch-enrolled-students/<int:course_id>/',
+         EnrolledStudentList.as_view()),
+    path('fetch-all-enrolled-students/<int:teacher_id>/',
+         EnrolledStudentList.as_view()),
+    path('fetch-enrolled-courses/<int:student_id>/',
+         EnrolledStudentList.as_view()),
 
     # chairman
     path('chairman/', ChairmanList.as_view()),
@@ -66,4 +69,6 @@ urlpatterns = [
     path('chair-login', chairman_login),
     path('chairman/change-password/<int:chairman_id>',
          chairman_change_password),
+
+
 ]
