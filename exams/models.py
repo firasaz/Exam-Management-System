@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
-from teachers.models import Course
+from teachers.models import Course, Teacher
+from students.models import Student
 
 # Create your models here.
 
@@ -19,11 +20,13 @@ class MCQExam(models.Model):
         verbose_name_plural="MCQ Exams"
 
 class MCQ_Exam(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True,related_name="examss")
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
     number_of_questions = models.IntegerField()
-    time = models.IntegerField(help_text="duration of the exam(in mins.)")
+    duration = models.IntegerField(help_text="duration of the exam(in mins.)")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True,related_name="examss")
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='exam_teacher') # foreign key creates a many-to-one field from exam to teacher (i.e. multiple exams to one teacher, no more no less)
+    student = models.ManyToManyField(Student, related_name='exam_student', blank=True)
 
     class Meta:
         verbose_name_plural="MCQ_Exams"
@@ -31,10 +34,13 @@ class MCQ_Exam(models.Model):
     def __str__(self):
         return f"Exam: {self.name}"
         # return "Exam "+str(self.id)
-    
+
     def get_questions(self):
         return self.questions.all()[:self.number_of_questions]
-    
+        
+    def get_teacher(self):
+        return self.course.teacher
+
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file
 

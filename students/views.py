@@ -2,7 +2,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from django.contrib.auth import authenticate, login, logout
+from django.core import serializers
 from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from API.serializer import StudentSerializer, StudentDashboardSerializer #, StudentCourseEnrollSerializer
 
 from .models import Student #, StudentCourseEnrollment
@@ -22,11 +26,8 @@ class StudentList(generics.ListCreateAPIView):
 def student_login(request):
     email = request.POST['email']
     password = request.POST['password']
-    try:
-        studentData = Student.objects.get(
-            email=email, password=password)
-    except Student.DoesNotExist:
-        studentData = None
+    
+    studentData = authenticate(request, email=email, password=password)
     if studentData:
         return JsonResponse({'bool': True, 'student_id': studentData.id})
     else:
@@ -62,6 +63,27 @@ def student_change_password(request, student_id):
 # class StudentEnrollCourseList(generics.ListCreateAPIView):
 #     queryset = StudentCourseEnrollment.objects.all()
 #     serializer_class = StudentCourseEnrollSerializer
+
+@api_view(["GET"])
+def CourseStudentList(request,course_id):
+    course = Course.objects.get(id=course_id)
+    students = course.course_students()
+    print(students)
+    serializer=StudentSerializer(students,many=True)
+    print(serializer.data)
+    return Response(serializer.data)
+
+@api_view(["GET"])
+def TeacherStudentList(request,teacher_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    queryset_lst = teacher.teacher_students()
+    print(queryset_lst)
+    # queryset.union(teacher.teacher_students()[1])
+    serializer = StudentSerializer(queryset_lst, many=True) # many=True tells the serializer that this is a list or a queryset of objects not a single object being serialized
+    # print(serializer)
+    # students = serializers.serialize("json", teacher.teacher_students(), many=True)
+    # print(students)
+    return Response(serializer.data)
 
 # 7
 # def fetch_enroll_status(request, student_id, course_id):

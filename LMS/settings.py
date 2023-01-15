@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-md!cq7)0zt7iawfnu3if!!6bnc3)kbs7wk%r^$1jx9id(w32x6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -67,7 +67,9 @@ ROOT_URLCONF = 'LMS.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'ems_frontend/build'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,16 +130,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# STATIC_URL = '/ems_frontend/build/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'ems_frontend/build/static'),
 ]
+
+# MEDIA_URL='/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# sometimes cors error happens if the requests in react do not end with a slash '/' in the end of a url.
 CORS_ALLOW_ALL_ORIGINS=True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+
+# CSRF_TRUSTED_ORIGINS=["http://localhost:3001"]
+
+# to use the custom 'User' model i built and inherit from it for other users in the 
+# project we probably will need to delete our database and recover it back somehow
+AUTH_USER_MODEL = 'Users.NewUser'
+
+# if we decided to use csrf tokens in our react app we will need to uncomment this line
+CSRF_TRUSTED_ORIGINS=["http://localhost:3000"]

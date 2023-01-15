@@ -1,20 +1,22 @@
 from django.db import models
+# from django.contrib.auth.models import User
 
+from Users.models import NewUser
 from teachers.models import Teacher
 from students.models import Student
 
 # Chairman
-class Chairman(models.Model):
-    full_name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    password = models.CharField(max_length=100, blank=True, null=True)
+class Chairman(NewUser):
+    # user=models.OneToOneField(User, on_delete=models.CASCADE)
+    # email = models.CharField(max_length=100)
+    # password = models.CharField(max_length=100, blank=True, null=True)
     qualification = models.CharField(max_length=200)
     department = models.CharField(max_length=50)
-    # profile_img = models.ImageField(upload_to='chair_imgs/', null=True)
+    profile_img = models.ImageField(upload_to='chair_imgs/', null=True)
 
 
     class Meta:
-        verbose_name_plural = "1. Chairman"
+        verbose_name_plural = "Chairman"
 
 
 #notifications model
@@ -27,4 +29,4 @@ class Notification(models.Model):
     notif_read_status=models.BooleanField(default=False, verbose_name='Notification Status')
 
     class Meta:
-        verbose_name_plural="8. Notification"
+        verbose_name_plural="Notifications"

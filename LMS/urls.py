@@ -19,15 +19,18 @@ from django.urls import path, include
 
 from accounts.views import homePage
 from API.views import getExamData, getQuestionsData, getAnswerData
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name="index.html")),
     path('admin/', admin.site.urls),
     
-    path('', homePage, name='home'),
     path('account/',include('accounts.urls')),
     path('api/',include('API.urls')),
     # path('api/exam/', getExamData, name='examAPI'),
     # path('api/question/', getQuestionsData, name='questionAPI'),
     # path('api/answer/', getAnswerData, name='answerAPI'),
     # path("user/exam/", include('exams.urls'))
-]
+]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

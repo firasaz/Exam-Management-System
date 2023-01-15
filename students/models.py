@@ -1,18 +1,20 @@
 from django.db import models
 
+from Users.models import NewUser
 # from accounts.models import Course
 # from teachers.models import Teacher, Course
 
 # Student
-class Student(models.Model):
-    full_name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=100, blank=True ,null=True)
-    username = models.CharField(max_length=200)
-    # profile_img = models.ImageField(upload_to='student_imgs/', null=True)
+class Student(NewUser):
+    # user=models.OneToOneField(User, on_delete=models.CASCADE)
+    # full_name = models.CharField(max_length=100)
+    # email = models.CharField(max_length=100, unique=True)
+    # password = models.CharField(max_length=100, blank=True ,null=True)
+    # username = models.CharField(max_length=200)
+    profile_img = models.ImageField(upload_to='static/images/student_imgs/', null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = "5. Student"
+        verbose_name_plural = "Students"
 
     def __str__(self):
         return self.full_name
@@ -45,10 +47,6 @@ class Student(models.Model):
     
     def enrolled_courses(self):
         return self.course_student.all() # course_student is the related name for the Student-Course relation
-
-    # def enrolled_courses(self):
-    #     enrolled_courses=StudentCourseEnrollment.objects.filter(student=self).count()
-    #     return enrolled_courses
 
     def completed_assignments(self):
         completed_assignments=StudentAssignment.objects.filter(student=self, student_status=True).count()

@@ -3,12 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Teacher
-from .forms import CreateUserForm
+from .forms import CreateUserForm, RegisterTeacherFormReact
 from .decorators import unauthenticated_user, allowed_users, admin_only
 # Create your views here.
 
@@ -37,19 +37,69 @@ def registerPage(request):
     context = {"form":form}
     return render(request, 'accounts/register.html', context)
 
+@csrf_exempt
+@unauthenticated_user
+def registerPageReact(request):
+    if request.method == "POST":
+        form = RegisterTeacherFormReact(request.POST)
+        print(form)
+        if form.is_valid():
+            user = form.save()
+            print(user)
+            cleaned_data = form.cleaned_data
+            print(cleaned_data)
+            if cleaned_data.get("qualification"):
+                group = Group.objects.get(name='teacher')
+                user.groups.add(group)
+            return JsonResponse({"message":"form is valid"})
+    teacher_name=request.POST.get('full_name')
+    email=request.POST.get('email')
+    passwd=request.POST.get('password')
+    qualification=request.POST.get('qualification')
+    dept=request.POST.get('department')
+    
+    return JsonResponse({"message":"idk"})
+    # User.objects.create()
+
+@csrf_exempt
+@unauthenticated_user
+def loginPageReact(request):
+    if request.method == 'POST':
+        print(request)
+        email = request.POST.get('email') # "email" is retreived from the html file where the name of the input tag is "email"
+        password = request.POST.get('password') # "password" is retreived from the html file where the name of the input tag is "password"
+
+        user = authenticate(request, username=email, password=password)
+        # print(user.id)
+        print(user)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({"bool":True})
+            # return redirect("home")
+        else:
+            return JsonResponse({"bool": False})
+            messages.info(request, 'username or password is incorrect')
+
+
+    context={}
+    # return render(request, 'accounts/index.html', context)
+
 @unauthenticated_user
 def loginPage(request):
     if request.method == 'POST':
-        username = request.POST.get('username') # "username" is retreived from the html file where the name of the input tag is "username"
+        print(request)
+        username = request.POST.get('username') # "username" is retreived from the html file where the name of the input tag is "email"
         password = request.POST.get('password') # "password" is retreived from the html file where the name of the input tag is "password"
 
         user = authenticate(request, username=username, password=password)
-        print(user.id)
-        # print(user)
+        # print(user.id)
+        print(user)
         if user is not None:
             login(request, user)
+            # return JsonResponse({"bool":True})
             return redirect("home")
         else:
+            # return JsonResponse({"bool": False})
             messages.info(request, 'username or password is incorrect')
 
 
