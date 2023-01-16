@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializer import ExamSerializer, QuestionSerializer, AnswerSerializer, AddExamSerializer
-from exams.models import MCQ_Exam
+from exams.models import Exam
 from questions.models import Question, Answer
 # Create your views here.
 
@@ -24,20 +24,22 @@ def getQuestionsData(request):
 
 @api_view(["GET"])
 def getExamData(request):
-    exams = MCQ_Exam.objects.all()
+    exams = Exam.objects.all()
     serializer = ExamSerializer(exams, many = True)
     return Response(serializer.data)
 
+# POST request on this view returns:
+# Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+# update; 
+# turned out for the POST method i wrote: request == "POST" instead of request.method == "POST"
 @api_view(["GET","POST"])
 def addExamData(request):
     if request.method == "GET":
-        exams = MCQ_Exam.objects.all()
-        serializer=ExamSerializer(exams, many=True)
+        exams = Exam.objects.all()
+        serializer=AddExamSerializer(exams, many=True)
         return Response(serializer.data)
-    elif request == "POST":
-        print(request)
+    elif request.method == "POST":
         serializer = AddExamSerializer(data=request.data)
-        print(serializer.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

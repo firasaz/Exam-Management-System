@@ -19,7 +19,7 @@ class MCQExam(models.Model):
     class Meta:
         verbose_name_plural="MCQ Exams"
 
-class MCQ_Exam(models.Model):
+class Exam(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
     number_of_questions = models.IntegerField()
@@ -36,13 +36,38 @@ class MCQ_Exam(models.Model):
         # return "Exam "+str(self.id)
 
     def get_questions(self):
-        return self.questions.all()[:self.number_of_questions]
+        return self.questions.all() #[:self.number_of_questions]
         
     def get_teacher(self):
         return self.course.teacher
+    
+    # def get_courses(self):
+    #     return self.course
 
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file
+
+class AttemptExam(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+    # question = models.ForeignKey(QuizQuestions, on_delete=models.CASCADE, null=True)
+    right_ans = models.CharField(max_length=200, null=True)
+    add_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Attempted Questions"
+
+    def question(self):
+        return self.exam.get_questions()
+
+# class CourseExam(models.Model):
+#     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True)
+#     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+#     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+#     add_time = models.DateTimeField(auto_now_add=True)
+
+#     class Meta:
+#         verbose_name_plural = "11. Course Exam"
 
 # class CourseCategory(models.Model):
 #     course = models.ForeignKey(Course, on_delete=models.CASCADE, default="")

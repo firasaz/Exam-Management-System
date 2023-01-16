@@ -1,38 +1,37 @@
 from rest_framework import serializers
 
-from exams.models import MCQ_Exam
+
+from exams.models import Exam, AttemptExam
 from questions.models import Question, Answer
-from accounts.models import Teacher, Student #, StudentCourseEnrollment
+from accounts.models import Teacher, Student  # , StudentCourseEnrollment
 from teachers.models import Course, CourseCategory
+from chairman.models import Chairman
 # from students.models import StudentAssignment
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = "__all__"
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     answers = AnswerSerializer(many=True)
+
     class Meta:
         model = Question
-        fields = ("text", "exam","type", "created", "answers")
+        fields = ("text", "exam", "type", "created", "answers")
+
 
 class ExamTeacherSerializer(serializers.ModelSerializer):
     class Meta:
-        model = MCQ_Exam
+        model = Exam
         fields = ["get_teacher"]
-
-class ExamSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True) # this field should match the related name specified in the model connected to this model
-    get_teacher = ExamTeacherSerializer() # many=True is wrong because_get_teacher returns one teacher object only as each exam can have one teacher only, no more no less
-    class Meta:
-        model = MCQ_Exam
-        fields = ("id","name", "description", "number_of_questions", "duration", "course", "questions","get_teacher")
 
 class AddExamSerializer(serializers.ModelSerializer):
     # get_teacher = ExamTeacherSerializer(many=True)
     class Meta:
-        model = MCQ_Exam
+        model = Exam
         fields = ("id", "name", "description", "number_of_questions", "duration","course","teacher","student") # "get_teacher"
 
 
@@ -66,7 +65,6 @@ class CourseSerializer(serializers.ModelSerializer):
         # fields = "__all__"
         fields = ["id","title","description","featured_img","prerequisites","category","teacher","student"]
 
-
     def __init__(self, *args, **kwargs):
         super(CourseSerializer, self).__init__(*args, **kwargs)
         request = self.context.get('request')
@@ -91,6 +89,8 @@ class TeacherCourseSerializer(serializers.ModelSerializer):
     
 class TeacherSerializer(serializers.ModelSerializer):
     teacher_courses=CourseEditSerializer(many=True)
+    # teacher_students=StudentSerializer(many=True) # need to reorder the serializers to work
+    # teacher_exams=ExamSerializer(many=True) # need to reorder the serializers to work
     class Meta:
         model = Teacher
         fields = ["id","full_name","email","username","department","qualification","profile_img","teacher_courses"]
@@ -105,6 +105,19 @@ class TeacherDashboardSerializer(serializers.ModelSerializer):
         model=Teacher
         fields=['total_teacher_courses','total_teacher_exams','total_teacher_students']
     #   total_teacher_exams
+
+class ExamSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True) # this field should match the related name specified in the model connected to this model
+    # get_teacher = ExamTeacherSerializer() # many=True is wrong because_get_teacher returns one teacher object only as each exam can have one teacher only, no more no less
+    teacher=TeacherSerializer()
+    class Meta:
+        model = Exam
+        fields = ("id","name", "description", "number_of_questions", "duration", "course", "questions","teacher")
+
+class ExamEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Exam
+        fields=['name','description','number_of_questions','duration']
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -148,14 +161,15 @@ class StudentDetailSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         self.Meta.depth = 0
         if request and request.method == 'GET':
-            self.Meta.depth =2
+            self.Meta.depth = 2
 
 
 
-# class StudentCourseEnrollSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = StudentCourseEnrollment
-#         fields = ['id','course','student','enrolled_time']
+
+class StudentCourseEnrollSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['title', 'total_enrolled_students']
 
 #     def __init__(self, *args, **kwargs):
 #         super(StudentCourseEnrollSerializer, self).__init__(*args, **kwargs)
@@ -176,7 +190,41 @@ class StudentDetailSerializer(serializers.ModelSerializer):
 #         if request and request.method == 'GET':
 #             self.Meta.depth = 2
 
+class AttemptExamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AttemptExam
+        fields = ['id', 'student', 'exam', 'question', 'right_ans', 'add_time']
+
+    def __init__(self, *args, **kwargs):
+        super(AttemptExamSerializer, self).__init__(*args, **kwargs)
+        request = self.context.get('request')
+        self.Meta.depth = 0
+        if request and request.method == 'GET':
+            self.Meta.depth = 2
+
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Teacher
-        fields='__all__'
+        model = Teacher
+        fields = '__all__'
+
+# chairman
+
+
+class ChairmanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chairman
+        fields = ['id', 'full_name', 'email', 'password','qualification', 'department', 'profile_img']
+        # teacher_courses
+
+    def __init__(self, *args, **kwargs):
+        super(ChairmanSerializer, self).__init__(*args, **kwargs)
+        request = self.context.get('request')
+        self.Meta.depth = 0
+        if request and request.method == 'GET':
+            self.Meta.depth = 2
+
+
+class ChairmanDashboardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ['total_teacher_courses', 'total_teacher_courses']

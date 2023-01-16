@@ -2,15 +2,21 @@ from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.http import JsonResponse
 
 from django.views.generic import ListView
-from .models import MCQ_Exam
+from django.views.decorators.csrf import csrf_exempt
+from .models import Exam, AttemptExam
 from questions.models import Question, Answer, ClassicalAnswer
 from results.models import Result
+from teachers.models import Course
+from students.models import Student
 from accounts.decorators import unauthenticated_user
 
 from rest_framework import generics
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 # from rest_framework import RetrieveUpdateDestroyAPIView
 
-from API.serializer import ExamSerializer
+from API.serializer import ExamSerializer, QuestionSerializer, AttemptExamSerializer, CourseEditSerializer, ExamEditSerializer
 
 # def Exams_List_View(request):
 #     Exam=MCQ_Exam.objects.all()
@@ -19,17 +25,129 @@ from API.serializer import ExamSerializer
 #     }
 #     return render(request,'exams/index.html',context)
 
+class ExamDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Exam.objects.all()
+    serializer_class = ExamSerializer
+
+
+class ExamQuestionList(generics.ListCreateAPIView):
+    serializer_class = QuestionSerializer
+
+    def get_queryset(self):
+        exam_id = self.kwargs['exam_id']
+        exam = Exam.objects.get(pk=exam_id)
+        if 'limit' in self.kwargs:
+            return exam.get_questions().order_by('id')[:1]
+        elif 'question_id' in self.kwargs:
+            current_question = self.kwargs['question_id']
+            questions=exam.get_questions()
+            return questions.filter(id__gt=current_question).order_by('id')[:1]
+        else:
+            return exam.get_questions()
+
+class CourseExamList(generics.ListCreateAPIView):
+    queryset = Exam.objects.all()
+    serializer_class = ExamSerializer
+
+    def get_queryset(self):
+        if 'course_id' in self.kwargs:
+            course_id = self.kwargs['course_id']
+            course = Course.objects.get(pk=course_id)
+            return course.course_exams()
+
+# class CourseExamList(generics.ListCreateAPIView):
+#     queryset = CourseExam.objects.all()
+#     serializer_class = CourseExamSerializer
+
+#     def get_queryset(self):
+#         if 'course_id' in self.kwargs:
+#             course_id = self.kwargs['course_id']
+#             course = Course.objects.get(pk=course_id)
+#             return CourseExam.objects.filter(course=course)
+
+
+def fetch_exam_assign_status(request, exam_id, course_id):
+    # exam = Exam.objects.filter(id=exam_id).first()
+    # course = Course.objects.filter(id=course_id).first()
+    # assignStatus = CourseExam.objects.filter(course=course, exam=exam).count()
+
+    try:
+        exam = Exam.objects.get(id=exam_id)
+    except Exam.DoesNotExist:
+        exam = None
+    try:
+        course = Course.objects.get(id=course_id)
+    except Course.DoesNotExist:
+        course = None
+    
+    assignStatus = course.course_exams().filter(exam=exam).count()
+    if assignStatus:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+
+
+class AttemptExamList(generics.ListCreateAPIView):
+    queryset = AttemptExam.objects.all()
+    serializer_class = AttemptExamSerializer
+
+    def get_queryset(self):
+        if 'exam_id' in self.kwargs:
+            exam_id = self.kwargs['exam_id']
+            exam = Exam.objects.get(pk=exam_id)
+            return AttemptExam.objects.raw(f'SELECT * FROM main_attempquiz WHERE quiz_id={int(exam_id)} GROUP by student_id')
+
+
+def fetch_exam_attempt_status(request, exam_id, student_id):
+    exam = Exam.objects.filter(id=exam_id).first()
+    student = Student.objects.filter(id=student_id).first()
+    attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
+    print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
+    if attemptStatus > 0:
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+
+
+def fetch_exam_result(request, exam_id, student_id):
+    exam = Exam.objects.filter(id=exam_id).first()
+    student = Student.objects.filter(id=student_id).first()
+    total_questions = exam.get_questions().count()
+    total_attempted_questions = AttemptExam.objects.filter(exam=exam, student=student).values('student').count()
+    attempted_questions = AttemptExam.objects.filter(exam=exam, student=student)
+
+    total_correct_questions = 0
+    for attempt in attempted_questions:
+        if attempt.right_ans == attempt.question.right_ans:
+            total_correct_questions += 1
+
+    return JsonResponse({'total_questions': total_questions, 'total_attempted_questions': total_attempted_questions, 'total_correct_questions': total_correct_questions})
+
+
 class ExamsListView(ListView):
-    model=MCQ_Exam
+    model=Exam
     template_name="exams/index.html"
 
 class ExamDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = MCQ_Exam.objects.all()
+    queryset = Exam.objects.all()
     serializer_class = ExamSerializer
+
+@api_view(['GET','PUT'])
+def exam_edit(request,pk):
+    exam=Exam.objects.get(id=pk)
+    if request.method == 'GET':
+        serializer=ExamEditSerializer(exam)
+        return Response(serializer.data)
+    elif request.method == 'PUT':    
+        serializer=ExamEditSerializer(exam, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors) # adding the status method here causes 400 bad request
 
 # url: <id>/
 def examView(request,id):
-    exam = MCQ_Exam.objects.get(id=id)
+    exam = Exam.objects.get(id=id)
     context = {
         'obj':exam
     }
@@ -46,7 +164,7 @@ def examView(request,id):
 
 # url: <int:id>/take/
 def takeExamView(request,id):
-    exam = MCQ_Exam.objects.get(id=id)
+    exam = Exam.objects.get(id=id)
     questions_dict = {}
     print(exam.get_questions())
     for q in exam.get_questions(): # loop over the questions of the exam
@@ -76,7 +194,7 @@ def is_ajax(request):
 
 # url: <int:id>/submit/
 def submitExamView(request,id=None):
-    exam = get_object_or_404(MCQ_Exam,id=id)
+    exam = get_object_or_404(Exam,id=id)
     if is_ajax(request=request):
         message = "This is ajax"
         data = request.POST # this returns a QueryDict(which is the dataDict in the exam.js file)

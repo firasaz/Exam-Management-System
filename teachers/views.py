@@ -15,7 +15,7 @@ from API.serializer import (
     )
 
 from .models import Teacher, Course, CourseCategory
-from exams.models import MCQ_Exam
+from exams.models import Exam
 
 # Create your views here.
 
@@ -170,7 +170,7 @@ def TeacherCourseEdit(request,c_id):
 def TeacherExamList(request,teacher_id):
     teacher = Teacher.objects.get(id=teacher_id)
     exams=teacher.teacher_exams()
-    serializer=AddExamSerializer(exams, many=True)
+    serializer=ExamSerializer(exams, many=True)
     print(serializer.data)
     return Response(serializer.data)
 # Courses Views
@@ -219,4 +219,4 @@ class CourseExamList(generics.ListCreateAPIView):
     def get_queryset(self):
         course_id = self.kwargs['course_id']
         course = Course.objects.get(pk=course_id)
-        return MCQ_Exam.objects.filter(course=course)
+        return Exam.objects.filter(course=course)

@@ -1,5 +1,5 @@
 from django.db import models
-from exams.models import MCQ_Exam
+from exams.models import Exam
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -11,7 +11,7 @@ class Question(models.Model):
         ("MCQ", "Multiple Choice")
     )
     text = models.CharField(max_length=200)
-    exam = models.ForeignKey(MCQ_Exam, on_delete=models.CASCADE, related_name='questions')
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='questions')
     type = models.CharField(max_length=20, choices=qtype,default="MCQ")
     created = models.DateTimeField(auto_now_add=True)
 

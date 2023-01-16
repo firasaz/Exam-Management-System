@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'results',
     'teachers',
     'students',
+    'chairman',
     'rest_framework',
     'corsheaders',
 ]
