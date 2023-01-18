@@ -93,6 +93,7 @@ urlpatterns = [
     path('teacher/<int:pk>/', TeacherDetail.as_view()),
     path('teacher/change-password/<int:teacher_id>/', teacher_change_password),
     path('teacher-login/', teacher_login),
+    path('teacher-course-edit/<int:c_id>/', TeacherCourseEdit),
 
     # Category
     path('category/', CategoryList.as_view()),

@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const baseUrl = "http://127.0.0.1:8000/api";
 function AddCourse() {
+  const [prereq, setPrereq] = useState([]);
   const [cats, setCats] = useState([]);
   const [courseData, setCourseData] = useState({
     category: "",
@@ -43,13 +44,21 @@ function AddCourse() {
 
     try {
       console.log(courseData);
+      console.log(courseData.f_img);
+      // if(courseData.f_img === "") {
+      //   courseData.f_img = null
+      // }
+      if(!courseData.f_img) {
+        courseData.f_img = null
+        console.log(courseData.f_img)
+      }
       axios.post(`${baseUrl}/course/`, {
             category: courseData.category,
             teacher: courseData.teacher,
             title: courseData.title,
             description: courseData.description,
             prerequisites: courseData.prerequisites,
-            f_img: courseData.f_img
+            featured_img: courseData.f_img
             // category: 2,
             // teacher: "2",
             // title: "hard-coded title for testing",
@@ -59,6 +68,7 @@ function AddCourse() {
           },
           {
             headers: {
+              // "Content-Type": "multipart/form-data", // this is causing problems when there is no image. image is not working anyway so for now we will use applications/json
               "Content-Type": "application/json",
             },
           }
@@ -74,7 +84,7 @@ function AddCourse() {
               showConfirmButton: false,
             });
           }
-          window.location.href = "/add-course";
+          // window.location.href = "/add-course";
           // console.log(res.data);
         });
     } catch (error) {
@@ -85,7 +95,6 @@ function AddCourse() {
   useEffect(() => {
     try {
       axios.get(baseUrl + "/category/").then((res) => {
-        console.log(res.data[0]);
         const teacherId = localStorage.getItem("teacherId");
         setCats(res.data);
         setCourseData({
@@ -95,6 +104,15 @@ function AddCourse() {
         });
       });
     } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      axios.get(`${baseUrl}/course/`).then((res) => {
+        console.log(res.data);
+        setPrereq(res.data)
+      });
+    } catch(error) {
       console.log(error);
     }
   }, []);
@@ -107,8 +125,6 @@ function AddCourse() {
         <div className="col-9">
           <div className="card">
             <h5 className="card-header">Add Course</h5>
-            <h5 className="card-header">{courseData.teacher}: {typeof(courseData.teacher)}</h5>
-            <h5 className="card-header">{courseData.category}: {typeof(courseData.category)}</h5>
             <div className="card-body">
               <form>
                 <div className="mb-3">
@@ -129,6 +145,7 @@ function AddCourse() {
                     })}
                   </select>
                 </div>
+
                 <div className="mb-3">
                   <label for="title" className="form-label">
                     Title
@@ -141,6 +158,7 @@ function AddCourse() {
                     className="form-control"
                   />
                 </div>
+
                 <div className="mb-3">
                   <label for="description" className="form-label">
                     Description
@@ -152,6 +170,7 @@ function AddCourse() {
                     id="description"
                   ></textarea>
                 </div>
+
                 <div className="mb-3">
                   <label for="image" className="form-label">
                     Featured Image
@@ -164,16 +183,24 @@ function AddCourse() {
                     className="form-control"
                   />
                 </div>
+
                 <div className="mb-3">
-                  <label for="prerequisites" className="form-label">
+                  <label for="title" className="form-label">
                     Prerequisites
                   </label>
-                  <textarea
-                    onChange={handleChange}
-                    className="form-control"
-                    id="prerequisites"
+                  <select
                     name="prerequisites"
-                  ></textarea>
+                    onClick={handleChange}
+                    class="form-control"
+                  >
+                    {prereq.map((prerequisites, index) => {
+                      return (
+                        <option key={index} value={prerequisites?.id}>
+                          {prerequisites?.title}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
 
                 <button

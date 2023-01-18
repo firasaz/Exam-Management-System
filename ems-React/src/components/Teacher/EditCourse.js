@@ -6,6 +6,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const baseUrl = "http://127.0.0.1:8000/api";
 function EditCourse() {
+  const [prereq, setPrereq] = useState([]);
   const [cats, setCats] = useState([]);
   const [courseData, setCourseData] = useState({
     category: "",
@@ -47,22 +48,29 @@ function EditCourse() {
     // // _formData.append('techs',courseData.techs);
 
     try {
+      const teacherId = localStorage.getItem("teacherId");
       console.log(courseData)
       axios.put(`${baseUrl }/teacher-course-edit/${course_id}/`, {
-        category: 2,
-        teacher: "2",
-        title: "hard-coded title for testing",
-        description: "testing type of data that works in POST request",
-        prerequisites: null,
-        f_img: null
+        // category: 2,
+        // // teacher: "2",
+        // title: "hard-coded title for testing",
+        // description: "testing type of data that works in POST request",
+        // prerequisites: null,
+        // featured_img: null
+        category: courseData.category,
+        teacher: teacherId,
+        title: courseData.title,
+        description: courseData.description,
+        prerequisites: courseData.prerequisites,
+        featured_img: courseData.f_img
         // techs: courseData.techs
         }, {
           headers: {
-            // "Content-Type": "application/json",
-            "Content-Type": "multipart/form-data"
+            // "Content-Type": "multipart/form-data"
+            "Content-Type": "application/json",
           },
         }).then((res) => {
-          if (res.status === 200) {
+          if (res.status === 200 || res.status ===201) {
             Swal.fire({
               title: "Data has been updated",
               icon: "success",
@@ -84,7 +92,7 @@ function EditCourse() {
     console.log(courseData.category);
   };
 
-    // Fetch categories when page load
+    // Fetch categories when page load for category menu
     useEffect(() => {
       // const teacherId = localStorage.getItem("teacherId");
       try {
@@ -100,11 +108,20 @@ function EditCourse() {
       } catch (error) {
         console.log(error);
       }
+
+      // fetch courses for the prerequisites menu
+      try {
+        axios.get(`${baseUrl}/course/`).then((res) => {
+          console.log(res.data);
+          setPrereq(res.data)
+        });
+      } catch(error) {
+        console.log(error);
+      }
   
       // Fetch current course data
       try {
         axios.get(`${baseUrl}/teacher-course-edit/${course_id}/`).then((res) => {
-          const teacherId = localStorage.getItem("teacherId");
           console.log(res.data)
           setCourseData({
             category: res.data.category,
@@ -134,7 +151,7 @@ function EditCourse() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label for="category" className="form-label">
                     Category
                   </label>
                   <select
@@ -152,6 +169,7 @@ function EditCourse() {
                     })}
                   </select>
                 </div>
+
                 <div className="mb-3">
                   <label for="title" className="form-label">
                     Title
@@ -165,6 +183,7 @@ function EditCourse() {
                     className="form-control"
                   />
                 </div>
+
                 <div className="mb-3">
                   <label for="description" className="form-label">
                     Description
@@ -198,7 +217,26 @@ function EditCourse() {
                     </p>
                   )}
                 </div>
+
                 <div className="mb-3">
+                  <label for="title" className="form-label">
+                    Prerequisites
+                  </label>
+                  <select
+                    name="prerequisites"
+                    onClick={handleChange}
+                    class="form-control"
+                  >
+                    {prereq.map((prerequisites, index) => {
+                      return (
+                        <option key={index} value={prerequisites?.id}>
+                          {prerequisites?.title}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                {/* <div className="mb-3">
                   <label for="prerequisites" className="form-label">
                     Prerequisites
                   </label>
@@ -208,7 +246,7 @@ function EditCourse() {
                     id="prerequisites"
                     name="prerequisites"
                   ></textarea>
-                </div>
+                </div> */}
                 {/* <div className="mb-3">
                                     <label for="techs" className="form-label">Technologies</label>
                                     <textarea value={courseData.techs} onChange={handleChange} name='techs' className="form-control" placeholder="Php, Python, Javascript, HTML, CSS" id="techs"></textarea>

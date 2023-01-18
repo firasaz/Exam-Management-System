@@ -8,6 +8,10 @@ from teachers.models import Course, CourseCategory, TeacherStudentChat, Notifica
 from chairman.models import Chairman
 # from students.models import StudentAssignment
 
+class TeacherNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
+        fields = ['full_name']
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,13 +62,13 @@ class CourseEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         # fields = "__all__"
-        fields = ["category","title","description","featured_img","prerequisites"]
+        fields = ["id","category","title","teacher","description","featured_img","prerequisites"]
 
 class CourseSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    # category = CategorySerializer()
     class Meta:
         model = Course
-        fields = ["id","title","description","featured_img","prerequisites","category"]
+        fields = ["id","title","description","featured_img","prerequisites","category","teacher"]
 
 
 class TeacherCourseSerializer(serializers.ModelSerializer):
@@ -72,9 +76,8 @@ class TeacherCourseSerializer(serializers.ModelSerializer):
         model = Course
         # fields = "__all__"
         fields = ["id","title","description","featured_img","prerequisites","category"]
-    
 
-        
+
 class TeacherEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
