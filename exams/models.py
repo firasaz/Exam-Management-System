@@ -47,10 +47,23 @@ class Exam(models.Model):
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file
 
+class ExamQuestions(models.Model):
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
+    question = models.CharField(max_length=200)
+    ans1 = models.CharField(max_length=200)
+    ans2 = models.CharField(max_length=200)
+    ans3 = models.CharField(max_length=200)
+    ans4 = models.CharField(max_length=200)
+    right_ans = models.CharField(max_length=200)
+    add_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Exam Questions"
+
 class AttemptExam(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
-    # question = models.ForeignKey(QuizQuestions, on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey(ExamQuestions, on_delete=models.CASCADE, null=True)
     right_ans = models.CharField(max_length=200, null=True)
     add_time = models.DateTimeField(auto_now_add=True)
 

@@ -59,16 +59,20 @@
 #     # path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
 # ]
 from django.urls import path
-from .views import getExamData, getQuestionsData, getAnswerData, addExamData
+from .views import getExamData, getQuestionsData, getAnswerData, addExamData, deleteQuestion, add_question
 from teachers.views import (
     TeacherList, TeacherDetail, TeacherDashboard, teacher_login, teacher_change_password, TeacherCourseList, TeacherView, TeacherCourseDetail, TeacherExamList, TeacherCourseEdit,
     CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView
-    )
-from students.views import (
-    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList
 )
-
-from exams.views import ExamDetailView, ExamsListView, fetch_exam_assign_status, exam_edit
+from students.views import (
+    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
+    EnrolledStudentList, StudentTeacherList, MessageList, NotificationList, save_teacher_student_msg,
+    save_teacher_student_group_msg_from_student, fetch_enroll_status
+)
+from exams.views import (
+    ExamDetailView, ExamsListView, AttemptExamList, 
+    fetch_exam_assign_status, exam_edit, fetch_exam_attempt_status, exam_question_list,
+)
 
 app_name = 'API'
 
@@ -79,6 +83,8 @@ urlpatterns = [
     # path('chairman/dashboard/<int:pk>/', ChairmanDashboard.as_view()),
     # path('chair-login', chairman_login),
     # path('chairman/change-password/<int:chairman_id>',chairman_change_password),
+    path('question/', getQuestionsData, name='questionAPI'),
+    path('question/<int:question_id>/', deleteQuestion, name='delete-questionAPI'),
 
     # Teacher
     path('', CourseList.as_view()),
@@ -92,14 +98,14 @@ urlpatterns = [
     path('category/', CategoryList.as_view()),
     # Course
     path('course/', CourseList.as_view()),
-    path('search-courses/<str:searchstring>', CourseList.as_view()),
+    path('search-courses/<str:searchstring>/', CourseList.as_view()),
     # Course Detail
     path('course/<int:pk>/', CourseDetailView.as_view()),
 
     # Teacher Courses
-    path('teacher-courses/<int:teacher_id>',TeacherCourseList.as_view()),
+    path('teacher-courses/<int:teacher_id>/',TeacherCourseList.as_view()),
     # Course Detail
-    path('teacher-course-detail/<int:pk>', TeacherCourseDetail.as_view()),
+    path('teacher-course-detail/<int:pk>/', TeacherCourseDetail.as_view()),
 
 
 
@@ -114,21 +120,22 @@ urlpatterns = [
     path('student/change-password/<int:student_id>/',student_change_password),
     path('user-login/', student_login),
     # path('student-enroll-course/', StudentEnrollCourseList.as_view()),
-    # path('fetch-enroll-status/<int:student_id>/<int:course_id>', fetch_enroll_status),
-    # path('fetch-all-enrolled-students/<int:teacher_id>',EnrolledStudentList.as_view()),
-    # path('fetch-enrolled-students/<int:course_id>',EnrolledStudentList.as_view()),
-    # path('fetch-enrolled-courses/<int:student_id>',EnrolledStudentList.as_view()),
+    path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
+    # path('fetch-all-enrolled-students/<int:teacher_id>/',EnrolledStudentList.as_view()),
+    # path('fetch-enrolled-students/<int:course_id>/',EnrolledStudentList.as_view()),
+    path('fetch-enrolled-courses/<int:student_id>/',EnrolledStudentList),
 
-    # path('student-assignment/<int:teacher_id>/<int:student_id>',AssignmentList.as_view()),
-    # path('my-assignments/<int:student_id>', MyAssignmentList.as_view()),
-    # path('update-assignment/<int:pk>', UpdateAssignment.as_view()),
-    # path('student/fetch-all-notifications/<int:student_id>/', NotificationList.as_view()),
+    # path('student-assignment/<int:teacher_id>/<int:student_id>/',AssignmentList.as_view()),
+    # path('my-assignments/<int:student_id>/', MyAssignmentList.as_view()),
+    # path('update-assignment/<int:pk>/', UpdateAssignment.as_view()),
+    path('student/fetch-all-notifications/<int:student_id>/', NotificationList.as_view()),
     # path('save-notification/', NotificationList.as_view()),
 
     # Quiz Start
     # path('exam/', QuizList.as_view()),
     # path('teacher-exam/<int:teacher_id>', TeacherExamList.as_view()),
     path('exam/', ExamsListView.as_view()),
+    path('exams/', getExamData),
     path('teacher-exam/<int:teacher_id>/', TeacherExamList),
     path('teacher-exams/<int:teacher_id>/', TeacherExamList),
     path('add-exam/', addExamData, name='addExamAPI'), # path by firas
@@ -136,14 +143,15 @@ urlpatterns = [
     path('teacher-exam-detail/<int:pk>/', ExamDetailView.as_view()), # 'pk' is the exam pk, path by firas
     path('teacher-exam-detail-edit/<int:pk>/', exam_edit), # 'pk' is the exam pk, path by firas
     # path('quiz/<int:pk>', QuizDetailView.as_view()),
-    # path('quiz-questions/<int:quiz_id>', QuizQuestionList.as_view()),
-    # path('quiz-questions/<int:quiz_id>/<int:limit>',QuizQuestionList.as_view()),
+    path('exam-questions/<int:exam_id>/', exam_question_list),
+    path('add-question/', add_question),
+    # path('quiz-questions/<int:quiz_id>/<int:limit>/',QuizQuestionList.as_view()),
     path('fetch-quiz-assign-status/<int:quiz_id>/<int:course_id>/',fetch_exam_assign_status),
     # path('quiz-assign-course/', CourseQuizList.as_view()),
-    # path('fetch-assigned-quiz/<int:course_id>/', CourseQuizList.as_view()),
-    # path('attempt-quiz/', AttemptQuizList.as_view()),
+    path('fetch-assigned-quiz/<int:course_id>/', CourseExamList.as_view()),
+    path('attempt-quiz/', AttemptExamList.as_view()),
     # path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>/',QuizQuestionList.as_view()),
-    # path('fetch-quiz-attempt-status/<int:quiz_id>/<int:student_id>/',fetch_quiz_attempt_status),
+    path('fetch-quiz-attempt-status/<int:exam_id>/<int:student_id>/', fetch_exam_attempt_status),
 
 
     # path('attempted-quiz/<int:quiz_id>/', AttemptQuizList.as_view()),
@@ -151,11 +159,11 @@ urlpatterns = [
 
 
 
-    # path('send-message/<int:teacher_id>/<int:student_id>/',save_teacher_student_msg),
-    # path('get-messages/<int:teacher_id>/<int:student_id>/',MessageList().as_view()),
+    path('send-message/<int:teacher_id>/<int:student_id>/',save_teacher_student_msg),
+    path('get-messages/<int:teacher_id>/<int:student_id>/',MessageList().as_view()),
 
     # path('send-group-message/<int:teacher_id>/',save_teacher_student_group_msg),
-    # path('send-group-message-from-student/<int:student_id>', save_teacher_student_group_msg_from_student),
+    path('send-group-message-from-student/<int:student_id>/', save_teacher_student_group_msg_from_student),
 
-    # path('fetch-my-teachers/<int:student_id>/', MyTeacherList.as_view()),
+    path('fetch-my-teachers/<int:student_id>/', StudentTeacherList),
 ]

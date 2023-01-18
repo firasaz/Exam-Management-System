@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 const baseUrl = "http://127.0.0.1:8000/api";
+
 function MessageList(props) {
   const [msgData, setmsgData] = useState([]);
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios
-        .get(
-          baseUrl + "/get-messages/" + props.teacher_id + "/" + props.student_id
-        )
-        .then((res) => {
-          setmsgData(res.data);
+      axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
+        console.log(res.data)
+        setmsgData(res.data);
         });
     } catch (error) {
       console.log(error);
@@ -20,14 +18,11 @@ function MessageList(props) {
 
   const fetchMsgs = () => {
     try {
-      axios
-        .get(
-          baseUrl + "/get-messages/" + props.teacher_id + "/" + props.student_id
-        )
-        .then((res) => {
-          setmsgData(res.data);
-          const objDiv = document.getElementById("msgList");
-          objDiv.scrollTop = objDiv.scrollHeight;
+      axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
+        console.log(res.data)
+        setmsgData(res.data);
+        const objDiv = document.getElementById("msgList");
+        objDiv.scrollTop = objDiv.scrollHeight;
         });
     } catch (error) {
       console.log(error);

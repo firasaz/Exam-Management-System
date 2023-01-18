@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from django.contrib.auth.models import User
 from Users.admin import UserAdminConfig
-from .models import Chairman, Notification
+from .models import Chairman #, Notification
 
 # Register your models here.
 
@@ -47,4 +47,4 @@ admin.site.register(Chairman)
 # admin.site.register(Student)
 # admin.site.register(StudentAssignment)
 # admin.site.register(StudentCourseEnrollment)
-admin.site.register(Notification)
+# admin.site.register(Notification)

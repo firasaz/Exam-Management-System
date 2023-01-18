@@ -13,7 +13,8 @@ function QuizQuestions() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/quiz-questions/" + quiz_id).then((res) => {
+      axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
+        console.log(res.data)
         settotalResult(res.data.length);
         setquestionData(res.data);
       });
@@ -33,10 +34,10 @@ function QuizQuestions() {
     }).then((result) => {
       if (result.isConfirmed) {
         try {
-          axios.delete(baseUrl + "/question/" + question_id).then((res) => {
+          axios.delete(`${baseUrl}/question/${question_id}/`).then((res) => {
             Swal.fire("success", "Data has been deleted.");
             try {
-              axios.get(baseUrl + "/quiz-questions/" + quiz_id).then((res) => {
+              axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
                 settotalResult(res.data.length);
                 setquestionData(res.data);
               });
@@ -83,7 +84,7 @@ function QuizQuestions() {
                     <tr>
                       <td>
                         <Link to={`/edit-question/` + row.id}>
-                          {row.questions}
+                          {row.question}
                         </Link>
                       </td>
                       <td>

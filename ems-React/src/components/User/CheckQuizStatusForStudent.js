@@ -8,11 +8,7 @@ function CheckQuizinCourse(props) {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios
-        .get(
-          `${baseUrl}/fetch-quiz-attempt-status/${props.quiz}/${props.student}`
-        )
-        .then((res) => {
+      axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.quiz}/${props.student}/`).then((res) => {
           setquizData(res.data);
         });
     } catch (error) {

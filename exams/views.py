@@ -25,9 +25,9 @@ from API.serializer import ExamSerializer, QuestionSerializer, AttemptExamSerial
 #     }
 #     return render(request,'exams/index.html',context)
 
-class ExamDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Exam.objects.all()
-    serializer_class = ExamSerializer
+# class ExamDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Exam.objects.all()
+#     serializer_class = ExamSerializer
 
 
 class ExamQuestionList(generics.ListCreateAPIView):
@@ -95,12 +95,13 @@ class AttemptExamList(generics.ListCreateAPIView):
         if 'exam_id' in self.kwargs:
             exam_id = self.kwargs['exam_id']
             exam = Exam.objects.get(pk=exam_id)
-            return AttemptExam.objects.raw(f'SELECT * FROM main_attempquiz WHERE quiz_id={int(exam_id)} GROUP by student_id')
+            return AttemptExam.objects.raw(f'SELECT * FROM main_attempexam WHERE exam_id={int(exam_id)} GROUP by student_id')
 
 
 def fetch_exam_attempt_status(request, exam_id, student_id):
     exam = Exam.objects.filter(id=exam_id).first()
     student = Student.objects.filter(id=student_id).first()
+    # exam_questions = exam.get_questions()
     attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
     print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
     if attemptStatus > 0:
@@ -123,6 +124,17 @@ def fetch_exam_result(request, exam_id, student_id):
 
     return JsonResponse({'total_questions': total_questions, 'total_attempted_questions': total_attempted_questions, 'total_correct_questions': total_correct_questions})
 
+# def fetch_exam_attempt_status(request, exam_id, student_id):
+#     exam = Exam.objects.filter(id=exam_id).first()
+#     student = Student.objects.filter(id=student_id).first()
+#     attemptStatus = AttemptExam.objects.filter(
+#         student=student, question__exam=exam).count()
+#     print(AttemptExam.objects.filter(
+#         student=student, question__exam=exam).query)
+#     if attemptStatus > 0:
+#         return JsonResponse({'bool': True})
+#     else:
+#         return JsonResponse({'bool': False})
 
 class ExamsListView(ListView):
     model=Exam
@@ -144,6 +156,19 @@ def exam_edit(request,pk):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors) # adding the status method here causes 400 bad request
+
+@api_view(['GET'])
+def exam_question_list(request,exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+    except Exam.DoesNotExist:
+        exam=None
+    if exam:
+        serializer = QuestionSerializer(exam.get_questions(), many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 
 # url: <id>/
 def examView(request,id):

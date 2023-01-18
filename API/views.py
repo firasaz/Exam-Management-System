@@ -22,11 +22,42 @@ def getQuestionsData(request):
     serializer = QuestionSerializer(questions, many = True)
     return Response(serializer.data)
 
+@api_view(["GET","DELETE"])
+def deleteQuestion(request,question_id):
+    try:
+        question=Question.objects.get(id=question_id)
+    except Question.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if request.method == "GET":
+        serializer = QuestionSerializer(question)
+        return Response(serializer.data)
+    elif request.method == "DELETE":
+        question.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 @api_view(["GET"])
 def getExamData(request):
     exams = Exam.objects.all()
     serializer = ExamSerializer(exams, many = True)
     return Response(serializer.data)
+
+
+@api_view(['GET','POST'])
+def add_question(request):
+    try:
+        questions=Question.objects.all()
+    except Question.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        serializer=QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer=QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # POST request on this view returns:
 # Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`

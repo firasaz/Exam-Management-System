@@ -20,13 +20,13 @@ class Chairman(NewUser):
 
 
 #notifications model
-class Notification(models.Model):
-    teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE, null=True)
-    student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
-    notif_subject=models.CharField(max_length=200, verbose_name='Notification subject',null=True)
-    notif_for=models.CharField(max_length=200, verbose_name='Notification For')
-    notif_created_time=models.DateTimeField(auto_now_add=True)
-    notif_read_status=models.BooleanField(default=False, verbose_name='Notification Status')
+# class Notification(models.Model):
+#     teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE, null=True)
+#     student=models.ForeignKey(Student,on_delete=models.CASCADE,null=True)
+#     notif_subject=models.CharField(max_length=200, verbose_name='Notification subject',null=True)
+#     notif_for=models.CharField(max_length=200, verbose_name='Notification For')
+#     notif_created_time=models.DateTimeField(auto_now_add=True)
+#     notif_read_status=models.BooleanField(default=False, verbose_name='Notification Status')
 
-    class Meta:
-        verbose_name_plural="Notifications"
+#     class Meta:
+#         verbose_name_plural="Notifications"

@@ -10,7 +10,7 @@ function TakeQuiz() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/quiz-questions/" + quiz_id + "/1").then((res) => {
+      axios.get(`${baseUrl}/quiz-questions/${quiz_id}/1/`).then((res) => {
         console.log(res.data);
         setquestionData(res.data);
       });
@@ -29,7 +29,7 @@ function TakeQuiz() {
 
     try {
       axios
-        .post(baseUrl + "/attempt-quiz/", _formData, {
+        .post(`${baseUrl}/attempt-quiz/`, _formData, {
           headers: {
             "content-type": "multipart/form-data",
           },
@@ -39,11 +39,7 @@ function TakeQuiz() {
             try {
               axios
                 .get(
-                  baseUrl +
-                    "/quiz-questions/" +
-                    quiz_id +
-                    "/next-question/" +
-                    question_id
+                  `${baseUrl}/quiz-questions/${quiz_id}/next-question/${question_id}/`
                 )
                 .then((res) => {
                   setquestionData(res.data);

@@ -23,7 +23,7 @@ function CourseDetail() {
   useEffect(() => {
     // Fetch Courses
     try {
-      axios.get(baseUrl + "/course/" + course_id).then((res) => {
+      axios.get(`${baseUrl}/course/${course_id}/`).then((res) => {
         console.log(res);
         setcourseData(res.data);
         setchapterData(res.data.course_chapters);
@@ -36,7 +36,7 @@ function CourseDetail() {
     // Fetch enroll status
     try {
       axios
-        .get(baseUrl + "/fetch-enroll-status/" + studentId + "/" + course_id)
+        .get(`${baseUrl}/fetch-enroll-status/${studentId}/${course_id}/`)
         .then((res) => {
           if (res.data.bool === true) {
             setenrollStatus("success");
@@ -141,17 +141,17 @@ function CourseDetail() {
         <div className="card mt-4">
           <h5 className="card-header">In this course</h5>
           <ul className="list-group list-group-flush">
-            {chapterData.map((chapter, index) => (
-              <li className="list-group-item" key={chapter.id}>
-                {chapter.title}
+            {chapterData?.map((chapter, index) => (
+              <li className="list-group-item" key={chapter?.id}>
+                {chapter?.title}
                 <span className="float-end">
-                  <span className="me-5">{chapter.chapter_duration}</span>
+                  <span className="me-5">{chapter?.chapter_duration}</span>
 
-                  {chapter.video && (
+                  {chapter?.video && (
                     <button
                       className="btn btn-sm btn-danger"
                       data-bs-toggle="modal"
-                      data-bs-target={`#videoModal${chapter.id}`}
+                      data-bs-target={`#videoModal${chapter?.id}`}
                     >
                       <i className="bi-youtube"></i>
                     </button>
@@ -160,7 +160,7 @@ function CourseDetail() {
                 {/* Video Modal Start */}
                 <div
                   className="modal fade"
-                  id={`videoModal${chapter.id}`}
+                  id={`videoModal${chapter?.id}`}
                   tabindex="-1"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
@@ -169,7 +169,7 @@ function CourseDetail() {
                     <div className="modal-content">
                       <div className="modal-header">
                         <h5 className="modal-title" id="exampleModalLabel">
-                          {chapter.title}
+                          {chapter?.title}
                         </h5>
                         <button
                           type="button"
@@ -180,10 +180,10 @@ function CourseDetail() {
                       </div>
                       <div className="modal-body">
                         <div className="ratio ratio-16x9">
-                          {/* <iframe src={chapter.video}  title={chapter.title} ></iframe> */}
+                          {/* <iframe src={chapter?.video}  title={chapter?.title} ></iframe> */}
                           <video width="320" height="240" controls>
-                            <source src={chapter.video} type="video/mp4" />
-                            <source src={chapter.video} type="video/mkv" />
+                            <source src={chapter?.video} type="video/mp4" />
+                            <source src={chapter?.video} type="video/mkv" />
                           </video>
                         </div>
                       </div>

@@ -113,7 +113,7 @@ function Main() {
 
         <Route path="/quiz" element={<AllQuiz />} />
         <Route path="/add-quiz" element={<AddQuiz />} />
-        <Route path="/edit-quiz/:exam_id" element={<EditQuiz />} />
+        <Route path="/edit-quiz/:quiz_id" element={<EditQuiz />} />
         <Route path="/all-questions/:quiz_id" element={<QuizQuestions />} />
         <Route
           path="/add-quiz-question/:quiz_id"

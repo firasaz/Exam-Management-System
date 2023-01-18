@@ -9,7 +9,7 @@ function Sidebar() {
     // Fetch Courses
     try {
       axios
-        .get(baseUrl + "/student/fetch-all-notifications/" + studentId)
+        .get(`${baseUrl}/student/fetch-all-notifications/${studentId}/`)
         .then((res) => {
           console.log(res);
           setnotifData(res.data);

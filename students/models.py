@@ -24,7 +24,8 @@ class Student(NewUser):
         teachers=[]
         for course in courses:
             _teacher = getattr(course, 'teacher')
-            teachers.append(_teacher)
+            if _teacher not in teachers:
+                teachers.append(_teacher)
         return teachers
     
     # def get_exams(self):
@@ -36,17 +37,11 @@ class Student(NewUser):
     #             exams[course] = exam_lst.append(exam) # store a key/value pair of course and exam list for that course
     #     return exams
     
-    def get_exams(self):
-        courses = self.enrolled_courses() # get all courses for student
-        # print("get_exams:",courses)
-        exams=[]
-        for course in courses: # iterate over every course
-            for exam in course.course_exams():
-                exams.append(exam)
-        return len(exams)
-    
     def enrolled_courses(self):
         return self.course_student.all() # course_student is the related name for the Student-Course relation
+
+    def total_enrolled_courses(self):
+        return self.course_student.all().count()
 
     def completed_assignments(self):
         completed_assignments=StudentAssignment.objects.filter(student=self, student_status=True).count()
@@ -55,6 +50,24 @@ class Student(NewUser):
     def pending_assignments(self):
         pending_assignments=StudentAssignment.objects.filter(student=self, student_status=False).count()
         return pending_assignments
+    
+    def get_exams(self):
+        courses = self.enrolled_courses() # get all courses for student
+        # print("get_exams:",courses)
+        exams=[]
+        for course in courses: # iterate over every course
+            for exam in course.course_exams():
+                exams.append(exam)
+        return exams
+
+    def total_exams(self):
+        courses = self.enrolled_courses() # get all courses for student
+        # print("get_exams:",courses)
+        exams=[]
+        for course in courses: # iterate over every course
+            for exam in course.course_exams():
+                exams.append(exam)
+        return len(exams)
 
 # student course enrollment
 # class StudentCourseEnrollment(models.Model):

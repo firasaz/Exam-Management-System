@@ -11,7 +11,8 @@ function CoursequizList() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/fetch-assigned-quiz/" + course_id).then((res) => {
+      axios.get(`${baseUrl}/fetch-assigned-quiz/${course_id}/`).then((res) => {
+        console.log(res.data)
         setquizData(res.data);
       });
     } catch (error) {
@@ -39,9 +40,9 @@ function CoursequizList() {
                 <tbody>
                   {quizData.map((row, index) => (
                     <tr>
-                      <td>{row.quiz.title}</td>
+                      <td>{row?.name}</td>
                       <CheckquizStatusForStudent
-                        quiz={row.quiz.id}
+                        quiz={row?.id}
                         student={studentId}
                       />
                     </tr>

@@ -157,6 +157,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 # to use the custom 'User' model i built and inherit from it for other users in the 
 # project we probably will need to delete our database and recover it back somehow
 AUTH_USER_MODEL = 'Users.NewUser'
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend'
+# )
 
 # if we decided to use csrf tokens in our react app we will need to uncomment this line
 CSRF_TRUSTED_ORIGINS=["http://localhost:3000"]

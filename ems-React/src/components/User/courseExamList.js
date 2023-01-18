@@ -11,7 +11,7 @@ function CourseExamList() {
   const studentId = localStorage.getItem("studentId");
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/fetch-assigned-exam/" + course_id).then((res) => {
+      axios.get(`${baseUrl}/fetch-assigned-exam/${course_id}/`).then((res) => {
         setExamData(res.data);
       });
     } catch (error) {

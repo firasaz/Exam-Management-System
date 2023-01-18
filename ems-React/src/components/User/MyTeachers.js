@@ -10,7 +10,7 @@ function MyTeachers() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/fetch-my-teachers/" + studentId).then((res) => {
+      axios.get(`${baseUrl}/fetch-my-teachers/${studentId}/`).then((res) => {
         console.log(res.data);
         setteacherData(res.data);
       });
@@ -50,7 +50,7 @@ function MyTeachers() {
     try {
       axios
         .post(
-          baseUrl + "/send-message/" + teacher_id + "/" + studentId,
+          `${baseUrl}/send-message/${teacher_id}/${studentId}/`,
           _formData
         )
         .then((res) => {
@@ -88,7 +88,7 @@ function MyTeachers() {
     try {
       axios
         .post(
-          baseUrl + "/send-group-message-from-student/" + studentId,
+          `${baseUrl}/send-group-message-from-student/${studentId}/`,
           _formData
         )
         .then((res) => {
@@ -196,8 +196,8 @@ function MyTeachers() {
                   {teacherData.map((row, index) => (
                     <tr>
                       <td>
-                        <Link to={`/teacher-detail/` + row.teacher.id}>
-                          {row.teacher.full_name}
+                        <Link to={`/teacher-detail/` + row?.id}>
+                          {row?.full_name}
                         </Link>
                       </td>
                       <td>
@@ -226,7 +226,7 @@ function MyTeachers() {
                                   id="exampleModalLabel"
                                 >
                                   <span className="text-danger">
-                                    {row.teacher.full_name}
+                                    {row?.full_name}
                                   </span>
                                 </h5>
                                 <button
@@ -240,7 +240,7 @@ function MyTeachers() {
                                 <div className="row">
                                   <div className="col-md-7 mb-2 col-12 border-end">
                                     <MessageList
-                                      teacher_id={row.teacher.id}
+                                      teacher_id={row?.id}
                                       student_id={studentId}
                                     />
                                   </div>
@@ -272,7 +272,7 @@ function MyTeachers() {
                                       <button
                                         type="button"
                                         onClick={() =>
-                                          formSubmit(row.teacher.id)
+                                          formSubmit(row?.id)
                                         }
                                         className="btn btn-primary"
                                       >

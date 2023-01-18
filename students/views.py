@@ -5,12 +5,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.core import serializers
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from API.serializer import StudentSerializer, StudentDashboardSerializer #, StudentCourseEnrollSerializer
+from API.serializer import (
+    StudentSerializer, StudentDashboardSerializer, StudentDetailSerializer,
+    CourseDetailSerializer, TeacherSerializer, TeacherEditSerializer,
+    TeacherStudentChatSerializer, NotificationSerializer
+    ) #, StudentCourseEnrollSerializer
 
 from .models import Student #, StudentCourseEnrollment
-from teachers.models import Teacher, Course
+from teachers.models import Teacher, Course, TeacherStudentChat, Notification
 # from accounts.models import Course
 # Create your views here.
 
@@ -27,7 +32,10 @@ def student_login(request):
     email = request.POST['email']
     password = request.POST['password']
     
-    studentData = authenticate(request, email=email, password=password)
+    # studentData = authenticate(request, email=email, password=password)
+    studentData=Student.objects.get(email=email)
+    studentData.check_password(password)
+    print(studentData)
     if studentData:
         return JsonResponse({'bool': True, 'student_id': studentData.id})
     else:
@@ -36,7 +44,7 @@ def student_login(request):
 # 3
 class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+    serializer_class = StudentDetailSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
 # 4
@@ -64,6 +72,17 @@ def student_change_password(request, student_id):
 #     queryset = StudentCourseEnrollment.objects.all()
 #     serializer_class = StudentCourseEnrollSerializer
 
+@api_view(['GET'])
+def StudentTeacherList(request,student_id):
+    try:
+        student=Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    teachers=student.get_teachers()
+    serializer=TeacherEditSerializer(teachers, many=True)
+    return Response(serializer.data)
+
 @api_view(["GET"])
 def CourseStudentList(request,course_id):
     course = Course.objects.get(id=course_id)
@@ -84,6 +103,89 @@ def TeacherStudentList(request,teacher_id):
     # students = serializers.serialize("json", teacher.teacher_students(), many=True)
     # print(students)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def EnrolledStudentList(request,student_id):
+    student=Student.objects.get(id=student_id)
+    student_courses=student.enrolled_courses()
+    serializer=CourseDetailSerializer(student_courses, many=True)
+    return Response(serializer.data)
+
+def fetch_enroll_status(request,student_id,course_id):
+    try:
+        student=Student.objects.get(id=student_id)
+        course=Course.objects.get(id=course_id)
+    except Student.DoesNotExist or Course.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if course in student.enrolled_courses():
+        return JsonResponse({'bool': True})
+    else:
+        return JsonResponse({'bool': False})
+
+class MessageList(generics.ListAPIView):
+    queryset = TeacherStudentChat.objects.all()
+    serializer_class = TeacherStudentChatSerializer
+
+    def get_queryset(self):
+        teacher_id = self.kwargs['teacher_id']
+        student_id = self.kwargs['student_id']
+        teacher = Teacher.objects.get(pk=teacher_id)
+        student = Student.objects.get(pk=student_id)
+        return TeacherStudentChat.objects.filter(teacher=teacher, student=student).exclude(msg_text='')
+
+class NotificationList(generics.ListCreateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        student_id = self.kwargs['student_id']
+        student = Student.objects.get(pk=student_id)
+        return Notification.objects.filter(student=student, notif_for='student', notif_subject='assignment', notifiread_status=False)
+
+@csrf_exempt
+def save_teacher_student_msg(request, teacher_id, student_id):
+    teacher = Teacher.objects.get(id=teacher_id)
+    student = Student.objects.get(id=student_id)
+    msg_text = request.POST.get('msg_text')
+    msg_from = request.POST.get('msg_from')
+    msgRes = TeacherStudentChat.objects.create(
+        teacher=teacher,
+        student=student,
+        msg_text=msg_text,
+        msg_from=msg_from,
+    )
+    if msgRes:
+        msgs = TeacherStudentChat.objects.filter(
+            teacher=teacher, student=student).count()
+        return JsonResponse({'bool': True, 'msg': 'Message has been send', 'total_msg': msgs})
+    else:
+        return JsonResponse({'bool': False, 'msg': 'Oops... Some Error Occured!!'})
+
+
+@csrf_exempt
+def save_teacher_student_group_msg_from_student(request, student_id):
+    student = Student.objects.get(id=student_id)
+    msg_text = request.POST.get('msg_text')
+    msg_from = request.POST.get('msg_from')
+
+    # sql = f"SELECT * FROM teacher_course as c,main_studentcourseenrollment as e,main_teacher as t WHERE c.teacher_id=t.id AND e.course_id=c.id AND e.student_id={student_id} GROUP BY c.teacher_id"
+    # qs = Course.objects.raw(sql)
+
+    # myCourses = student.enrolled_courses()
+    myTeachers = student.get_teachers() 
+    for teacher in myTeachers:
+        msgRes = TeacherStudentChat.objects.create(
+            teacher=teacher,
+            student=student,
+            msg_text=msg_text,
+            msg_from=msg_from,
+        )
+    if msgRes:
+        return JsonResponse({'bool': True, 'msg': 'Message has been send'})
+    else:
+        return JsonResponse({'bool': False, 'msg': 'Oops... Some Error Occured!!'})
+
 
 # 7
 # def fetch_enroll_status(request, student_id, course_id):

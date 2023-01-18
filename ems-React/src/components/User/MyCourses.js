@@ -9,10 +9,9 @@ function MyCourses() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios
-        .get(baseUrl + "/fetch-enrolled-courses/" + studentId)
-        .then((res) => {
-          setcourseData(res.data);
+      axios.get(`${baseUrl}/fetch-enrolled-courses/${studentId}/`).then((res) => {
+        console.log(res.data)
+        setcourseData(res.data);
         });
     } catch (error) {
       console.log(error);
@@ -41,19 +40,19 @@ function MyCourses() {
                   {courseData.map((row, index) => (
                     <tr>
                       <td>
-                        <Link to={`/detail/` + row.course.id}>
-                          {row.course.title}
+                        <Link to={`/detail/` + row?.id}>
+                          {row?.title}
                         </Link>
                       </td>
                       <td>
-                        <Link to={`/teacher-detail/` + row.course.teacher.id}>
-                          {row.course.teacher.full_name}
+                        <Link to={`/teacher-detail/` + row?.teacher?.id}>
+                          {row?.teacher?.full_name}
                         </Link>
                       </td>
                       <td>
                         <Link
                           className="btn btn-sm btn-warning"
-                          to={`/course-quiz/` + row.course.id}
+                          to={`/course-quiz/` + row?.id}
                         >
                           Exam List
                         </Link>

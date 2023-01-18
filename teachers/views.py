@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from API.serializer import (
     TeacherSerializer,TeacherDashboardSerializer, TeacherEditSerializer, TeacherCourseSerializer,
-    CourseSerializer, CategorySerializer, CourseEditSerializer,
+    CourseSerializer, CourseEditSerializer, CourseDetailSerializer, CategorySerializer,
     ExamSerializer, AddExamSerializer
     )
 
@@ -106,7 +106,7 @@ class TeacherCourseList(generics.ListCreateAPIView):
 # specific teacher course detail
 class TeacherCourseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    serializer_class = CourseDetailSerializer
 
 @api_view(['GET','PUT'])
 def TeacherCourseEdit(request,c_id):
@@ -195,7 +195,7 @@ class CourseList(generics.ListCreateAPIView):
 # 3)
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+    serializer_class = CourseDetailSerializer
 
 
 def CourseView(request,id):

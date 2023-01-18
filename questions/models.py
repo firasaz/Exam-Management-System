@@ -10,13 +10,13 @@ class Question(models.Model):
         ("Classical Question", "Classical Question"),
         ("MCQ", "Multiple Choice")
     )
-    text = models.CharField(max_length=200)
+    question = models.CharField(max_length=200)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='questions')
     type = models.CharField(max_length=20, choices=qtype,default="MCQ")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.text}"
+        return f"{self.question}"
         # return f"Q{self.id}"
     
     def get_answers(self):
