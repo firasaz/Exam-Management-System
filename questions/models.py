@@ -35,7 +35,7 @@ class Answer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Question:{self.question.text}; Answer:{self.text}; Correct:{self.correct}"
+        return f"Question:{self.question.question}; Answer:{self.text}; Correct:{self.correct}"
 
 class ClassicalAnswer(models.Model):
     text = models.TextField()

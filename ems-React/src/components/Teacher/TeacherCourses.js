@@ -42,7 +42,7 @@ function MyCourses() {
                   {courseData.map((course, index) => (
                     <tr>
                       <td>
-                        <Link to={`/all-questions/` + course.id}>
+                        <Link to={`/quiz/`}>
                           {course.title}
                         </Link>
                       </td>

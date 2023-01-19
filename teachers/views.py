@@ -256,5 +256,8 @@ class CourseExamList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         course_id = self.kwargs['course_id']
-        course = Course.objects.get(pk=course_id)
-        return Exam.objects.filter(course=course)
+        try:
+            course = Course.objects.get(pk=course_id)
+            return Exam.objects.filter(course=course)
+        except Course.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

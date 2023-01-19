@@ -102,10 +102,13 @@ def fetch_exam_attempt_status(request, exam_id, student_id):
     exam = Exam.objects.filter(id=exam_id).first()
     student = Student.objects.filter(id=student_id).first()
     # exam_questions = exam.get_questions()
-    attemptStatus = AttemptExam.objects.filter(student=student, exam=exam).count()
+    attemptStatus = AttemptExam.objects.filter(student=student, exam=exam).count() # searches for a record for a certain student in a certain exam
     # attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
     # print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
     print(attemptStatus)
+    print()
+    print(AttemptExam.objects.filter(student=student, exam=exam).query)
+    print(AttemptExam.objects.filter(student=student, exam=exam))
     if attemptStatus > 0:
         return JsonResponse({'bool': True})
     else:

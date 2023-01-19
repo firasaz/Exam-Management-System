@@ -20,11 +20,15 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    # answers = AnswerSerializer(many=True)
-
+    answers = AnswerSerializer(many=True)
     class Meta:
         model = Question
-        fields = ("id","question", "exam", "type", "created") # , "answers"
+        fields = ("id","question", "exam", "type", "created", "answers")
+
+class AddQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ("id","question", "exam", "type", "created")
 
 
 class ExamTeacherSerializer(serializers.ModelSerializer):

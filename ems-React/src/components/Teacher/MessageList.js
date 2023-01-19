@@ -6,11 +6,7 @@ function MessageList(props) {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios
-        .get(
-          baseUrl + "/get-messages/" + props.teacher_id + "/" + props.student_id
-        )
-        .then((res) => {
+      axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
           setmsgData(res.data);
         });
     } catch (error) {
@@ -20,11 +16,7 @@ function MessageList(props) {
 
   const fetchMsgs = () => {
     try {
-      axios
-        .get(
-          baseUrl + "/get-messages/" + props.teacher_id + "/" + props.student_id
-        )
-        .then((res) => {
+      axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
           setmsgData(res.data);
           const objDiv = document.getElementById("msgList");
           objDiv.scrollTop = objDiv.scrollHeight;
@@ -47,12 +39,12 @@ function MessageList(props) {
           onClick={fetchMsgs}
           title="Refresh"
         >
-          <i class="bi bi-bootstrap-reboot"></i>
+          <i className="bi bi-bootstrap-reboot"></i>
         </span>
       </p>
       <div style={msgList} id="msgList">
         {msgData.map((row, index) => (
-          <div className="row mb-4">
+          <div className="row mb-4" key = {index}>
             {row.msg_from !== "teacher" && (
               <div className="col-5">
                 <div class="alert alert-primary mb-1">{row.msg_text}</div>

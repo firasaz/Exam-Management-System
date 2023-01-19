@@ -33,8 +33,11 @@ def student_login(request):
     password = request.POST['password']
     
     # studentData = authenticate(request, email=email, password=password)
-    studentData=Student.objects.get(email=email)
-    studentData.check_password(password)
+    try:
+        studentData=Student.objects.get(email=email)
+        studentData.check_password(password)
+    except Student.DoesNotExist:
+        studentData = None
     print(studentData)
     if studentData:
         return JsonResponse({'bool': True, 'student_id': studentData.id})

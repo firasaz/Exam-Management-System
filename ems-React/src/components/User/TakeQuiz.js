@@ -23,7 +23,7 @@ function TakeQuiz() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setquestionData(res.data);
       });
     } catch (error) {
@@ -77,59 +77,69 @@ function TakeQuiz() {
                 Exam: <span className="text-danger">{questionData[0]?.exam}</span>
         </h4>
           {questionData.map((row, index) => (
-            <>
-              <div className="card">
+              <div className="card" key={index}>
                 <h5 className="card-header">{row?.question}</h5>
                 <div className="card-body">
                   <table className="table table-bordered">
                     <tbody>
-                      <>
-                        <tr>
+                      {/* {console.log("row_answers:",row?.answers[1])} */}
+                      {row.answers.map((ans,index2) => {
+                        return(
+                        <tr key={index2}>
                           <td>
                             <button
-                              onClick={() => submitAnswer(row?.id, row?.ans1)}
-                              className="btn btn-outline-secondary"
-                            >
-                              {row?.ans1}
+                              onClick = {() => submitAnswer(ans?.id, ans?.text)}
+                              className = "btn btn-outline-secondary">
+                                {ans.text}
                             </button>
                           </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button
-                              onClick={() => submitAnswer(row?.id, row?.ans2)}
-                              className="btn btn-outline-secondary"
-                            >
-                              {row?.ans2}
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button
-                              onClick={() => submitAnswer(row?.id, row?.ans3)}
-                              className="btn btn-outline-secondary"
-                            >
-                              {row?.ans3}
-                            </button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <button
-                              onClick={() => submitAnswer(row?.id, row?.ans4)}
-                              className="btn btn-outline-secondary"
-                            >
-                              {row?.ans4}
-                            </button>
-                          </td>
-                        </tr>
-                      </>
-                    </tbody>
-                  </table>
-                </div>
+                        </tr>)
+                      })}
+
+                      {/* <tr>
+                        <td>
+                          <button
+                            onClick={() => submitAnswer(row?.answers?.id, row?.answers?.text)}
+                            className="btn btn-outline-secondary"
+                          >
+                            {row?.answers?.text}
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <button
+                            onClick={() => submitAnswer(row?.id, row?.ans2)}
+                            className="btn btn-outline-secondary"
+                          >
+                            {row?.ans2}
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <button
+                            onClick={() => submitAnswer(row?.id, row?.ans3)}
+                            className="btn btn-outline-secondary"
+                          >
+                            {row?.ans3}
+                          </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <button
+                            onClick={() => submitAnswer(row?.id, row?.ans4)}
+                            className="btn btn-outline-secondary"
+                          >
+                            {row?.ans4}
+                          </button>
+                        </td>
+                      </tr> */}
+                  </tbody>
+                </table>
               </div>
-            </>
+            </div>
           ))}
           {questionData.length === 0 && (
             <span className="text-primary">No more questions</span>

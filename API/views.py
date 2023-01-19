@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializer import ExamSerializer, QuestionSerializer, AnswerSerializer, AddExamSerializer
+from .serializer import ExamSerializer, QuestionSerializer, AddQuestionSerializer, AnswerSerializer, AddExamSerializer
 from exams.models import Exam
 from questions.models import Question, Answer
 # Create your views here.
@@ -50,10 +50,10 @@ def add_question(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     
     if request.method == "GET":
-        serializer=QuestionSerializer(questions, many=True)
+        serializer=AddQuestionSerializer(questions, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
-        serializer=QuestionSerializer(data=request.data)
+        serializer=AddQuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

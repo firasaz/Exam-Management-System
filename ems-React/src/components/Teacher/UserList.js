@@ -82,7 +82,7 @@ function UserList() {
     _formData.append("msg_from", "teacher");
 
     try {
-      axios.post(baseUrl + "/send-group-message/" + teacherId, _formData).then((res) => {
+      axios.post(`${baseUrl}/send-group-message/${teacherId}/`, _formData).then((res) => {
           if (res.data.bool === true) {
             setgroupMsgData({
               msg_text: "",
@@ -125,7 +125,7 @@ function UserList() {
               id="groupMsgModal"
               data-bs-backdrop="static"
               data-bs-keyboard="false"
-              tabindex="-1"
+              tabIndex="-1"
               aria-labelledby="staticBackdropLabel"
               aria-hidden="true"
             >
@@ -151,7 +151,7 @@ function UserList() {
                     )}
                     <form>
                       <div className="mb-3">
-                        <label for="exampleInputEmail1" className="form-label">
+                        <label htmlFor="exampleInputEmail1" className="form-label">
                           Message
                         </label>
                         <textarea
@@ -218,7 +218,7 @@ function UserList() {
                         <div
                           className="modal fade"
                           id={`msgModal${index}`}
-                          tabindex="-1"
+                          tabIndex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
@@ -260,7 +260,7 @@ function UserList() {
                                     <form>
                                       <div className="mb-3">
                                         <label
-                                          for="exampleInputEmail1"
+                                          htmlFor="exampleInputEmail1"
                                           className="form-label"
                                         >
                                           Message

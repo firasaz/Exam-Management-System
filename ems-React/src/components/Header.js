@@ -90,7 +90,7 @@ function Header() {
               </>
             )}
 
-            {teacherLoginStatus !== "true" && (
+            {teacherLoginStatus !== "true" && studentLoginStatus !== "true" &&(
               <>
                 <li className="nav-item dropdown">
                   <Link
@@ -98,8 +98,7 @@ function Header() {
                     to="#"
                     role="button"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
+                    aria-expanded="false">
                     Chairman
                   </Link>
                   <ul className="dropdown-menu">
