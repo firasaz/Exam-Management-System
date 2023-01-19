@@ -36,7 +36,7 @@ class AddExamSerializer(serializers.ModelSerializer):
     # get_teacher = ExamTeacherSerializer(many=True)
     class Meta:
         model = Exam
-        fields = ("id", "name", "description", "number_of_questions", "duration","course","teacher","student") # "get_teacher"
+        fields = ("id", "name", "description", "number_of_questions", "duration","course","teacher") # "student", "get_teacher"
 
 
 # Abdallah's serializers
@@ -70,12 +70,17 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ["id","title","description","featured_img","prerequisites","category","teacher"]
 
+# class ExamEditSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model=Exam
+#         fields=['id','name','description','number_of_questions','duration']
 
 class TeacherCourseSerializer(serializers.ModelSerializer):
+    # examss = ExamEditSerializer(many=True)
     class Meta:
         model = Course
         # fields = "__all__"
-        fields = ["id","title","description","featured_img","prerequisites","category"]
+        fields = ["id","title","description","featured_img","prerequisites","category",] # "examss"
 
 
 class TeacherEditSerializer(serializers.ModelSerializer):
@@ -138,15 +143,13 @@ class ExamSerializer(serializers.ModelSerializer):
     teacher=TeacherSerializer()
     class Meta:
         model = Exam
-        fields = ("id","name", "description", "number_of_questions", "duration", "course", "questions","teacher")
+        fields = ("id","name", "description", "number_of_questions", "duration", "course", "questions","teacher","student")
+
 
 class ExamEditSerializer(serializers.ModelSerializer):
     class Meta:
         model=Exam
-        fields=['name','description','number_of_questions','duration']
-
-
-
+        fields=['id','name','description','number_of_questions','duration']
 
 class StudentDashboardSerializer(serializers.ModelSerializer):
     # total_enrolled_courses=CourseSerializer(many=True)

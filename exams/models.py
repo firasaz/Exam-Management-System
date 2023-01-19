@@ -43,6 +43,8 @@ class Exam(models.Model):
     
     # def get_courses(self):
     #     return self.course
+    def get_students(self):
+        return self.student
 
     def get_absolute_url(self):
         return reverse("exams:exam-detail", kwargs={"id": self.id}) # need to specify the app name that we added in urls.py file

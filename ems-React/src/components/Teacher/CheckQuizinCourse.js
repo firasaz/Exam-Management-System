@@ -12,7 +12,7 @@ function CheckQuizinCourse(props) {
     try {
       axios
         .get(
-          `${baseUrl}/fetch-quiz-assign-status/${props.quiz}/${props.course}`
+          `${baseUrl}/fetch-quiz-assign-status/${props.quiz}/${props.course}/`
         )
         .then((res) => {
           setquizData(res.data);
@@ -26,13 +26,14 @@ function CheckQuizinCourse(props) {
   const assignQuiz = (quiz_id) => {
     const _formData = new FormData();
     _formData.append("teacher", teacherId);
-    _formData.append("course", props.course);
+    _formData.append("course", props.course); // in my backend i don't have a field for the course of each question
     _formData.append("quiz", props.quiz);
     try {
       axios
-        .post(baseUrl + "/quiz-assign-course/", _formData, {
+        .post(`${baseUrl}/assign-exam/${quiz_id}/`, _formData, {
           headers: {
-            "content-type": "multipart/form-data",
+            "Content-Type": "application/json",
+            // "content-type": "multipart/form-data",
           },
         })
         .then((res) => {

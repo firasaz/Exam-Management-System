@@ -75,14 +75,17 @@ function AllQuiz() {
                   {quizData.map((row, index) => (
                     <tr>
                       <td>
-                        <Link to={`/all-questions/` + row?.id}>{row.name}</Link>
+                        <Link to={`/all-questions/` + row?.id}>{row?.name}</Link>
                       </td>
+
                       <td>
                         {row?.number_of_questions}
                       </td>
+
                       <td>
                         {row?.duration} mins.
                       </td>
+                      
                       <td>
                         <Link
                           className="btn btn-info btn-sm"
@@ -97,7 +100,7 @@ function AllQuiz() {
                           Add Question
                         </Link>
                         <button
-                          onClick={() => handleDeleteClick(row.id)}
+                          onClick={() => handleDeleteClick(row?.id)}
                           className="btn btn-danger btn-sm ms-2"
                         >
                           Delete

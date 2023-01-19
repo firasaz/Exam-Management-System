@@ -35,7 +35,7 @@ def deleteQuestion(request,question_id):
         question.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(["GET"])
+@api_view(["GET","PUT"])
 def getExamData(request):
     exams = Exam.objects.all()
     serializer = ExamSerializer(exams, many = True)

@@ -10,12 +10,12 @@ function AllQuiz() {
   const [courseData, setcourseData] = useState([]);
   const teacherId = localStorage.getItem("teacherId");
   const { course_id } = useParams();
-  // Fetch courses when page load
+
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/teacher-exams/${teacherId}/`).then((res) => {
-        setquizData(res.data);
         console.log(res.data);
+        setquizData(res.data);
       });
     } catch (error) {
       console.log(error);
@@ -24,7 +24,7 @@ function AllQuiz() {
     // Fetch Courses
     try {
       axios.get(`${baseUrl}/course/${course_id}/`).then((res) => {
-        console.log(res);
+        console.log(res.data);
         setcourseData(res.data);
       });
     } catch (error) {
@@ -56,9 +56,9 @@ function AllQuiz() {
                   {quizData.map((row, index) => (
                     <tr>
                       <td>
-                        <Link to={`/all-questions/` + row.id}>{row.title}</Link>
+                        <Link to={`/all-questions/` + row?.id}>{row?.name}</Link>
                       </td>
-                      <CheckQuizinCourse quiz={row.id} course={course_id} />
+                      <CheckQuizinCourse quiz={row?.id} course={course_id} />
                     </tr>
                   ))}
                 </tbody>

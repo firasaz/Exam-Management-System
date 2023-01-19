@@ -80,7 +80,7 @@ def fetch_exam_assign_status(request, exam_id, course_id):
     except Course.DoesNotExist:
         course = None
     
-    assignStatus = course.course_exams().filter(exam=exam).count()
+    assignStatus = course.course_exams().filter(name=exam).count()
     if assignStatus:
         return JsonResponse({'bool': True})
     else:

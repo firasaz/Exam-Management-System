@@ -11,7 +11,8 @@ from rest_framework import status
 from API.serializer import (
     TeacherSerializer,TeacherDashboardSerializer, TeacherEditSerializer, TeacherCourseSerializer,
     CourseSerializer, CourseEditSerializer, CourseDetailSerializer, CategorySerializer,
-    ExamSerializer, AddExamSerializer
+    ExamSerializer, AddExamSerializer,
+    StudentSerializer
     )
 
 from .models import Teacher, Course, CourseCategory
@@ -171,8 +172,45 @@ def TeacherExamList(request,teacher_id):
     teacher = Teacher.objects.get(id=teacher_id)
     exams=teacher.teacher_exams()
     serializer=ExamSerializer(exams, many=True)
-    print(serializer.data)
+    # print(serializer.data)
     return Response(serializer.data)
+
+@api_view(["GET"])
+def teacher_students_view(request, teacher_id):
+    try:
+        teacher = Teacher.objects.get(id=teacher_id)
+    except Teacher.DoesNotExist:
+        teacher = None
+    if teacher:
+        teacher_students = teacher.teacher_students()
+        serializer = StudentSerializer(teacher_students, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return JsonResponse({
+        "bool": "False",
+        "teacher": "No such teacher found."
+    })
+
+@api_view(['GET','POST'])
+def assign_exam(request, exam_id):
+    try:
+        exam = Exam.objects.get(id=exam_id)
+    except Exam.DoesNotExist:
+        exam = None
+    if exam:
+        exam_course = exam.course
+        exam_teacher = exam.get_teacher()
+        teacher_students = exam_teacher.teacher_students()
+        
+        for student in teacher_students: # loop over each student taking a course with this exam's teacher
+            # print(student)
+            # print(exam_course)
+            # print(student.enrolled_courses())
+            if exam_course in student.enrolled_courses(): # check for each student whether they take this exam's course
+                print(student)
+                exam.student.add(student) # add student of that course to the exam
+    serializer=ExamSerializer(exam)
+    return Response(serializer.data)
+
 # Courses Views
 # 1
 class CategoryList(generics.ListCreateAPIView):

@@ -1,6 +1,7 @@
 import TeacherSidebar from "./TeacherSidebar";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 const baseUrl = "http://127.0.0.1:8000/api";
 function AddQuiz() {
   const [cats, setCats] = useState([]);
@@ -23,17 +24,31 @@ function AddQuiz() {
   const formSubmit = () => {
     const teacherId = localStorage.getItem("teacherId");
     const _formData = new FormData();
-    _formData.append("teacher", quizData.teacher);
-    _formData.append("title", quizData.title);
-    _formData.append("detail", quizData.description);
-    _formData.append("detail", quizData.number_of_questions);
-    _formData.append("detail", quizData.duration);
-    _formData.append("detail", quizData.course);
+    _formData.append("teacher", teacherId);
+    _formData.append("name", quizData.title);
+    _formData.append("description", quizData.description);
+    _formData.append("number_of_questions", quizData.number_of_questions);
+    _formData.append("duration", quizData.duration);
+    _formData.append("course", quizData.course);
 
     try {
+      console.log(quizData)
       axios.post(`${baseUrl}/add-exam/`, _formData, {}).then((res) => {
-        // console.log(res.data);
-        window.location.href = "/add-quiz";
+        if (res.status === 200 || res.status ===201) {
+          Swal.fire({
+            title: "Exam has been created",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        } else {
+          console.log(res.status);
+          console.log(res.status.error);
+        }
+        // window.location.href = "/add-quiz";
       });
     } catch (error) {
       console.log(error);
@@ -48,10 +63,10 @@ function AddQuiz() {
       axios.get(`${baseUrl}/teacher-courses/${teacherId}/`).then((res) => {
         console.log(res.data);
         setCats(res.data);
-        // setquizData({
-        //   ...quizData,
-        //   ['teacherId']: teacherId,
-        // })
+        setquizData({
+          ...quizData,
+          ['course']: res.data[0].id,
+        })
         
       });
     } catch (error) {
@@ -83,7 +98,7 @@ function AddQuiz() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Title
                   </label>
                   <input
@@ -95,7 +110,7 @@ function AddQuiz() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="description" className="form-label">
+                  <label htmlFor="description" className="form-label">
                     Description
                   </label>
                   <input
@@ -107,19 +122,19 @@ function AddQuiz() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="no_questions" className="form-label">
+                  <label htmlFor="no_questions" className="form-label">
                     Number of Questions
                   </label>
                   <input
                     type="number"
                     onChange={handleChange}
-                    name="no_questions"
-                    id="no_questions"
+                    name="number_of_questions"
+                    id="number_of_questions"
                     className="form-control"
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="duration" className="form-label">
+                  <label htmlFor="duration" className="form-label">
                     Duration
                   </label>
                   <input
@@ -131,7 +146,7 @@ function AddQuiz() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="course" className="form-label">
+                  <label htmlFor="course" className="form-label">
                     Course
                   </label>
                   <select
@@ -150,7 +165,7 @@ function AddQuiz() {
                   </select>
                 </div>
                 <div className="mb-3">
-                  <label for="teacher" className="form-label">
+                  <label htmlFor="teacher" className="form-label">
                     Teacher
                   </label>
                   <select

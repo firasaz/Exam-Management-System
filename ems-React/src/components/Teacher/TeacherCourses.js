@@ -10,6 +10,7 @@ function MyCourses() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/teacher-courses/${teacherId}/`).then((res) => {
+        console.log(res.data)
         setCourseData(res.data);
       });
     } catch (error) {

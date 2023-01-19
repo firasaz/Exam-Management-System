@@ -15,7 +15,7 @@ function EditQuiz() {
   });
 
   const teacherId = localStorage.getItem("teacherId");
-  const { exam_id } = useParams();
+  const { quiz_id } = useParams();
 
   const handleChange = (event) => {
     setquizData({
@@ -25,19 +25,20 @@ function EditQuiz() {
   };
 
   const formSubmit = () => {
+    console.log(quizData)
     const _formData = new FormData();
-    _formData.append("teacher", teacherId);
-    _formData.append("name", quizData.name);
-    _formData.append("description", quizData.description);
-    _formData.append("number_of_questions", quizData.no_of_questions);
-    _formData.append("duration", quizData.duration);
+    // _formData.append("teacher", teacherId);
+    // _formData.append("name", quizData.name);
+    // _formData.append("description", quizData.description);
+    // _formData.append("number_of_questions", quizData.no_of_questions);
+    // _formData.append("duration", quizData.duration);
 
     try {
-      axios.put(`${baseUrl}/teacher-exam-detail-edit/${exam_id}/`, {
+      axios.put(`${baseUrl}/teacher-exam-detail-edit/${quiz_id}/`, {
         teacher: teacherId,
         name: quizData.name,
         description: quizData.description,
-        no_of_questions: quizData.no_of_questions,
+        number_of_questions: quizData.no_of_questions,
         duration: quizData.duration,
         // course: quizData.course,
       }, {
@@ -45,8 +46,8 @@ function EditQuiz() {
             "Content-Type": "application/json",
           },
         }).then((res) => {
-          console.log(res)
-          if (res.status === 200) {
+          console.log(res.status)
+          if (res.status === 200 || res.status ===201) {
             Swal.fire({
               title: "Data has been updated",
               icon: "success",
@@ -61,15 +62,13 @@ function EditQuiz() {
     } catch (error) {
       console.log(error);
     }
-    console.log(_formData)
-    console.log(quizData)
   };
 
    // Fetch categories when page load
     useEffect(() => {
     // Fetch current quiz data
     try {
-      axios.get(`${baseUrl}/teacher-exam-detail/${exam_id}/`).then((res) => {
+      axios.get(`${baseUrl}/teacher-exam-detail/${quiz_id}/`).then((res) => {
         console.log(res.data)
         setquizData({
           name: res.data.name,
@@ -97,7 +96,7 @@ function EditQuiz() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="name" className="form-label">
+                  <label htmlFor="name" className="form-label">
                     Name
                   </label>
                   <input
@@ -110,7 +109,7 @@ function EditQuiz() {
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="description" className="form-label">
+                  <label htmlFor="description" className="form-label">
                     Description
                   </label>
                   <textarea
@@ -122,20 +121,20 @@ function EditQuiz() {
                   ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label for="no_of_questions" className="form-label">
+                  <label htmlFor="number_of_questions" className="form-label">
                     Number of Questions
                   </label>
                   <input
                     type="number"
                     value={quizData.no_of_questions}
                     onChange={handleChange}
-                    name="no_of_questions"
-                    id="no_of_questions"
+                    name="number_of_questions"
+                    id="number_of_questions"
                     className="form-control"
                   />
                 </div>
                 <div className="mb-3">
-                  <label for="duration" className="form-label">
+                  <label htmlFor="duration" className="form-label">
                     Duration
                   </label>
                   <input
@@ -148,7 +147,7 @@ function EditQuiz() {
                   />
                 </div>
                 {/* <div className="mb-3">
-                  <label for="course" className="form-label">
+                  <label htmlFor="course" className="form-label">
                     Course
                   </label>
                   <select

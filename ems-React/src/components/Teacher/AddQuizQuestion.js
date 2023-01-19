@@ -143,7 +143,7 @@ function AddQuizQuestion() {
                     id="type"
                     className="form-control"
                   >
-                  <option key='choice 1' value='Multiple Choice'>Multiple Choice</option>
+                  <option key='choice 1' value='MCQ'>Multiple Choice</option>
                   <option key='choice 2' value='Classical Question'>Classical Question</option>
                   </select>
                 </div>

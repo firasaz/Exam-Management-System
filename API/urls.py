@@ -61,8 +61,9 @@
 from django.urls import path
 from .views import getExamData, getQuestionsData, getAnswerData, addExamData, deleteQuestion, add_question
 from teachers.views import (
-    TeacherList, TeacherDetail, TeacherDashboard, teacher_login, teacher_change_password, TeacherCourseList, TeacherView, TeacherCourseDetail, TeacherExamList, TeacherCourseEdit,
-    CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView
+    TeacherList, TeacherDetail, TeacherDashboard, TeacherCourseList, TeacherCourseDetail,
+    teacher_students_view, teacher_login, teacher_change_password, TeacherView, TeacherExamList, TeacherCourseEdit, assign_exam,
+    CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView,
 )
 from students.views import (
     StudentList, student_login, StudentDetail, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
@@ -122,7 +123,7 @@ urlpatterns = [
     path('user-login/', student_login),
     # path('student-enroll-course/', StudentEnrollCourseList.as_view()),
     path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
-    # path('fetch-all-enrolled-students/<int:teacher_id>/',EnrolledStudentList.as_view()),
+    path('fetch-all-enrolled-students/<int:teacher_id>/', teacher_students_view),
     # path('fetch-enrolled-students/<int:course_id>/',EnrolledStudentList.as_view()),
     path('fetch-enrolled-courses/<int:student_id>/',EnrolledStudentList),
 
@@ -140,15 +141,16 @@ urlpatterns = [
     path('teacher-exam/<int:teacher_id>/', TeacherExamList),
     path('teacher-exams/<int:teacher_id>/', TeacherExamList),
     path('add-exam/', addExamData, name='addExamAPI'), # path by firas
+    path('assign-exam/<int:exam_id>/', assign_exam),
     # path('teacher-exam-detail/<int:pk>/', TeacherExamDetail.as_view()),
     path('teacher-exam-detail/<int:pk>/', ExamDetailView.as_view()), # 'pk' is the exam pk, path by firas
     path('teacher-exam-detail-edit/<int:pk>/', exam_edit), # 'pk' is the exam pk, path by firas
     # path('quiz/<int:pk>', QuizDetailView.as_view()),
     path('exam-questions/<int:exam_id>/', exam_question_list),
+    # path('quiz-assign-course/', CourseQuizList.as_view()), # i am using the below path instead
     path('add-question/', add_question),
     # path('quiz-questions/<int:quiz_id>/<int:limit>/',QuizQuestionList.as_view()),
-    path('fetch-quiz-assign-status/<int:quiz_id>/<int:course_id>/',fetch_exam_assign_status),
-    # path('quiz-assign-course/', CourseQuizList.as_view()),
+    path('fetch-quiz-assign-status/<int:exam_id>/<int:course_id>/',fetch_exam_assign_status),
     path('fetch-assigned-quiz/<int:course_id>/', CourseExamList.as_view()),
     path('attempt-quiz/', AttemptExamList.as_view()),
     # path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>/',QuizQuestionList.as_view()),
