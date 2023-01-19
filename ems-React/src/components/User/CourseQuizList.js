@@ -12,7 +12,7 @@ function CoursequizList() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-assigned-quiz/${course_id}/`).then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         setquizData(res.data);
       });
     } catch (error) {

@@ -7,10 +7,22 @@ function TakeQuiz() {
   const [questionData, setquestionData] = useState([]);
   const { quiz_id } = useParams();
   const studentId = localStorage.getItem("studentId");
-  // Fetch courses when page load
+
+  // useEffect(() => {
+  //   try {
+  //     axios.get(`${baseUrl}/quiz-questions/${quiz_id}/1/`).then((res) => {
+  //       console.log(res.data);
+  //       setquestionData(res.data);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   document.title = "Attempt Exam";
+  // }, []);
+
   useEffect(() => {
     try {
-      axios.get(`${baseUrl}/quiz-questions/${quiz_id}/1/`).then((res) => {
+      axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
         console.log(res.data);
         setquestionData(res.data);
       });
@@ -61,13 +73,13 @@ function TakeQuiz() {
           <Sidebar />
         </aside>
         <section className="col-md-9">
+        <h4 className="mb-3 border-bottom pb-1">
+                Exam: <span className="text-danger">{questionData[0]?.exam}</span>
+        </h4>
           {questionData.map((row, index) => (
             <>
-              <h4 className="mb-3 border-bottom pb-1">
-                Exam: <span className="text-danger">{row.quiz.title}</span>
-              </h4>
               <div className="card">
-                <h5 className="card-header">{row.questions}</h5>
+                <h5 className="card-header">{row?.question}</h5>
                 <div className="card-body">
                   <table className="table table-bordered">
                     <tbody>
@@ -75,40 +87,40 @@ function TakeQuiz() {
                         <tr>
                           <td>
                             <button
-                              onClick={() => submitAnswer(row.id, row.ans1)}
+                              onClick={() => submitAnswer(row?.id, row?.ans1)}
                               className="btn btn-outline-secondary"
                             >
-                              {row.ans1}
+                              {row?.ans1}
                             </button>
                           </td>
                         </tr>
                         <tr>
                           <td>
                             <button
-                              onClick={() => submitAnswer(row.id, row.ans2)}
+                              onClick={() => submitAnswer(row?.id, row?.ans2)}
                               className="btn btn-outline-secondary"
                             >
-                              {row.ans2}
+                              {row?.ans2}
                             </button>
                           </td>
                         </tr>
                         <tr>
                           <td>
                             <button
-                              onClick={() => submitAnswer(row.id, row.ans3)}
+                              onClick={() => submitAnswer(row?.id, row?.ans3)}
                               className="btn btn-outline-secondary"
                             >
-                              {row.ans3}
+                              {row?.ans3}
                             </button>
                           </td>
                         </tr>
                         <tr>
                           <td>
                             <button
-                              onClick={() => submitAnswer(row.id, row.ans4)}
+                              onClick={() => submitAnswer(row?.id, row?.ans4)}
                               className="btn btn-outline-secondary"
                             >
-                              {row.ans4}
+                              {row?.ans4}
                             </button>
                           </td>
                         </tr>

@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from teachers.models import Course, Teacher
 from students.models import Student
+# from questions.models import Question
 
 # Create your models here.
 
@@ -65,7 +66,7 @@ class ExamQuestions(models.Model):
 class AttemptExam(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
-    question = models.ForeignKey(ExamQuestions, on_delete=models.CASCADE, null=True)
+    # question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
     right_ans = models.CharField(max_length=200, null=True)
     add_time = models.DateTimeField(auto_now_add=True)
 

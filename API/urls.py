@@ -147,6 +147,7 @@ urlpatterns = [
     path('teacher-exam-detail-edit/<int:pk>/', exam_edit), # 'pk' is the exam pk, path by firas
     # path('quiz/<int:pk>', QuizDetailView.as_view()),
     path('exam-questions/<int:exam_id>/', exam_question_list),
+    # path('exam-questions/<int:exam_id>/<int:question_id>/', exam_question_list),
     # path('quiz-assign-course/', CourseQuizList.as_view()), # i am using the below path instead
     path('add-question/', add_question),
     # path('quiz-questions/<int:quiz_id>/<int:limit>/',QuizQuestionList.as_view()),
@@ -155,6 +156,7 @@ urlpatterns = [
     path('attempt-quiz/', AttemptExamList.as_view()),
     # path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>/',QuizQuestionList.as_view()),
     path('fetch-quiz-attempt-status/<int:exam_id>/<int:student_id>/', fetch_exam_attempt_status),
+    # path('fetch-quiz-attempt-status/<int:course_id>/', fetch_exam_attempt_status),
 
 
     # path('attempted-quiz/<int:quiz_id>/', AttemptQuizList.as_view()),

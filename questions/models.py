@@ -1,9 +1,9 @@
 from django.db import models
-from exams.models import Exam
 from django.contrib.auth.models import User
 from django.conf import settings
 
 from students.models import Student
+from exams.models import Exam
 
 class Question(models.Model):
     qtype = (

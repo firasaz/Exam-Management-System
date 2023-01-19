@@ -51,6 +51,7 @@ function ProfileSetting() {
 
   // Submit Form
   const submitForm = () => {
+    console.log(teacherData)
     const teacherFormData = new FormData();
     teacherFormData.append("full_name", teacherData.full_name);
     teacherFormData.append("email", teacherData.email);

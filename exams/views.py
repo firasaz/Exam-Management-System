@@ -102,12 +102,29 @@ def fetch_exam_attempt_status(request, exam_id, student_id):
     exam = Exam.objects.filter(id=exam_id).first()
     student = Student.objects.filter(id=student_id).first()
     # exam_questions = exam.get_questions()
-    attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
-    print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
+    attemptStatus = AttemptExam.objects.filter(student=student, exam=exam).count()
+    # attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
+    # print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
+    print(attemptStatus)
     if attemptStatus > 0:
         return JsonResponse({'bool': True})
     else:
         return JsonResponse({'bool': False})
+
+# this is not right
+
+# @api_view(['GET'])
+# def fetch_exam_attempt_status(request, course_id):
+#     try:
+#         course=Course.objects.get(id=course_id)
+#     except Course.DoesNotExist:
+#         course=None
+    
+#     if course:
+#         exams = course.course_exams()
+#         serializer = ExamSerializer(exams, many=True)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+#     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def fetch_exam_result(request, exam_id, student_id):
