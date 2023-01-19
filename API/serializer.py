@@ -58,6 +58,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = CourseCategory
         fields = "__all__"
 
+class CourseTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Course
+        fields = ['id','title']
+
 class CourseEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
@@ -138,9 +143,11 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
 
 class ExamSerializer(serializers.ModelSerializer):
+    course = CourseTitleSerializer()
     questions = QuestionSerializer(many=True) # this field should match the related name specified in the model connected to this model
     # get_teacher = ExamTeacherSerializer() # many=True is wrong because_get_teacher returns one teacher object only as each exam can have one teacher only, no more no less
-    teacher=TeacherSerializer()
+    teacher = TeacherSerializer()
+    student = StudentSerializer(many=True)
     class Meta:
         model = Exam
         fields = ("id","name", "description", "number_of_questions", "duration", "course", "questions","teacher","student")

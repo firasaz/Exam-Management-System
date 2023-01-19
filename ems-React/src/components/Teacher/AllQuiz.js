@@ -66,6 +66,7 @@ function AllQuiz() {
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Course</th>
                     <th>Total Question</th>
                     <th>Duration</th>
                     <th>Action</th>
@@ -79,6 +80,10 @@ function AllQuiz() {
                       </td>
 
                       <td>
+                        {row?.course?.title}
+                      </td>
+
+                      <td>
                         {row?.number_of_questions}
                       </td>
 
@@ -89,13 +94,13 @@ function AllQuiz() {
                       <td>
                         <Link
                           className="btn btn-info btn-sm"
-                          to={`/edit-quiz/` + row.id}
+                          to={`/edit-quiz/` + row?.id}
                         >
                           Edit
                         </Link>
                         <Link
                           className="btn btn-success btn-sm ms-2"
-                          to={`/add-quiz-question/` + row.id}
+                          to={`/add-quiz-question/` + row?.id}
                         >
                           Add Question
                         </Link>

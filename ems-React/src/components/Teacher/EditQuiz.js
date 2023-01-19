@@ -108,6 +108,7 @@ function EditQuiz() {
                     className="form-control"
                   />
                 </div>
+                
                 <div className="mb-3">
                   <label htmlFor="description" className="form-label">
                     Description
@@ -120,7 +121,9 @@ function EditQuiz() {
                     id="description"
                   ></textarea>
                 </div>
-                <div className="mb-3">
+                
+                {/* this div below is not allowing me to change the number of questions for some reason */}
+                <div className="mb-3"> 
                   <label htmlFor="number_of_questions" className="form-label">
                     Number of Questions
                   </label>
@@ -133,6 +136,7 @@ function EditQuiz() {
                     className="form-control"
                   />
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="duration" className="form-label">
                     Duration
