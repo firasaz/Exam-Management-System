@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import TeacherProfile from "./Teacher/teacherprofile";
+import ChairProfile from "./chairman/chairprofile";
+import UserProfile from "./User/userprofile";
 
 function Header() {
   const chairLoginStatus = localStorage.getItem("chairLoginStatus");
@@ -90,7 +93,7 @@ function Header() {
               </>
             )}
 
-            {teacherLoginStatus !== "true" && studentLoginStatus !== "true" &&(
+            {teacherLoginStatus !== "true" && studentLoginStatus !== "true" && (
               <>
                 <li className="nav-item dropdown">
                   <Link
@@ -98,7 +101,8 @@ function Header() {
                     to="#"
                     role="button"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                    aria-expanded="false"
+                  >
                     Chairman
                   </Link>
                   <ul className="dropdown-menu">
@@ -124,6 +128,14 @@ function Header() {
                     )}
                     {chairLoginStatus === "true" && (
                       <>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/chair-profile-setting"
+                          >
+                            <ChairProfile />
+                          </Link>
+                        </li>
                         <li>
                           <Link className="dropdown-item" to="/chair-dashboard">
                             Dashboard
@@ -177,6 +189,14 @@ function Header() {
                         <li>
                           <Link
                             className="dropdown-item"
+                            to="/teacher-profile-setting"
+                          >
+                            <TeacherProfile />
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item"
                             to="/teacher-dashboard"
                           >
                             Dashboard
@@ -226,6 +246,15 @@ function Header() {
                     )}
                     {studentLoginStatus === "true" && (
                       <>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/user-profile-setting"
+                          >
+                            {" "}
+                            <UserProfile />{" "}
+                          </Link>
+                        </li>
                         <li>
                           <Link className="dropdown-item" to="/user-dashboard">
                             Dashboard
