@@ -24,7 +24,6 @@ function ProfileSetting() {
           full_name: res.data.full_name,
           email: res.data.email,
           username: res.data.username,
-          interested_categories: res.data.interested_categories,
           profile_img: res.data.profile_img,
           p_img: "",
           login_via_otp: res.data.login_via_otp,

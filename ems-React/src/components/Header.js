@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import TeacherProfile from "./Teacher/teacherprofile";
+import ChairProfile from "./chairman/chairprofile";
+import UserProfile from "./User/userprofile";
 
 function Header() {
   const chairLoginStatus = localStorage.getItem("chairLoginStatus");
@@ -44,12 +47,21 @@ function Header() {
                     to="#"
                     role="button"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                    aria-expanded="false"
+                  >
                     Chairman
                   </Link>
                   <ul className="dropdown-menu">
                     {chairLoginStatus === "true" && (
                       <>
+                        <li>
+                          <Link
+                            className="dropdown-item"
+                            to="/chair-profile-setting"
+                          >
+                            <ChairProfile />
+                          </Link>
+                        </li>
                         <li>
                           <Link className="dropdown-item" to="/chair-dashboard">
                             Dashboard
