@@ -72,7 +72,7 @@ from students.views import (
 )
 from exams.views import (
     ExamDetailView, ExamsListView, AttemptExamList, 
-    fetch_exam_assign_status, exam_edit, fetch_exam_attempt_status, exam_question_list,
+    fetch_exam_assign_status, exam_edit, fetch_exam_attempt_status, exam_question_list, SubmitExamView
 )
 
 app_name = 'API'
@@ -157,6 +157,8 @@ urlpatterns = [
     # path('quiz-questions/<int:quiz_id>/next-question/<int:question_id>/',QuizQuestionList.as_view()),
     path('fetch-quiz-attempt-status/<int:exam_id>/<int:student_id>/', fetch_exam_attempt_status),
     # path('fetch-quiz-attempt-status/<int:course_id>/', fetch_exam_attempt_status),
+
+    path('answer-exam/<int:exam_id>/', SubmitExamView),
 
 
     # path('attempted-quiz/<int:quiz_id>/', AttemptQuizList.as_view()),

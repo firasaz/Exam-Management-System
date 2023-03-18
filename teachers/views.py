@@ -72,9 +72,10 @@ def teacher_login(request):
     teacherData = authenticate(request, email=email, password=password)
     
     # teacherData = authenticate(request, username=email, password=password)
-    # print(teacherData)
+    # print(teacherData.is_staff)
     if teacherData:
-        return JsonResponse({'bool': True, 'teacher_id': teacherData.id, 'teacher_name': teacherData.full_name})
+        login(request, teacherData)
+        return JsonResponse({'bool': True, 'id': teacherData.id, 'position': teacherData.is_staff, 'name': teacherData.full_name})
     else:
         return JsonResponse({'bool': False})
 
@@ -109,9 +110,9 @@ class TeacherCourseDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseDetailSerializer
 
+@csrf_exempt
 @api_view(['GET','PUT'])
 def TeacherCourseEdit(request,c_id):
-    print(request.data)
     course = Course.objects.get(id=c_id)
     if request.method == "GET":
         serializer = CourseEditSerializer(course)
@@ -119,10 +120,11 @@ def TeacherCourseEdit(request,c_id):
     
     elif request.method == "PUT":
         serializer = CourseEditSerializer(course, data=request.data)
+        # print(serializer)
         if serializer.is_valid():
             serializer.save()
             # print(serializer.validated_data['category'])
-            # print(serializer.validated_data)
+            print(serializer.validated_data)
             # # category=CourseCategory.objects.get(id=serializer.validated_data['category'])
             # category=serializer.validated_data['category']
             # # teacher=Teacher.objects.get(id=serializer.validated_data['teacher'])
@@ -139,7 +141,9 @@ def TeacherCourseEdit(request,c_id):
             # course.prerequisites=prerequisites
             # course.featured_img=featured_img
             # serializer.save(update_fields=['category','teacher','title','description','prerequisites','featrued_img'])
+            # print(request.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(request.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 

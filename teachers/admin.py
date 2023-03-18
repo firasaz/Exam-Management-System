@@ -12,7 +12,7 @@ class TeacherAdminConfig(UserAdmin):
 
     fieldsets = (
         (None, {
-            'fields':('full_name','email','username','department','qualification','profile_img')
+            'fields':('full_name','email','username','department','qualification','profile_img','position')
             }),
         ('Permissions', {
             'fields':('is_staff','is_superuser','is_active')

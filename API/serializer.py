@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 from exams.models import Exam, AttemptExam
-from questions.models import Question, Answer
+from questions.models import Question, Answer, ExamQuestionAnswers
 from accounts.models import Teacher, Student  # , StudentCourseEnrollment
 from teachers.models import Course, CourseCategory, TeacherStudentChat, Notification
 from chairman.models import Chairman
@@ -23,12 +23,12 @@ class QuestionSerializer(serializers.ModelSerializer):
     answers = AnswerSerializer(many=True)
     class Meta:
         model = Question
-        fields = ("id","question", "exam", "type", "created", "answers")
+        fields = ("id","question", "exam", "type", "points", "created", "answers")
 
 class AddQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ("id","question", "exam", "type", "created")
+        fields = ("id","question", "exam", "type", "points", "created")
 
 
 class ExamTeacherSerializer(serializers.ModelSerializer):
@@ -77,7 +77,7 @@ class CourseSerializer(serializers.ModelSerializer):
     # category = CategorySerializer()
     class Meta:
         model = Course
-        fields = ["id","title","description","featured_img","prerequisites","category","teacher"]
+        fields = ["id","category","title","teacher","description","featured_img","prerequisites"]
 
 # class ExamEditSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -109,13 +109,13 @@ class TeacherSerializer(serializers.ModelSerializer):
     # teacher_exams=ExamSerializer(many=True) # need to reorder the serializers to work
     class Meta:
         model = Teacher
-        fields = ["id","full_name","email","username","department","qualification","profile_img","teacher_courses"]
+        fields = ["id","full_name","email","username","department","qualification","profile_img","teacher_courses","password","position"]
     
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         # fields = '__all__'
-        fields = ['id','full_name','email','username','profile_img']
+        fields = ['id','full_name','email','username','profile_img','password']
 
 class CourseDetailSerializer(serializers.ModelSerializer):
     # specifying the fields of the teacher and the student doesn't allow the frontend to work
@@ -161,6 +161,12 @@ class ExamEditSerializer(serializers.ModelSerializer):
     class Meta:
         model=Exam
         fields=['id','name','description','number_of_questions','duration']
+
+
+class ExamQuestionAnswersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamQuestionAnswers
+        fields = '__all__'
 
 class StudentDashboardSerializer(serializers.ModelSerializer):
     # total_enrolled_courses=CourseSerializer(many=True)

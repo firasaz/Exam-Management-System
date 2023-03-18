@@ -119,6 +119,7 @@ const sendData = () => {
     const classicalDict = {}
     dataDict["csrfmiddlewaretoken"] = csrf[0].value
 
+    console.log(choices)
     choices.forEach(element => {
         if (element.checked) { // add the choice, which has the question and its corresponding value, from the form in the dictionary
             dataDict[element.name] = element.value

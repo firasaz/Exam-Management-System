@@ -82,6 +82,7 @@ class Teacher(NewUser):
     qualification = models.CharField(max_length=200)
     department = models.CharField(max_length=50)
     profile_img = models.ImageField(upload_to='static/images/teacher_imgs/', null=True, blank=True)
+    position = models.CharField(max_length=100, default="teacher")
 
     class Meta:
         verbose_name_plural = "Teachers"

@@ -29,48 +29,35 @@ function EditCourse() {
   };
 
   const handleFileChange = (event) => {
+    console.log(event.target.name)
     setCourseData({
       ...courseData,
       [event.target.name]: event.target.files[0],
     });
+    console.log(courseData.f_img)
+    console.log(event.target.files[0])
   };
 
   const formSubmit = (e) => {
     e.preventDefault();
-    // const _formData = new FormData();
-    // _formData.append("category", courseData.category);
-    // _formData.append("teacher", 1);
-    // _formData.append("title", courseData.title);
-    // _formData.append("description", courseData.description);
-    // if (courseData.f_img !== "") {
-    //   _formData.append("featured_img", courseData.f_img);
-    // }
+    const teacherId = localStorage.getItem("teacherId");
+    // use this "FormData()" when handling files and multipart/form-data!!
+    const _formData = new FormData();
+    _formData.append("category", courseData.category);
+    _formData.append("teacher", teacherId);
+    _formData.append("title", courseData.title);
+    _formData.append("description", courseData.description);
+    _formData.append("featured_img", courseData.f_img);
     // // _formData.append('techs',courseData.techs);
 
     try {
-      const teacherId = localStorage.getItem("teacherId");
-      console.log(courseData)
-      axios.put(`${baseUrl }/teacher-course-edit/${course_id}/`, {
-        // category: 2,
-        // // teacher: "2",
-        // title: "hard-coded title for testing",
-        // description: "testing type of data that works in POST request",
-        // prerequisites: null,
-        // featured_img: null
-        category: courseData.category,
-        teacher: teacherId,
-        title: courseData.title,
-        description: courseData.description,
-        prerequisites: courseData.prerequisites,
-        featured_img: courseData.f_img
-        // techs: courseData.techs
-        }, {
+      axios.put(`${baseUrl }/teacher-course-edit/${course_id}/`, _formData, {
           headers: {
-            // "Content-Type": "multipart/form-data"
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
+            // "Content-Type": "application/json",
           },
         }).then((res) => {
-          if (res.status === 200 || res.status ===201) {
+          if (res.status === 200 || res.status === 201) {
             Swal.fire({
               title: "Data has been updated",
               icon: "success",
@@ -88,13 +75,10 @@ function EditCourse() {
     } catch (error) {
       console.log(error);
     }
-    console.log(courseData);
-    console.log(courseData.category);
   };
 
     // Fetch categories when page load for category menu
     useEffect(() => {
-      // const teacherId = localStorage.getItem("teacherId");
       try {
         axios.get(`${baseUrl}/category/`).then((res) => {
           console.log(res.data)
@@ -129,8 +113,6 @@ function EditCourse() {
             description: res.data.description,
             f_img: res.data.featured_img,
             prerequisites: res.data.prerequisites,
-            // f_img: "",
-            // techs:res.data.techs,
           });
         });
       } catch (error) {
@@ -151,14 +133,14 @@ function EditCourse() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="category" className="form-label">
+                  <label htmlFor="category" className="form-label">
                     Category
                   </label>
                   <select
                     name="category"
                     value={courseData.category}
                     onChange={handleChange}
-                    class="form-control"
+                    className="form-control"
                   >
                     {cats.map((category, index) => {
                       return (
@@ -171,7 +153,7 @@ function EditCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Title
                   </label>
                   <input
@@ -185,7 +167,7 @@ function EditCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="description" className="form-label">
+                  <label htmlFor="description" className="form-label">
                     Description
                   </label>
                   <textarea
@@ -197,7 +179,7 @@ function EditCourse() {
                   ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label for="video" className="form-label">
+                  <label htmlFor="video" className="form-label">
                     Featured Image
                   </label>
                   <input
@@ -219,13 +201,13 @@ function EditCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Prerequisites
                   </label>
                   <select
                     name="prerequisites"
                     onClick={handleChange}
-                    class="form-control"
+                    className="form-control"
                   >
                     {prereq.map((prerequisites, index) => {
                       return (
@@ -237,7 +219,7 @@ function EditCourse() {
                   </select>
                 </div>
                 {/* <div className="mb-3">
-                  <label for="prerequisites" className="form-label">
+                  <label htmlFor="prerequisites" className="form-label">
                     Prerequisites
                   </label>
                   <textarea
@@ -248,7 +230,7 @@ function EditCourse() {
                   ></textarea>
                 </div> */}
                 {/* <div className="mb-3">
-                                    <label for="techs" className="form-label">Technologies</label>
+                                    <label htmlFor="techs" className="form-label">Technologies</label>
                                     <textarea value={courseData.techs} onChange={handleChange} name='techs' className="form-control" placeholder="Php, Python, Javascript, HTML, CSS" id="techs"></textarea>
                                 </div> */}
                 <button

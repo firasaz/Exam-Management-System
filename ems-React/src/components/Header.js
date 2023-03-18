@@ -1,26 +1,11 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function Header() {
   const chairLoginStatus = localStorage.getItem("chairLoginStatus");
   const teacherLoginStatus = localStorage.getItem("teacherLoginStatus");
   const studentLoginStatus = localStorage.getItem("studentLoginStatus");
-  const [searchstring, setSearchString] = useState({
-    search: "",
-  });
-
-  const handleChange = (event) => {
-    setSearchString({
-      ...searchstring,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  function searchCourse() {
-    if (searchstring.search !== "") {
-      window.location.href = "/search/" + searchstring.search;
-    }
-  }
+  const teacherName = localStorage.getItem("teacherName");
+  const studentName = localStorage.getItem("studentName");
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,41 +13,6 @@ function Header() {
         <Link className="navbar-brand" to="#">
           EMS for EMU
         </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNavAltMarkup"
-          aria-controls="navbarNavAltMarkup"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <form className="d-flex">
-          {(studentLoginStatus ||
-            teacherLoginStatus ||
-            chairLoginStatus === "true") && (
-            <>
-              <input
-                onClick={handleChange}
-                name="search"
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              ></input>
-
-              <button
-                onClick={searchCourse}
-                className="btn btn-warning"
-                type="button"
-              >
-                Search
-              </button>
-            </>
-          )}
-        </form>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
             {(studentLoginStatus || teacherLoginStatus === "true") && (
@@ -87,11 +37,7 @@ function Header() {
                 <Link className="nav-item nav-link" to="/all-courses">
                   Courses
                 </Link>
-              </>
-            )}
 
-            {teacherLoginStatus !== "true" && studentLoginStatus !== "true" &&(
-              <>
                 <li className="nav-item dropdown">
                   <Link
                     className="nav-link dropdown-toggle"
@@ -102,26 +48,6 @@ function Header() {
                     Chairman
                   </Link>
                   <ul className="dropdown-menu">
-                    {chairLoginStatus !== "true" && (
-                      <>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/chair-login"
-                          >
-                            Login
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/chair-register"
-                          >
-                            Register
-                          </Link>
-                        </li>
-                      </>
-                    )}
                     {chairLoginStatus === "true" && (
                       <>
                         <li>
@@ -139,7 +65,7 @@ function Header() {
               </>
             )}
 
-            {studentLoginStatus !== "true" && (
+            {teacherLoginStatus === "true" && (
               <>
                 <li className="nav-item dropdown">
                   <Link
@@ -149,49 +75,23 @@ function Header() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Teacher
+                    {teacherName}
                   </Link>
                   <ul className="dropdown-menu">
-                    {teacherLoginStatus !== "true" && (
-                      <>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/teacher-login"
-                          >
-                            Login
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/teacher-register"
-                          >
-                            Register
-                          </Link>
-                        </li>
-                      </>
-                    )}
-                    {teacherLoginStatus === "true" && (
-                      <>
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to="/teacher-dashboard"
-                          >
-                            Dashboard
-                          </Link>
-                          <Link className="dropdown-item" to="/teacher-logout">
-                            Logout
-                          </Link>
-                        </li>
-                      </>
-                    )}
+                    <li>
+                      <Link className="dropdown-item" to="/teacher-dashboard">
+                        Dashboard
+                      </Link>
+                      <Link className="dropdown-item" to="/teacher-logout">
+                        Logout
+                      </Link>
+                    </li>
                   </ul>
                 </li>
               </>
             )}
-            {teacherLoginStatus !== "true" && (
+
+            {studentLoginStatus === "true" && (
               <>
                 <li className="nav-item dropdown">
                   <Link
@@ -201,41 +101,17 @@ function Header() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Student
+                    {studentName}
                   </Link>
                   <ul className="dropdown-menu">
-                    {studentLoginStatus !== "true" && (
-                      <>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/user-login"
-                          >
-                            Login
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="nav-item dropdown-item"
-                            to="/user-register"
-                          >
-                            Register
-                          </Link>
-                        </li>
-                      </>
-                    )}
-                    {studentLoginStatus === "true" && (
-                      <>
-                        <li>
-                          <Link className="dropdown-item" to="/user-dashboard">
-                            Dashboard
-                          </Link>
-                          <Link className="dropdown-item" to="/user-logout">
-                            Logout
-                          </Link>
-                        </li>
-                      </>
-                    )}
+                    <li>
+                      <Link className="dropdown-item" to="/teacher-dashboard">
+                        Dashboard
+                      </Link>
+                      <Link className="dropdown-item" to="/teacher-logout">
+                        Logout
+                      </Link>
+                    </li>
                   </ul>
                 </li>
               </>

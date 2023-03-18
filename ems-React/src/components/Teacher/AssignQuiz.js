@@ -41,8 +41,8 @@ function AllQuiz() {
         <section className="col-md-9">
           <div className="card">
             <h5 className="card-header">
-              Assign Quiz{" "}
-              <span className="text-primary">({courseData.title})</span>
+              Assign Quiz
+              <span className="text-primary"> ({courseData.title})</span>
             </h5>
             <div className="card-body">
               <table className="table table-bordered">

@@ -13,6 +13,7 @@ class Question(models.Model):
     question = models.CharField(max_length=200)
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='questions')
     type = models.CharField(max_length=20, choices=qtype,default="MCQ")
+    points = models.IntegerField(verbose_name='question points')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -46,3 +47,12 @@ class ClassicalAnswer(models.Model):
         return f"Answer: {self.text}; Question: {self.question}; Student: {self.user}"
     
 
+
+class ExamQuestionAnswers(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student')
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question_points = models.IntegerField(help_text='question holds how many points.')
+    answer_mcq = models.CharField(max_length=100, null=True, blank=True)
+    # answer_mcq = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
+    answer_classical = models.ImageField(upload_to='static/images/answers_imgs', null=True, blank=True)

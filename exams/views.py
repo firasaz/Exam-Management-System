@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
 from .models import Exam, AttemptExam
-from questions.models import Question, Answer, ClassicalAnswer
+from questions.models import Question, Answer, ClassicalAnswer, ExamQuestionAnswers
 from results.models import Result
 from teachers.models import Course
 from students.models import Student
@@ -14,6 +14,7 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import json
 # from rest_framework import RetrieveUpdateDestroyAPIView
 
 from API.serializer import ExamSerializer, QuestionSerializer, AttemptExamSerializer, CourseEditSerializer, ExamEditSerializer
@@ -188,6 +189,49 @@ def exam_question_list(request,exam_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
+@csrf_exempt
+def SubmitExamView(request, exam_id):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode) #this returns a dictionary of question and the student's answer
+    body_keys = body.keys()
+    print(body_keys)
+
+    # print(len(request.POST))
+    student_id= int(body["student"])
+    # print(body)
+    try:
+        exam = Exam.objects.get(id = exam_id)
+    except Exam.DoesNotExist:
+        exam = None
+    
+    try:
+        student = Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        student = None
+    
+    # print(exam)
+    if exam:
+        questions = list(exam.get_questions()) # returns a list of exam objects instead of a queryset
+        # questions_answered = []
+        # print(questions)
+        
+        # for q in questions:
+        #     question_names.append(q.question)
+
+        for q in body_keys:
+            if q != 'exam' and q!= 'student':
+                print(q)
+                try:
+                    question_answered = Question.objects.get(id=q)
+                    print(question_answered.type)
+                except Question.DoesNotExist:
+                    question_answered = None
+                
+                ExamQuestionAnswers.objects.create(student=student, exam=exam, question=question_answered, question_points=question_answered.points, answer_mcq=body[q])
+
+
+    return JsonResponse({"savage":"piris"})
+
 
 
 # url: <id>/
@@ -229,7 +273,7 @@ def takeExamView(request,id):
     # print(request.POST)
     return JsonResponse({
         'data': questions_dict,
-        'time': exam.time,
+        'time': exam.duration,
     })
     # return render(request,'exams/exam.html',context)
 
@@ -266,7 +310,7 @@ def submitExamView(request,id=None):
             # selected_ans = request.POST.get("Q"+str(q.id)) # this is really dumb. but it works tho ;)
             
             # q is the question object string whereas the request.POST.get() needs a string key value
-            selected_ans = request.POST.get(str(q)) 
+            selected_ans = request.POST.get(str(q))
 
             print(selected_ans)
             if q.get_type() == "Classical Question":

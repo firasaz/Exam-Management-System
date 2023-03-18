@@ -12,7 +12,6 @@ function Home() {
       axios.get(`${baseUrl}/course/?result=4`).then((res) => {
         setCourseData(res.data);
         console.log(res.data)
-        console.log(res.data.results)
       });
     } catch (error) {
       console.log(error);
@@ -25,7 +24,7 @@ function Home() {
     <div className="container mt-4">
       {/* Enrolled Courses */}
       <h3 className="pb-1 mb-4">
-        Enrolled Courses{" "}
+        Enrolled Courses
         <Link to="/all-courses" className="float-end btn btn-primary">
           See All
         </Link>

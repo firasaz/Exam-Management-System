@@ -8,20 +8,17 @@ const baseUrl = "http://127.0.0.1:8000/api";
 function AddQuizQuestion() {
   const [cats, setCats] = useState([]);
   const [questionData, setquestionData] = useState({
-    exam: "",
     question: "",
-    // exam: "",
-    type:"MCQ"
+    type:"MCQ",
   });
 
   const handleChange = (event) => {
     setquestionData({
       ...questionData,
       [event.target.name]: event.target.value,
-      
     });
     if(event.target.name === "type") {
-      console.log(event.target.value)
+      console.log(event.target)
     }
   };
 
@@ -31,21 +28,20 @@ function AddQuizQuestion() {
     const _formData = new FormData();
     _formData.append("exam", quiz_id);
     _formData.append("question", questionData.question);
-    // _formData.append("exam", questionData.exam);
     _formData.append("type", questionData.type);
 
     console.log(quiz_id)
     console.log(typeof(quiz_id))
     try {
     console.log(questionData)
-    axios
-        .post(`${baseUrl}/add-question/`, {
+    axios.post(`${baseUrl}/add-question/`, {
           exam: quiz_id,
           question: questionData.question,
-          type: questionData.type
+          points: questionData.points,
+          type: questionData.type,
         }, {
           headers: {
-            "content-type": "application/json",
+            "Content-Type": "application/json",
           },
         }).then((res) => {
           if (res.status == 200 || res.status === 201) {
@@ -67,21 +63,6 @@ function AddQuizQuestion() {
     console.log(_formData)
   };
 
-  useEffect(() => {
-    try {
-      axios.get(`${baseUrl}/exams/`).then((res) => {
-        console.log(res.data);
-        setCats(res.data);
-        setquestionData({
-          ...questionData,
-          // ['type']: res.data[0].id,
-          ['exam']: quiz_id
-        })
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
   return (
     <div className="container mt-4">
       <div className="row">
@@ -102,7 +83,7 @@ function AddQuizQuestion() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="question" className="form-label">
+                  <label htmlFor="question" className="form-label">
                     Question
                   </label>
                   <input
@@ -110,6 +91,19 @@ function AddQuizQuestion() {
                     onChange={handleChange}
                     name="question"
                     id="question"
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="points" className="form-label">
+                    Question Points
+                  </label>
+                  <input
+                    type="number"
+                    onChange={handleChange}
+                    name="points"
+                    id="points"
                     className="form-control"
                   />
                 </div>
@@ -134,7 +128,7 @@ function AddQuizQuestion() {
                 </div> */}
 
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Type
                   </label>
                   <select
@@ -144,12 +138,34 @@ function AddQuizQuestion() {
                     className="form-control"
                   >
                   <option key='choice 1' value='MCQ'>Multiple Choice</option>
-                  <option key='choice 2' value='Classical Question'>Classical Question</option>
+                  <option key='choice 2' value='Classical Question' name="Classical Question" onClick={handleChange}>Classical Question</option>
                   </select>
                 </div>
-                
-                {/* <div className="mb-3">
-                  <label for="title" className="form-label">
+                {console.log("")}
+                <div className="mb-3" id="choices">
+                  <label htmlFor="title" className="form-label">
+                    Ans 1
+                  </label>
+                  <input
+                    type="text"
+                    onChange={handleChange}
+                    name="ans1"
+                    id="title"
+                    className="form-control mb-3"
+                  />
+
+                  <label htmlFor="title" className="form-label">
+                    Ans 2
+                  </label>
+                  <input
+                    type="text"
+                    onChange={handleChange}
+                    name="ans2"
+                    id="title"
+                    className="form-control mb-3"
+                  />
+
+                  <label htmlFor="title" className="form-label">
                     Ans 3
                   </label>
                   <input
@@ -157,11 +173,10 @@ function AddQuizQuestion() {
                     onChange={handleChange}
                     name="ans3"
                     id="title"
-                    className="form-control"
+                    className="form-control mb-3"
                   />
-                </div>
-                <div className="mb-3">
-                  <label for="title" className="form-label">
+
+                  <label htmlFor="title" className="form-label">
                     Ans 4
                   </label>
                   <input
@@ -169,10 +184,11 @@ function AddQuizQuestion() {
                     onChange={handleChange}
                     name="ans4"
                     id="title"
-                    className="form-control"
+                    className="form-control mb-3"
                   />
                 </div>
-                <div className="mb-3">
+
+                {/* <div className="mb-3">
                   <label for="title" className="form-label">
                     Right Answer
                   </label>

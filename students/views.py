@@ -38,8 +38,10 @@ def student_login(request):
         studentData.check_password(password)
     except Student.DoesNotExist:
         studentData = None
-    print(studentData)
+    # print(studentData)
+
     if studentData:
+        login(request, studentData)
         return JsonResponse({'bool': True, 'student_id': studentData.id})
     else:
         return JsonResponse({'bool': False})
@@ -188,6 +190,10 @@ def save_teacher_student_group_msg_from_student(request, student_id):
         return JsonResponse({'bool': True, 'msg': 'Message has been send'})
     else:
         return JsonResponse({'bool': False, 'msg': 'Oops... Some Error Occured!!'})
+
+# @csrf_exempt
+# def student_answers_view(request):
+#     pass
 
 
 # 7

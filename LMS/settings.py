@@ -162,4 +162,4 @@ AUTH_USER_MODEL = 'Users.NewUser'
 # )
 
 # if we decided to use csrf tokens in our react app we will need to uncomment this line
-CSRF_TRUSTED_ORIGINS=["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS=["http://localhost:3000", "http://localhost:3001"]

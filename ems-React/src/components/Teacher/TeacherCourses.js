@@ -16,7 +16,7 @@ function MyCourses() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [teacherId]);
   console.log(courseData)
 
   return (

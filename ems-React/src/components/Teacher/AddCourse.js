@@ -128,13 +128,13 @@ function AddCourse() {
             <div className="card-body">
               <form>
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Category
                   </label>
                   <select
                     name="category"
                     onClick={handleChange}
-                    class="form-control"
+                    className="form-control"
                   >
                     {cats.map((category, index) => {
                       return (
@@ -147,7 +147,7 @@ function AddCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Title
                   </label>
                   <input
@@ -160,7 +160,7 @@ function AddCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="description" className="form-label">
+                  <label htmlFor="description" className="form-label">
                     Description
                   </label>
                   <textarea
@@ -172,7 +172,7 @@ function AddCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="image" className="form-label">
+                  <label htmlFor="image" className="form-label">
                     Featured Image
                   </label>
                   <input
@@ -185,13 +185,13 @@ function AddCourse() {
                 </div>
 
                 <div className="mb-3">
-                  <label for="title" className="form-label">
+                  <label htmlFor="title" className="form-label">
                     Prerequisites
                   </label>
                   <select
                     name="prerequisites"
                     onClick={handleChange}
-                    class="form-control"
+                    className="form-control"
                   >
                     {prereq.map((prerequisites, index) => {
                       return (

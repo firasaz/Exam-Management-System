@@ -30,7 +30,7 @@ class Exam(models.Model):
     student = models.ManyToManyField(Student, related_name='exam_student', blank=True)
 
     class Meta:
-        verbose_name_plural="MCQ_Exams"
+        verbose_name_plural="1.Exams"
 
     def __str__(self):
         return f"Exam: {self.name}"
@@ -61,7 +61,7 @@ class ExamQuestions(models.Model):
     add_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = "Exam Questions"
+        verbose_name_plural = "2.Exam Questions"
 
 class AttemptExam(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
@@ -71,7 +71,7 @@ class AttemptExam(models.Model):
     add_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = "Attempted Questions"
+        verbose_name_plural = "2.Attempted Questions"
 
     def question(self):
         return self.exam.get_questions()

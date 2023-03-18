@@ -32,5 +32,5 @@ urlpatterns = [
     # path('api/exam/', getExamData, name='examAPI'),
     # path('api/question/', getQuestionsData, name='questionAPI'),
     # path('api/answer/', getAnswerData, name='answerAPI'),
-    # path("user/exam/", include('exams.urls'))
+    path("user/exam/", include('exams.urls'))
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

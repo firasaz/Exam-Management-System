@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 const baseUrl = "http://127.0.0.1:8000/api";
 function AddQuiz() {
+  const teacherName = localStorage.getItem("teacherName");
   const [cats, setCats] = useState([]);
   const [teach, setTeach] = useState([]);
   const [quizData, setquizData] = useState({
@@ -168,20 +169,7 @@ function AddQuiz() {
                   <label htmlFor="teacher" className="form-label">
                     Teacher
                   </label>
-                  <select
-                    name="teacher"
-                    // value={courseData.category}
-                    onChange={handleChange}
-                    class="form-control"
-                  >
-                    {teach.map((teacher, index) => {
-                      return (
-                        <option key={index} value={teacher?.id}>
-                          {teacher?.full_name}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <input className="form-control" type="text" value={teacherName} readonly />
                 </div>
 
                 <button

@@ -134,7 +134,7 @@ function MyTeachers() {
               id="groupMsgModal"
               data-bs-backdrop="static"
               data-bs-keyboard="false"
-              tabindex="-1"
+              tabIndex="-1"
               aria-labelledby="staticBackdropLabel"
               aria-hidden="true"
             >
@@ -160,7 +160,7 @@ function MyTeachers() {
                     )}
                     <form>
                       <div className="mb-3">
-                        <label for="exampleInputEmail1" className="form-label">
+                        <label htmlFor="exampleInputEmail1" className="form-label">
                           Message
                         </label>
                         <textarea
@@ -214,7 +214,7 @@ function MyTeachers() {
                         <div
                           className="modal fade"
                           id={`msgModal${index}`}
-                          tabindex="-1"
+                          tabIndex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
@@ -256,7 +256,7 @@ function MyTeachers() {
                                     <form>
                                       <div className="mb-3">
                                         <label
-                                          for="exampleInputEmail1"
+                                          htmlFor="exampleInputEmail1"
                                           className="form-label"
                                         >
                                           Message

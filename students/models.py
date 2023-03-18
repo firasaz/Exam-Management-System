@@ -12,6 +12,7 @@ class Student(NewUser):
     # password = models.CharField(max_length=100, blank=True ,null=True)
     # username = models.CharField(max_length=200)
     profile_img = models.ImageField(upload_to='static/images/student_imgs/', null=True, blank=True)
+    position = models.CharField(max_length=100, default="student")
 
     class Meta:
         verbose_name_plural = "Students"

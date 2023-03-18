@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
-const baseUrl = "http://127.0.0.1:8000/api";
+// import { Link } from "react-router-dom";
+// import { useState, useEffect } from "react";
+// import axios from "axios";
+// const baseUrl = "http://127.0.0.1:8000/api";
 function Footer() {
   //   const [pagesData, setpagesData] = useState([]);
   //   // Fetch courses when page load
@@ -15,14 +15,13 @@ function Footer() {
   //     }
   //   }, []);
   return (
-    <footer className="py-3 my-5">
-      <ul className="nav justify-content-center border-bottom pb-3 mb-3">
-        <li className="nav-item">
-          <Link to="#" className="nav-link px-2 text-muted">
-            Goodluck for your Exams
-          </Link>
-        </li>
-        {/* {pagesData &&
+    <footer className="footer">
+      <hr style={{margin: "1rem"}} />
+      {/* <ul className="nav justify-content-center border-bottom pb-3 mb-3">
+        <p className="text-center text-muted">
+          Goodluck for your Exams
+        </p>
+        {pagesData &&
           pagesData.map((row, index) => (
             <li className="nav-item">
               <Link
@@ -32,10 +31,10 @@ function Footer() {
                 {row.title}
               </Link>
             </li>
-          ))} */}
-      </ul>
+          ))}
+      </ul> */}
       <p className="text-center text-muted">
-        © 2022 Exam Management System for EMU
+        © 2023 Exam Management System for EMU
       </p>
     </footer>
   );

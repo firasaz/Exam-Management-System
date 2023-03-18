@@ -12,7 +12,7 @@ class Chairman(NewUser):
     # password = models.CharField(max_length=100, blank=True, null=True)
     qualification = models.CharField(max_length=200)
     department = models.CharField(max_length=50)
-    profile_img = models.ImageField(upload_to='chair_imgs/', null=True)
+    profile_img = models.ImageField(upload_to='chair_imgs/', null=True, blank=True)
 
 
     class Meta:

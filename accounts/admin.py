@@ -27,7 +27,7 @@ class ChairmanAdminConfig(UserAdminConfig):
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
-            "fields": ("full_name","username","email","department","qualification","profile_img")
+            "fields": ("full_name","username","email","password","department","qualification","profile_img")
             }),
         ("Permissions", {
             "classes": ("wide",),
@@ -40,7 +40,7 @@ class ChairmanAdminConfig(UserAdminConfig):
     )
 
 
-admin.site.register(Chairman)
+admin.site.register(Chairman, ChairmanAdminConfig)
 # admin.site.register(Teacher)
 # admin.site.register(Course)
 # admin.site.register(CourseCategory)

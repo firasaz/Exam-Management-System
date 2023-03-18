@@ -16,7 +16,7 @@ def getAnswerData(request):
     serializer = AnswerSerializer(answers, many = True)
     return Response(serializer.data)
 
-@api_view(["GET"])
+@api_view(["GET","POST"])
 def getQuestionsData(request):
     questions = Question.objects.all()
     serializer = QuestionSerializer(questions, many = True)
