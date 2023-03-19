@@ -53,6 +53,7 @@ def add_question(request):
         serializer=AddQuestionSerializer(questions, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
+        print(request.data)
         serializer=AddQuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

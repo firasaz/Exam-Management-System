@@ -31,7 +31,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AddQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ("id","question", "exam", "type", "points", "created")
+        fields = ("question", "exam", "type", "points", "created", "answers")
 
 
 class ExamTeacherSerializer(serializers.ModelSerializer):

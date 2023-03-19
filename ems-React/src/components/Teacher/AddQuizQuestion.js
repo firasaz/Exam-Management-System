@@ -1,49 +1,111 @@
 import { Link } from "react-router-dom";
 import TeacherSidebar from "./TeacherSidebar";
-import { useState, useEffect } from "react";
+import { useState, useRef, ReactDOM } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-const baseUrl = "http://127.0.0.1:8000/api";
+
 function AddQuizQuestion() {
-  const [cats, setCats] = useState([]);
+  const baseUrl = "http://127.0.0.1:8000/api";
+  const choices = useRef(null);
+  const add = useRef(null);
+  const del = useRef(null);
+  const btns = useRef(null);
   const [questionData, setquestionData] = useState({
     question: "",
     type:"MCQ",
+    points:"",
+    choices:[],
   });
+  const [elements, setElements] = useState([]);
 
   const handleChange = (event) => {
     setquestionData({
       ...questionData,
       [event.target.name]: event.target.value,
     });
-    if(event.target.name === "type") {
-      console.log(event.target)
-    }
+    // console.log(event.target.name);
+    switch(event.target.name) {
+      case "type":
+        const hidden = choices.current;
+        const buttons = btns.current;
+        buttons.style.display = hidden.style.display = event.target.value === "MCQ" ? 'block' : 'none';
+        break;
+
+      case "ans":
+        switch(event.target.id) {
+          case "choice 1":
+            questionData.choices[0] = event.target.value;
+            break;
+          case "choice 2":
+            questionData.choices[1] = event.target.value;
+            break;
+          case "choice 3":
+            questionData.choices[2] = event.target.value;
+            break;
+          case "choice 4":
+            questionData.choices[3] = event.target.value;
+            break;
+          case "choice 5":
+            questionData.choices[4] = event.target.value;
+            break;
+        }
+        // console.log(event.target.id);
+        // questionData.choices.push(event.target.value);
+        console.log(questionData.choices);
+    };
   };
+
+  let counter = 2;
+  const addChoice = (e) => {
+    e.preventDefault();
+    counter+=1;
+    console.log(counter);
+
+    const div = document.createElement('div');
+    div.id = `choice-div-${counter}`;
+    div.innerHTML = `
+    <label for="title" class="form-label">
+      Ans ${counter}
+    </label>
+    <input
+      type="text"
+      name="ans"
+      id="choice ${counter}"
+      class="form-control mb-3"
+      onChange="handleChange()"
+    />
+    `;
+    const targetNode = document.getElementById('choices');
+    // ReactDOM.render(inputJSX, targetNode);
+    // console.log(targetNode);
+    targetNode.appendChild(div);
+  };
+
+  const delChoice = (e) => {
+    e.preventDefault();
+    const choice = document.getElementById(`choice-div-${counter}`);
+    choice.parentNode.removeChild(choice);
+    counter--;
+    console.log(counter);
+  }
 
   const { quiz_id } = useParams();
 
-  const formSubmit = () => {
-    const _formData = new FormData();
-    _formData.append("exam", quiz_id);
-    _formData.append("question", questionData.question);
-    _formData.append("type", questionData.type);
-
-    console.log(quiz_id)
-    console.log(typeof(quiz_id))
+  const formSubmit = (e) => {
+    e.preventDefault();
+    console.log(questionData);
     try {
-    console.log(questionData)
-    axios.post(`${baseUrl}/add-question/`, {
-          exam: quiz_id,
-          question: questionData.question,
-          points: questionData.points,
-          type: questionData.type,
-        }, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => {
+      axios.post(`${baseUrl}/add-question/`, {
+        question: questionData.question,
+        exam: quiz_id,
+        type: questionData.type,
+        points: questionData.points,
+        choices:questionData.choices,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        }, }).then((res) => {
           if (res.status == 200 || res.status === 201) {
             Swal.fire({
               title: "Data has been added",
@@ -54,15 +116,13 @@ function AddQuizQuestion() {
               timerProgressBar: true,
               showConfirmButton: false,
             });
-            // window.location.reload();
           }
         });
     } catch (error) {
       console.log(error);
     }
-    console.log(_formData)
   };
-
+  
   return (
     <div className="container mt-4">
       <div className="row">
@@ -141,53 +201,47 @@ function AddQuizQuestion() {
                   <option key='choice 2' value='Classical Question' name="Classical Question" onClick={handleChange}>Classical Question</option>
                   </select>
                 </div>
-                {console.log("")}
-                <div className="mb-3" id="choices">
-                  <label htmlFor="title" className="form-label">
-                    Ans 1
-                  </label>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    name="ans1"
-                    id="title"
-                    className="form-control mb-3"
-                  />
 
-                  <label htmlFor="title" className="form-label">
-                    Ans 2
-                  </label>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    name="ans2"
-                    id="title"
-                    className="form-control mb-3"
-                  />
+                <div className="mb-3" ref={choices} id="choices">
+                  <div id="choice-div-1">
+                    <label htmlFor="title" className="form-label" >
+                      Ans 1
+                    </label>
+                    <input
+                      type="text"
+                      onChange={handleChange}
+                      name="ans"
+                      id="choice 1"
+                      className="form-control mb-3"
+                    />
+                  </div>
 
-                  <label htmlFor="title" className="form-label">
-                    Ans 3
-                  </label>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    name="ans3"
-                    id="title"
-                    className="form-control mb-3"
-                  />
-
-                  <label htmlFor="title" className="form-label">
-                    Ans 4
-                  </label>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    name="ans4"
-                    id="title"
-                    className="form-control mb-3"
-                  />
+                  <div id="choice-div-2">
+                    <label htmlFor="title" className="form-label">
+                      Ans 2
+                    </label>
+                    <input
+                      type="text"
+                      onChange={handleChange}
+                      name="ans"
+                      id="choice 2"
+                      className="form-control mb-3"
+                    />
+                  </div>
                 </div>
 
+                <div id="btns" ref={btns}>
+                  <button
+                    className="btn btn-secondary mb-3 me-3"
+                    ref={add}
+                    onClick={addChoice}
+                  >+</button>
+                  <button
+                    className="btn btn-secondary mb-3 me-3"
+                    ref={del}
+                    onClick={delChoice}
+                  >-</button>
+                </div>
                 {/* <div className="mb-3">
                   <label for="title" className="form-label">
                     Right Answer
