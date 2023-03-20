@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import TeacherSidebar from "./TeacherSidebar";
-import { useState, useRef, ReactDOM } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -15,16 +15,18 @@ function AddQuizQuestion() {
     question: "",
     type:"MCQ",
     points:"",
-    choices:[],
+    choices:{},
   });
-  const [elements, setElements] = useState([]);
+  const [counter, setCounter] = useState(3);
 
   const handleChange = (event) => {
-    setquestionData({
-      ...questionData,
-      [event.target.name]: event.target.value,
-    });
-    // console.log(event.target.name);
+    if (event.target.name !== "ans") {
+      setquestionData({
+        ...questionData,
+        [event.target.name]: event.target.value,
+      });
+    }
+
     switch(event.target.name) {
       case "type":
         const hidden = choices.current;
@@ -35,78 +37,89 @@ function AddQuizQuestion() {
       case "ans":
         switch(event.target.id) {
           case "choice 1":
-            questionData.choices[0] = event.target.value;
+            console.log(questionData)
+            questionData.choices['choice 1'] = event.target.value;
+            // questionData.choices[0] = event.target.value;
             break;
           case "choice 2":
-            questionData.choices[1] = event.target.value;
+            questionData.choices['choice 2'] = event.target.value;
+            // questionData.choices[1] = event.target.value;
             break;
           case "choice 3":
-            questionData.choices[2] = event.target.value;
+            questionData.choices['choice 3'] = event.target.value;
+            // questionData.choices[2] = event.target.value;
             break;
           case "choice 4":
-            questionData.choices[3] = event.target.value;
+            questionData.choices['choice 4'] = event.target.value;
+            // questionData.choices[3] = event.target.value;
             break;
           case "choice 5":
-            questionData.choices[4] = event.target.value;
+            questionData.choices['choice 5'] = event.target.value;
+            // questionData.choices[4] = event.target.value;
             break;
+          // default:
+          //   questionData.choices.push(event.target.value);
         }
-        // console.log(event.target.id);
-        // questionData.choices.push(event.target.value);
-        console.log(questionData.choices);
+        // console.log(questionData.choices);
     };
   };
 
-  let counter = 2;
   const addChoice = (e) => {
     e.preventDefault();
-    counter+=1;
-    console.log(counter);
+    setCounter(counter => counter + 1);
+    // questionData.choices.push("");
 
     const div = document.createElement('div');
+    const input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('name', 'ans');
+    input.setAttribute('id', `choice ${counter}`);
+    input.setAttribute('class', 'form-control mb-3');
+    input.addEventListener('change', handleChange);
+
     div.id = `choice-div-${counter}`;
     div.innerHTML = `
     <label for="title" class="form-label">
       Ans ${counter}
     </label>
-    <input
-      type="text"
-      name="ans"
-      id="choice ${counter}"
-      class="form-control mb-3"
-      onChange="handleChange()"
-    />
     `;
+    div.appendChild(input);
     const targetNode = document.getElementById('choices');
-    // ReactDOM.render(inputJSX, targetNode);
-    // console.log(targetNode);
     targetNode.appendChild(div);
   };
 
   const delChoice = (e) => {
     e.preventDefault();
-    const choice = document.getElementById(`choice-div-${counter}`);
+    setCounter(counter => counter - 1);
+    const choice = document.getElementById(`choice-div-${counter-1}`);
     choice.parentNode.removeChild(choice);
-    counter--;
-    console.log(counter);
+    // if (questionData.choices.has(`choice ${counter}`)) {
+    //   questionData.choices.delete(`choice ${counter}`)
+    // };
+    // questionData.choices.pop();
+    delete questionData.choices[`choice ${counter-1}`]
+    console.log(questionData.choices);
   }
 
   const { quiz_id } = useParams();
 
   const formSubmit = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("question", questionData.question);
+    formData.append("exam", quiz_id);
+    formData.append("type", questionData.type);
+    formData.append("points", questionData.points);
+    if (questionData.type === "MCQ") {formData.append("answers", questionData.choices)};
     console.log(questionData);
     try {
-      axios.post(`${baseUrl}/add-question/`, {
-        question: questionData.question,
-        exam: quiz_id,
-        type: questionData.type,
-        points: questionData.points,
-        choices:questionData.choices,
-      }, {
+      axios.post(`${baseUrl}/add-question/`, formData, {
         headers: {
           "Content-Type": "application/json",
         }, }).then((res) => {
-          if (res.status == 200 || res.status === 201) {
+          // const added_q_id = res.data.id;
+          if (res.status === 200 || res.status === 201) {
             Swal.fire({
               title: "Data has been added",
               icon: "success",
@@ -119,8 +132,17 @@ function AddQuizQuestion() {
           }
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
+
+    // try {
+    //   for (let choice in questionData.choices) {
+    //     axios.post(`${baseUrl}/answer/`, {
+    //       "text":choice,
+    //       "correct":questio
+    //     })
+    //   }
+    // }
   };
   
   return (

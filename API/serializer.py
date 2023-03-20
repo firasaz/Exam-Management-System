@@ -18,7 +18,7 @@ class TeacherNameSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = "__all__"
+        fields = ["text","correct","question"]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -31,7 +31,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AddQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ("question", "exam", "type", "points", "created", "answers")
+        fields = ("id","question", "exam", "type", "points", "created")
 
 
 class ExamTeacherSerializer(serializers.ModelSerializer):

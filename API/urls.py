@@ -78,6 +78,7 @@ from exams.views import (
 app_name = 'API'
 
 urlpatterns = [
+    path('answer/', getAnswerData),
     # # chairman
     # path('chairman/', ChairmanList.as_view()),
     # path('chairman/<int:pk>/', ChairmanDetail.as_view()),
