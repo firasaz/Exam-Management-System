@@ -9,22 +9,22 @@ function ProfileSetting() {
     email: "",
     username: "",
 
-    profile_img: "",
-    p_img: "",
+    // profile_img: "",
+    // p_img: "",
   });
   const studentId = localStorage.getItem("studentId");
   // Fetch categories when page load
   useEffect(() => {
     // Fetch current teacher data
     try {
-      axios.get(baseUrl + "/student/" + studentId).then((res) => {
+      axios.get(`${baseUrl}/student/${studentId}/`).then((res) => {
         setstudentData({
           full_name: res.data.full_name,
           email: res.data.email,
           username: res.data.username,
-          profile_img: res.data.profile_img,
-          p_img: "",
-          login_via_otp: res.data.login_via_otp,
+          // profile_img: res.data.profile_img,
+          // p_img: "",
+          // login_via_otp: res.data.login_via_otp,
         });
       });
     } catch (error) {
@@ -50,33 +50,34 @@ function ProfileSetting() {
 
   // Submit Form
   const submitForm = () => {
+    console.log(studentData);
     const studentFormData = new FormData();
     studentFormData.append("full_name", studentData.full_name);
     studentFormData.append("email", studentData.email);
     studentFormData.append("username", studentData.username);
 
-    if (studentData.p_img !== "") {
-      studentFormData.append(
-        "profile_img",
-        studentData.p_img,
-        studentData.p_img.name
-      );
-    }
+    // if (studentData.p_img !== "") {
+    //   studentFormData.append(
+    //     "profile_img",
+    //     studentData.p_img,
+    //     studentData.p_img.name
+    //   );
+    // }
 
     try {
       axios
-        .put(baseUrl + "/student/" + studentId + "/", studentFormData, {
+        .put(`${baseUrl}/student/${studentId}/`, studentFormData, {
           headers: {
-            "content-type": "multipart/form-data",
+            "content-type": "application/json",
           },
         })
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 201) {
             Swal.fire({
               title: "Data has been updated",
               icon: "success",
               toast: true,
-              timer: 3000,
+              timer: 2000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,

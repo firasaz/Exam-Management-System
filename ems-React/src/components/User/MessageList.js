@@ -8,7 +8,7 @@ function MessageList(props) {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         setmsgData(res.data);
         });
     } catch (error) {
@@ -19,7 +19,7 @@ function MessageList(props) {
   const fetchMsgs = () => {
     try {
       axios.get(`${baseUrl}/get-messages/${props.teacher_id}/${props.student_id}/`).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         setmsgData(res.data);
         const objDiv = document.getElementById("msgList");
         objDiv.scrollTop = objDiv.scrollHeight;

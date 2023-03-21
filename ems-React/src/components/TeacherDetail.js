@@ -11,7 +11,6 @@ function TeacherDetail() {
   useEffect(() => {
     try {
       axios.get(baseUrl + "/teacher/" + teacher_id).then((res) => {
-        console.log(res);
         setteacherData(res.data);
         setcourseData(res.data.teacher_courses);
       });

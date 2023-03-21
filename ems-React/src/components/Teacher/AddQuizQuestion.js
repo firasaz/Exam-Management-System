@@ -1,6 +1,6 @@
 import { Form, Link } from "react-router-dom";
 import TeacherSidebar from "./TeacherSidebar";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -17,8 +17,7 @@ function AddQuizQuestion() {
     points:"",
     choices:[],
   });
-  const [counter, setCounter] = useState(3);
-  const [added_q_id, setAdded_q_id] = useState(1);
+  const [counter, setCounter] = useState(3);  
 
   const handleChange = (event) => {
     if (event.target.name !== "ans") {
@@ -34,38 +33,30 @@ function AddQuizQuestion() {
         const buttons = btns.current;
         buttons.style.display = hidden.style.display = event.target.value === "MCQ" ? 'block' : 'none';
         break;
-        
+
       case "check":
         console.log(event.target.checked);
+        break;
 
       case "ans":
         console.log(questionData.choices)
         switch(event.target.id) {
           case "choice 1":
-            // questionData.choices['choice 1'] = event.target.value;
             questionData.choices[0] = event.target.value;
-            console.log(questionData.choices);
             break;
           case "choice 2":
-            // questionData.choices['choice 2'] = event.target.value;
             questionData.choices[1] = event.target.value;
             break;
           case "choice 3":
-            // questionData.choices['choice 3'] = event.target.value;
             questionData.choices[2] = event.target.value;
             break;
           case "choice 4":
-            // questionData.choices['choice 4'] = event.target.value;
             questionData.choices[3] = event.target.value;
             break;
           case "choice 5":
-            // questionData.choices['choice 5'] = event.target.value;
             questionData.choices[4] = event.target.value;
             break;
-          // default:
-          //   questionData.choices.push(event.target.value);
         }
-        // console.log(questionData.choices);
     };
   };
 
@@ -83,13 +74,6 @@ function AddQuizQuestion() {
     input.setAttribute('class', 'form-control');
     input.addEventListener('change', handleChange);
 
-    // const check = document.createElement('input');
-    // check.type = "checkbox";
-    // check.id = `correctAnswer-${counter}`;
-    // check.name = "check";
-    // check.setAttribute('class','form-check-input');
-    // check.addEventListener('click', handleChange);
-
     div.id = `choice-div-${counter}`;
     div.className = "mb-3";
     div.innerHTML = `
@@ -98,11 +82,6 @@ function AddQuizQuestion() {
     </label>
     `;
     div.appendChild(input);
-    // div.appendChild(check);
-    // div.innerHTML+=`
-    // <label class="form-check-label" for="correctAnswer-${counter}">
-    // Correct
-    // </label>`;
     const targetNode = document.getElementById('choices');
     targetNode.appendChild(div);
   };
@@ -112,49 +91,54 @@ function AddQuizQuestion() {
     setCounter(counter => counter - 1);
     const choice = document.getElementById(`choice-div-${counter-1}`);
     choice.parentNode.removeChild(choice);
-    // if (questionData.choices.has(`choice ${counter}`)) {
-    //   questionData.choices.delete(`choice ${counter}`)
-    // };
     // delete questionData.choices[`choice ${counter-1}`]
     questionData.choices.pop();
     console.log(questionData.choices);
   }
 
-  const choicesCreate = (e) => {
-    // e.preventDefault();
-
-    try {
-      for (let choice in questionData.choices) {
+  const choicesCreate = (q_id) => {
+    for (let choice in questionData.choices) {
         const _formData = new FormData();
         _formData.append("text", questionData.choices[choice]);
-        _formData.append("question", added_q_id);
-        if (choice === 0) {
-          _formData.append("correct", "true");
-        } else {_formData.append("correct", "false")}
-        
-        axios.post(`${baseUrl}/answer/`, _formData, {
+        _formData.append("question", q_id);
+        choice === '0' ? _formData.append("correct", "true") :_formData.append("correct", "false")
+
+        axios.post(`${baseUrl}/answer/`, _formData, 
+        {
           headers: {
             "Content-Type": "application/json",
           }
         }).then((res) => {
           if (res.status === 201) {
-            Swal.fire({
+            Swal.fire
+            ({
               title: "Answer has been created",
               icon: "success",
               toast: true,
-              timer: 2000,
+              timer: 1000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
-            });
+            })
+          };
+        }).catch((error) => {
+          if(error.response) {
+            Swal.fire({
+              title:"Oops! Something wrong happened.",
+              icon: "error",
+              toast: false,
+              timer: 1500,
+              position: "top-right",
+              timerProgressBar: false,
+              showCloseButton: true,
+            })
           }
         })
-      };
-    } catch(error) {};
+      }
   }
   const { quiz_id } = useParams();
 
-  const formSubmit = (e) => {
+  const questionCreate = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -164,31 +148,38 @@ function AddQuizQuestion() {
     formData.append("points", questionData.points);
     if (questionData.type === "MCQ") {formData.append("answers", questionData.choices)};
     console.log(questionData);
-    try {
-      axios.post(`${baseUrl}/add-question/`, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        }, }).then((res) => {
-          setAdded_q_id(res.data.id);
-          if (res.status === 200 || res.status === 201) {
-            Swal.fire({
-              title: "Question has been created",
-              icon: "success",
-              toast: true,
-              timer: 2000,
-              position: "top-right",
-              timerProgressBar: true,
-              showConfirmButton: false,
-            });
-          }
-        });
-    } catch (error) {
-      // console.log(error);
-    }
+    const res = await axios.post(`${baseUrl}/add-question/`, formData, 
+    {
+      headers: {
+        "Content-Type": "application/json",
+      }, 
+    }).catch((error) => {
+        if(error.response) {
+          Swal.fire
+          ({
+            title:"Oops! Something wrong happened.",
+            icon: "error",
+            toast: true,
+            timer: 1500,
+            position: "top-right",
+            timerProgressBar: false,
+            showConfirmButton: false,
+          })
+        };
+      })
+      setTimeout(function() {choicesCreate(res.data.id)},2100);
 
-    choicesCreate();
-    // setTimeout(choicesCreate(),2500);
-    
+      if (res.status === 201) {
+        Swal.fire({
+          title: "Question has been created",
+          icon: "success",
+          toast: true,
+          timer: 2000,
+          position: "top-right",
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      }
   };
   
   return (
@@ -315,7 +306,7 @@ function AddQuizQuestion() {
 
                 <button
                   type="button"
-                  onClick={formSubmit}
+                  onClick={questionCreate}
                   className="btn btn-primary"
                 >
                   Submit

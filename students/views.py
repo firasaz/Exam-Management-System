@@ -46,11 +46,29 @@ def student_login(request):
     else:
         return JsonResponse({'bool': False})
 
+@api_view(['GET','PUT'])
+def student_detail_view(request, pk):
+    try:
+        student = Student.objects.get(pk=pk)
+    except Student.DoesNotExist:
+        student = None
+    
+    if request.method == 'GET':
+        serializer = StudentDetailSerializer(student)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        print(request.data)
+        serializer = StudentDetailSerializer(student, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 # 3
-class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentDetailSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+# class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Student.objects.all()
+#     serializer_class = StudentDetailSerializer
+#     # permission_classes = [permissions.IsAuthenticated]
 
 # 4
 class StudentDashboard(generics.RetrieveAPIView):

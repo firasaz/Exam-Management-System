@@ -11,7 +11,7 @@ function MyTeachers() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-my-teachers/${studentId}/`).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setteacherData(res.data);
       });
     } catch (error) {
@@ -54,7 +54,7 @@ function MyTeachers() {
           _formData
         )
         .then((res) => {
-          if (res.data.bool == true) {
+          if (res.data.bool === true) {
             setmsgData({
               msg_text: "",
             });

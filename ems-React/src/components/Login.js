@@ -30,8 +30,9 @@ function Login() {
                 localStorage.setItem("teacherLoginStatus", true);
                 window.location.href = "/teacher-dashboard";
             } else {
-                localStorage.setItem("studentName", res.data.name)
+                localStorage.setItem("studentName", res.data.name);
                 localStorage.setItem("studentId", res.data.id);
+                localStorage.setItem("studentLoginStatus", true);
                 window.location.href = "/user-dashboard";
             }
             }

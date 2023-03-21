@@ -168,13 +168,13 @@ class StudentCourseEnrollSerializer(serializers.ModelSerializer):
 
 
 class StudentDetailSerializer(serializers.ModelSerializer):
-    enrolled_courses = CourseSerializer(many=True)
-    get_teachers = TeacherSerializer(many=True)
+    # enrolled_courses = CourseSerializer(many=True)
+    # get_teachers = TeacherSerializer(many=True)
 
     class Meta:
         model = Student
         # fields = '__all__'
-        fields = ['id', 'full_name', 'email', 'username', 'password', 'enrolled_courses', 'get_teachers']
+        fields = ['id', 'full_name', 'email', 'username',]
 
 class StudentCourseEnrollSerializer(serializers.ModelSerializer):
     class Meta:

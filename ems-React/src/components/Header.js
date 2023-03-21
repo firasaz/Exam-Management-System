@@ -117,7 +117,7 @@ function Header() {
                   </Link>
                   <ul className="dropdown-menu">
                     <li>
-                      <Link className="dropdown-item" to="/teacher-dashboard">
+                      <Link className="dropdown-item" to="/user-dashboard">
                         Dashboard
                       </Link>
                       <Link className="dropdown-item" to="/teacher-logout">

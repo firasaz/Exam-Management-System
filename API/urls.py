@@ -66,9 +66,9 @@ from teachers.views import (
     CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView,
 )
 from students.views import (
-    StudentList, student_login, StudentDetail, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
+    StudentList, student_login, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
     EnrolledStudentList, StudentTeacherList, MessageList, NotificationList, save_teacher_student_msg,
-    save_teacher_student_group_msg_from_student, fetch_enroll_status
+    save_teacher_student_group_msg_from_student, fetch_enroll_status, student_detail_view#, StudentDetail
 )
 from exams.views import (
     ExamDetailView, ExamsListView, AttemptExamList, 
@@ -118,7 +118,7 @@ urlpatterns = [
     path('teacher-change-password/<int:teacher_id>/', teacher_change_password),
     # path('user-forgot-password/', user_forgot_password),
     # path('user-change-password/<int:student_id>/', user_change_password),
-    path('student/<int:pk>/', StudentDetail.as_view()),
+    path('student/<int:pk>/', student_detail_view),
     path('student/dashboard/<int:pk>/', StudentDashboard.as_view()),
     path('student/change-password/<int:student_id>/',student_change_password),
     path('user-login/', student_login),
