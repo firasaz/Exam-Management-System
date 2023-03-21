@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import TeacherSidebar from "./TeacherSidebar";
 import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -15,9 +15,10 @@ function AddQuizQuestion() {
     question: "",
     type:"MCQ",
     points:"",
-    choices:{},
+    choices:[],
   });
   const [counter, setCounter] = useState(3);
+  const [added_q_id, setAdded_q_id] = useState(1);
 
   const handleChange = (event) => {
     if (event.target.name !== "ans") {
@@ -33,29 +34,33 @@ function AddQuizQuestion() {
         const buttons = btns.current;
         buttons.style.display = hidden.style.display = event.target.value === "MCQ" ? 'block' : 'none';
         break;
+        
+      case "check":
+        console.log(event.target.checked);
 
       case "ans":
+        console.log(questionData.choices)
         switch(event.target.id) {
           case "choice 1":
-            console.log(questionData)
-            questionData.choices['choice 1'] = event.target.value;
-            // questionData.choices[0] = event.target.value;
+            // questionData.choices['choice 1'] = event.target.value;
+            questionData.choices[0] = event.target.value;
+            console.log(questionData.choices);
             break;
           case "choice 2":
-            questionData.choices['choice 2'] = event.target.value;
-            // questionData.choices[1] = event.target.value;
+            // questionData.choices['choice 2'] = event.target.value;
+            questionData.choices[1] = event.target.value;
             break;
           case "choice 3":
-            questionData.choices['choice 3'] = event.target.value;
-            // questionData.choices[2] = event.target.value;
+            // questionData.choices['choice 3'] = event.target.value;
+            questionData.choices[2] = event.target.value;
             break;
           case "choice 4":
-            questionData.choices['choice 4'] = event.target.value;
-            // questionData.choices[3] = event.target.value;
+            // questionData.choices['choice 4'] = event.target.value;
+            questionData.choices[3] = event.target.value;
             break;
           case "choice 5":
-            questionData.choices['choice 5'] = event.target.value;
-            // questionData.choices[4] = event.target.value;
+            // questionData.choices['choice 5'] = event.target.value;
+            questionData.choices[4] = event.target.value;
             break;
           // default:
           //   questionData.choices.push(event.target.value);
@@ -67,23 +72,37 @@ function AddQuizQuestion() {
   const addChoice = (e) => {
     e.preventDefault();
     setCounter(counter => counter + 1);
-    // questionData.choices.push("");
+    questionData.choices.push("");
+    console.log(questionData.choices);
 
     const div = document.createElement('div');
     const input = document.createElement('input');
     input.setAttribute('type', 'text');
     input.setAttribute('name', 'ans');
     input.setAttribute('id', `choice ${counter}`);
-    input.setAttribute('class', 'form-control mb-3');
+    input.setAttribute('class', 'form-control');
     input.addEventListener('change', handleChange);
 
+    // const check = document.createElement('input');
+    // check.type = "checkbox";
+    // check.id = `correctAnswer-${counter}`;
+    // check.name = "check";
+    // check.setAttribute('class','form-check-input');
+    // check.addEventListener('click', handleChange);
+
     div.id = `choice-div-${counter}`;
+    div.className = "mb-3";
     div.innerHTML = `
     <label for="title" class="form-label">
       Ans ${counter}
     </label>
     `;
     div.appendChild(input);
+    // div.appendChild(check);
+    // div.innerHTML+=`
+    // <label class="form-check-label" for="correctAnswer-${counter}">
+    // Correct
+    // </label>`;
     const targetNode = document.getElementById('choices');
     targetNode.appendChild(div);
   };
@@ -96,11 +115,43 @@ function AddQuizQuestion() {
     // if (questionData.choices.has(`choice ${counter}`)) {
     //   questionData.choices.delete(`choice ${counter}`)
     // };
-    // questionData.choices.pop();
-    delete questionData.choices[`choice ${counter-1}`]
+    // delete questionData.choices[`choice ${counter-1}`]
+    questionData.choices.pop();
     console.log(questionData.choices);
   }
 
+  const choicesCreate = (e) => {
+    // e.preventDefault();
+
+    try {
+      for (let choice in questionData.choices) {
+        const _formData = new FormData();
+        _formData.append("text", questionData.choices[choice]);
+        _formData.append("question", added_q_id);
+        if (choice === 0) {
+          _formData.append("correct", "true");
+        } else {_formData.append("correct", "false")}
+        
+        axios.post(`${baseUrl}/answer/`, _formData, {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }).then((res) => {
+          if (res.status === 201) {
+            Swal.fire({
+              title: "Answer has been created",
+              icon: "success",
+              toast: true,
+              timer: 2000,
+              position: "top-right",
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+          }
+        })
+      };
+    } catch(error) {};
+  }
   const { quiz_id } = useParams();
 
   const formSubmit = (e) => {
@@ -118,13 +169,13 @@ function AddQuizQuestion() {
         headers: {
           "Content-Type": "application/json",
         }, }).then((res) => {
-          // const added_q_id = res.data.id;
+          setAdded_q_id(res.data.id);
           if (res.status === 200 || res.status === 201) {
             Swal.fire({
-              title: "Data has been added",
+              title: "Question has been created",
               icon: "success",
               toast: true,
-              timer: 3000,
+              timer: 2000,
               position: "top-right",
               timerProgressBar: true,
               showConfirmButton: false,
@@ -135,14 +186,9 @@ function AddQuizQuestion() {
       // console.log(error);
     }
 
-    // try {
-    //   for (let choice in questionData.choices) {
-    //     axios.post(`${baseUrl}/answer/`, {
-    //       "text":choice,
-    //       "correct":questio
-    //     })
-    //   }
-    // }
+    choicesCreate();
+    // setTimeout(choicesCreate(),2500);
+    
   };
   
   return (
@@ -190,25 +236,6 @@ function AddQuizQuestion() {
                   />
                 </div>
 
-                {/* <div className="mb-3">
-                  <label for="title" className="form-label">
-                    Exam
-                  </label>
-                  <select
-                    name="exam"
-                    onClick={handleChange}
-                    class="form-control"
-                  >
-                    {cats.map((exam, index) => {
-                      return (
-                        <option key={index} value={exam?.id}>
-                          {exam?.name}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div> */}
-
                 <div className="mb-3">
                   <label htmlFor="title" className="form-label">
                     Type
@@ -225,7 +252,7 @@ function AddQuizQuestion() {
                 </div>
 
                 <div className="mb-3" ref={choices} id="choices">
-                  <div id="choice-div-1">
+                  <div id="choice-div-1" className="mb-3">
                     <label htmlFor="title" className="form-label" >
                       Ans 1
                     </label>
@@ -234,11 +261,16 @@ function AddQuizQuestion() {
                       onChange={handleChange}
                       name="ans"
                       id="choice 1"
-                      className="form-control mb-3"
+                      placeholder="Type correct answer here"
+                      className="form-control"
                     />
+                    {/* <input className="form-check-input" type="checkbox" value="" id="correctAnswer-1" name="check" onClick={handleChange} />
+                    <label className="form-check-label ms-1" htmlFor="correctAnswer-1">
+                      Correct
+                    </label> */}
                   </div>
 
-                  <div id="choice-div-2">
+                  <div id="choice-div-2" className="mb-3">
                     <label htmlFor="title" className="form-label">
                       Ans 2
                     </label>
@@ -247,8 +279,12 @@ function AddQuizQuestion() {
                       onChange={handleChange}
                       name="ans"
                       id="choice 2"
-                      className="form-control mb-3"
+                      className="form-control"
                     />
+                    {/* <input className="form-check-input" type="checkbox" value="" id="correctAnswer-2" name="check" onClick={handleChange} />
+                    <label className="form-check-label ms-1" htmlFor="correctAnswer-2">
+                      Correct
+                    </label> */}
                   </div>
                 </div>
 

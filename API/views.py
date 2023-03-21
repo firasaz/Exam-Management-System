@@ -10,11 +10,24 @@ from questions.models import Question, Answer
 
 @api_view(["GET","POST"])
 def getAnswerData(request):
-    answers = Answer.objects.all()
-    print(answers)
-    print(type(answers))
-    serializer = AnswerSerializer(answers, many = True)
-    return Response(serializer.data)
+    try:
+        answers = Answer.objects.all()
+    except Answer.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    # print(answers)
+    # print(type(answers))
+    if request.method == "GET":
+        serializer = AnswerSerializer(answers, many = True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        print(request.data)
+        serializer = AnswerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["GET","POST"])
 def getQuestionsData(request):
@@ -55,7 +68,7 @@ def add_question(request):
     elif request.method == "POST":
         # ans=request.data.pop('answers')
         # print(ans)
-        print(request.data['answers'])
+        # print(request.data['answers'])
         serializer=AddQuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
