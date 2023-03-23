@@ -194,7 +194,7 @@ function MyTeachers() {
                 </thead>
                 <tbody>
                   {teacherData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         <Link to={`/teacher-detail/` + row?.id}>
                           {row?.full_name}

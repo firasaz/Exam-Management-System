@@ -195,6 +195,7 @@ def SubmitExamView(request, exam_id):
     body = json.loads(body_unicode) #this returns a dictionary of question and the student's answer
     body_keys = body.keys()
     print(body_keys)
+    print(body)
 
     # print(len(request.POST))
     student_id= int(body["student"])

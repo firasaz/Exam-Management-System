@@ -10,7 +10,8 @@ function TeacherDetail() {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(baseUrl + "/teacher/" + teacher_id).then((res) => {
+      axios.get(`${baseUrl}/teacher/${teacher_id}/`).then((res) => {
+        console.log(res.data);
         setteacherData(res.data);
         setcourseData(res.data.teacher_courses);
       });
@@ -24,21 +25,21 @@ function TeacherDetail() {
       <div className="row">
         <div className="col-4">
           <img
-            src="/logo512.png"
+            src={teacherData?.profile_img}
             className="img-thumbnail"
             alt="Teacher Image"
           />
         </div>
         <div className="col-8">
-          <h3>{teacherData.full_name}</h3>
-          <p>{teacherData.detail}</p>
+          <h3>{teacherData?.full_name}</h3>
+          <p>{teacherData?.qualification}</p>
         </div>
       </div>
       {/* Course Videos */}
       <div className="card mt-4">
         <h5 className="card-header">Course List</h5>
         <div className="list-group list-group-flush">
-          {courseData.map((course, index) => (
+          {courseData?.map((course, index) => (
             <Link
               to={`/detail/${course.id}`}
               class="list-group-item list-group-item-action"

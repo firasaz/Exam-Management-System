@@ -25,7 +25,7 @@ function Timer() {
   }, [time]);
 
   useEffect(() => {
-    setTime({ minutes: 30, seconds: 0 });
+    setTime({ minutes: 1, seconds: 0 });
   }, []);
 
   return (

@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import TeacherProfile from "./Teacher/teacherprofile";
 import ChairProfile from "./chairman/chairprofile";
-import UserProfile from "./User/userprofile";
 
 function Header() {
   const chairLoginStatus = localStorage.getItem("chairLoginStatus");
@@ -9,6 +7,7 @@ function Header() {
   const studentLoginStatus = localStorage.getItem("studentLoginStatus");
   const teacherName = localStorage.getItem("teacherName");
   const studentName = localStorage.getItem("studentName");
+  const page = window.location.pathname; // using this variable doesn't really work
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,6 +27,14 @@ function Header() {
                 </Link>
                 <Link className="nav-item nav-link" to="/all-courses">
                   Courses
+                </Link>
+              </>
+            )}
+
+            {(teacherLoginStatus !== "true" && studentLoginStatus !== "true" && page !== "/login") && (
+              <>
+                <Link className="nav-item nav-link" to="/login">
+                  Login
                 </Link>
               </>
             )}
@@ -120,7 +127,7 @@ function Header() {
                       <Link className="dropdown-item" to="/user-dashboard">
                         Dashboard
                       </Link>
-                      <Link className="dropdown-item" to="/teacher-logout">
+                      <Link className="dropdown-item" to="/user-logout">
                         Logout
                       </Link>
                     </li>

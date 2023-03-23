@@ -39,7 +39,7 @@ function UserForgotChangePassword(){
     }
 
     const studentLoginStatus=localStorage.getItem('studentLoginStatus');
-    if(studentLoginStatus=='true'){
+    if(studentLoginStatus==='true'){
         window.location.href='/user-dashboard';
     }
 

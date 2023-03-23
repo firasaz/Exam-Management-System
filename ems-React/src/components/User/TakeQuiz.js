@@ -9,24 +9,19 @@ const baseUrl = "http://127.0.0.1:8000/api";
 
 function TakeQuiz() {
   const [questionData, setquestionData] = useState([]);
-  const [answerData, setanswerData] = useState([]);
   const { quiz_id } = useParams();
   const studentId = localStorage.getItem("studentId");
   const dataDict = {};
-  const [choices, setchoicesData] = useState([]);
-  // const choices = []
 
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
+        console.log(res.data);
         setquestionData(res.data);
       });
     } catch (error) {
       console.log(error);
     }
-    
-    // const choices = document.getElementsByClassName("ans")
-    setchoicesData([...document.getElementsByClassName("ans")])
     
   }, []);
 
@@ -37,10 +32,6 @@ const handleChange = (event) => {
   //   [event.target.id]: event.target.value, // set the id of each answer to the checked value of it
   dataDict[event.target.name] = event.target.value
 }
-  
-//   choices.push(event.target)
-//   // dataDict[event.target.id]=event.target
-// };
 
   const submitAnswer = (e) => {
     e.preventDefault();
@@ -48,18 +39,21 @@ const handleChange = (event) => {
     const dataDict = {}
     dataDict["student"] = studentId;
 
-    choices.forEach(element => {
+    const choices = document.getElementsByClassName('ans');
+    for(let i=0; i<choices.length; i++) {
+      const element = choices[i];
+
       if (element.checked) { // add the choice, which has the question and its corresponding value, from the form in the dictionary
         dataDict[element.name] = element.value
+        console.log("dataDict")
         console.log(dataDict)
       }
       else {
         if (!dataDict[element.name]) {
           dataDict[element.name] = null // add the unanswered question and give it a value of null
-          // console.log("element",element)
         }
       }
-    });
+    }
 
     try {
       axios.post(`${baseUrl}/answer-exam/${quiz_id}/`, dataDict, {
@@ -91,7 +85,7 @@ const handleChange = (event) => {
             <form method="POST">
               {questionData.map((row, index) => (
                 <>
-                  {console.log(questionData)}
+                  {/* {console.log(questionData)} */}
                     <div className="card" key={index}>
                       <h5 className="card-header">{row?.question}</h5>
                       <div className="card-body">

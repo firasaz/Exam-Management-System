@@ -11,7 +11,6 @@ function TeacherDashboard() {
     // Fetch Courses
     if (teacherLoginStatus) {
       axios.get(`${baseUrl}/teacher/dashboard/${teacherId}/`).then((res) => {
-        console.log(teacherLoginStatus);
         setdashbardData(res.data);
       });
     } else {

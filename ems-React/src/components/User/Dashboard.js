@@ -6,13 +6,17 @@ const baseUrl = "http://127.0.0.1:8000/api";
 function Dashboard() {
   const [dashboardData, setdashboardData] = useState([]);
   const studentId = localStorage.getItem("studentId");
+  const studentLoginStatus = localStorage.getItem("studentLoginStatus");
   useEffect(() => {
     // Fetch Courses
     try {
-      axios.get(`${baseUrl}/student/dashboard/${studentId}/`).then((res) => {
-        console.log(res);
-        setdashboardData(res.data);
-      });
+      if(studentLoginStatus) {
+        axios.get(`${baseUrl}/student/dashboard/${studentId}/`).then((res) => {
+          console.log(res);
+          setdashboardData(res.data);
+        });
+      } else {window.location.href="/login"}
+      
     } catch (error) {
       console.log(error);
     }

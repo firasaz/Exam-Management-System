@@ -42,7 +42,7 @@ function MessageList(props) {
           onClick={fetchMsgs}
           title="Refresh"
         >
-          <i class="bi bi-bootstrap-reboot"></i>
+          <i className="bi bi-bootstrap-reboot"></i>
         </span>
       </p>
       <div style={msgList} id="msgList">
@@ -50,14 +50,14 @@ function MessageList(props) {
           <div className="row mb-4">
             {row.msg_from !== "student" && (
               <div className="col-5">
-                <div class="alert alert-primary mb-1">{row.msg_text}</div>
+                <div className="alert alert-primary mb-1">{row.msg_text}</div>
                 <small className="text-muted">{row.msg_time}</small>
               </div>
             )}
 
             {row.msg_from === "student" && (
               <div className="col-5 offset-7">
-                <div class="alert alert-success mb-1">{row.msg_text}</div>
+                <div className="alert alert-success mb-1">{row.msg_text}</div>
                 <small className="text-muted">{row.msg_time}</small>
               </div>
             )}
