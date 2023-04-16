@@ -29,6 +29,7 @@ def getAnswerData(request, answer_id=None):
     elif request.method == "PUT":
         serializer = AnswerSerializer(answer_obj, data=request.data)
         if serializer.is_valid():
+            serializer.save()
             print(serializer.data)
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)
