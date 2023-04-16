@@ -5,7 +5,7 @@ from .models import Teacher, Course, CourseCategory
 # Register your models here.
 
 class TeacherAdminConfig(UserAdmin):
-    list_display = ('full_name','email','department','qualification','is_staff','is_superuser','is_active')
+    list_display = ('full_name','email','department','qualification','is_staff','is_active')
     list_filter = ('department','email','full_name','is_superuser','is_staff','is_active')
     search_fields = ('email','full_name','department','username')
     ordering = ('-start_date',)

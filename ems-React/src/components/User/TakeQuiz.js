@@ -69,6 +69,7 @@ const handleChange = (event) => {
     } catch(error) {
       console.log(error);
     }
+    window.location.href="/user-dashboard"
   };
 
   return (

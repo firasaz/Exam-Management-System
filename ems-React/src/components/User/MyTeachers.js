@@ -48,12 +48,8 @@ function MyTeachers() {
     _formData.append("msg_from", "student");
 
     try {
-      axios
-        .post(
-          `${baseUrl}/send-message/${teacher_id}/${studentId}/`,
-          _formData
-        )
-        .then((res) => {
+      axios.post(`${baseUrl}/send-message/${teacher_id}/${studentId}/`, _formData
+        ).then((res) => {
           if (res.data.bool === true) {
             setmsgData({
               msg_text: "",
@@ -86,12 +82,8 @@ function MyTeachers() {
     _formData.append("msg_from", "student");
 
     try {
-      axios
-        .post(
-          `${baseUrl}/send-group-message-from-student/${studentId}/`,
-          _formData
-        )
-        .then((res) => {
+      axios.post(`${baseUrl}/send-group-message-from-student/${studentId}/`, _formData
+        ).then((res) => {
           if (res.data.bool === true) {
             setgroupMsgData({
               msg_text: "",

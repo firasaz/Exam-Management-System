@@ -62,6 +62,7 @@ import ChairDashboard from "./chairman/dashboard";
 import ChairRegister from "./chairman/register";
 
 import Login from "./Login";
+import EditQuizQuestion from "./Teacher/EditQuizQuestion";
 
 function Main() {
   return (
@@ -97,6 +98,7 @@ function Main() {
         <Route path="/add-quiz" element={<AddQuiz />} />
         <Route path="/edit-quiz/:quiz_id" element={<EditQuiz />} />
         <Route path="/all-questions/:quiz_id" element={<QuizQuestions />} />
+        <Route path="/edit-question/:question_id" element={<EditQuizQuestion />} />
         <Route path="/add-quiz-question/:quiz_id" element={<AddQuizQuestion />} />
         <Route path="/assign-quiz/:course_id" element={<AssignQuiz />} />
         <Route path="/attempted-students/:quiz_id" element={<AttemptedStudents />} />

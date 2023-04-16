@@ -98,47 +98,47 @@ function AddQuizQuestion() {
 
   const choicesCreate = (q_id) => {
     for (let choice in questionData.choices) {
-        const _formData = new FormData();
-        _formData.append("text", questionData.choices[choice]);
-        _formData.append("question", q_id);
-        choice === '0' ? _formData.append("correct", "true") :_formData.append("correct", "false")
+      const _formData = new FormData();
+      _formData.append("text", questionData.choices[choice]);
+      _formData.append("question", q_id);
+      choice === '0' ? _formData.append("correct", "true") :_formData.append("correct", "false")
 
-        axios.post(`${baseUrl}/answer/`, _formData, 
-        {
-          headers: {
-            "Content-Type": "application/json",
-          }
-        }).then((res) => {
-          if (res.status === 201) {
-            Swal.fire
-            ({
-              title: "Answer has been created",
-              icon: "success",
-              toast: true,
-              timer: 1000,
-              position: "top-right",
-              timerProgressBar: true,
-              showConfirmButton: false,
-            })
-          };
-        }).catch((error) => {
-          if(error.response) {
-            Swal.fire({
-              title:"Oops! Something wrong happened.",
-              icon: "error",
-              toast: false,
-              timer: 1500,
-              position: "top-right",
-              timerProgressBar: false,
-              showCloseButton: true,
-            })
-          }
-        })
-      }
-  }
+      axios.post(`${baseUrl}/answer/`, _formData, 
+      {
+        headers: { "Content-Type": "application/json" }
+      }).then((res) => {
+        if (res.status === 201) {
+          Swal.fire
+          ({
+            title: "Answer has been created",
+            icon: "success",
+            toast: true,
+            timer: 1000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          })
+        }
+      }).catch((error) => {
+        if(error.response) {
+          Swal.fire({
+            title:"Oops! Something wrong happened.",
+            icon: "error",
+            toast: false,
+            timer: 1500,
+            position: "top-right",
+            timerProgressBar: false,
+            showCloseButton: true,
+          })
+        }
+      })
+    }
+  };
+
   const { quiz_id } = useParams();
+  localStorage.setItem("exam_id", quiz_id)
 
-  const questionCreate = async (e) => {
+  const questionCreate = async(e) => {
     e.preventDefault();
 
     const formData = new FormData();

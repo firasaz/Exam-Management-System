@@ -44,7 +44,7 @@ class ClassicalAnswer(models.Model):
     user = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="classical_answer_user",null=True)
 
     def __str__(self):
-        return f"Answer: {self.text}; Question: {self.question}; Student: {self.user}"
+        return f"Answer: {self.text} | Question: {self.question} | Student: {self.user}"
     
 
 
@@ -56,3 +56,7 @@ class ExamQuestionAnswers(models.Model):
     answer_mcq = models.CharField(max_length=100, null=True, blank=True)
     # answer_mcq = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
     answer_classical = models.ImageField(upload_to='static/images/answers_imgs', null=True, blank=True)
+    add_time = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'Student: {self.student} | Exam: {self.exam} | Question: {self.question} | Answer: {self.answer_mcq} |'

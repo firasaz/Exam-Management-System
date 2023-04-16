@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 import json
 # from rest_framework import RetrieveUpdateDestroyAPIView
 
-from API.serializer import ExamSerializer, QuestionSerializer, AttemptExamSerializer, CourseEditSerializer, ExamEditSerializer
+from API.serializer import ExamSerializer, QuestionSerializer, AttemptExamSerializer, CourseEditSerializer, ExamEditSerializer, StudentAnswers
 
 # def Exams_List_View(request):
 #     Exam=MCQ_Exam.objects.all()
@@ -103,13 +103,8 @@ def fetch_exam_attempt_status(request, exam_id, student_id):
     exam = Exam.objects.filter(id=exam_id).first()
     student = Student.objects.filter(id=student_id).first()
     # exam_questions = exam.get_questions()
-    attemptStatus = AttemptExam.objects.filter(student=student, exam=exam).count() # searches for a record for a certain student in a certain exam
-    # attemptStatus = AttemptExam.objects.filter(student=student, question__exam=exam).count()
-    # print(AttemptExam.objects.filter(student=student, question__exam=exam).query)
+    attemptStatus = ExamQuestionAnswers.objects.filter(student=student, exam=exam).count() # searches for a record for a certain student in a certain exam
     print(attemptStatus)
-    print()
-    print(AttemptExam.objects.filter(student=student, exam=exam).query)
-    print(AttemptExam.objects.filter(student=student, exam=exam))
     if attemptStatus > 0:
         return JsonResponse({'bool': True})
     else:
@@ -197,7 +192,6 @@ def SubmitExamView(request, exam_id):
     print(body_keys)
     print(body)
 
-    # print(len(request.POST))
     student_id= int(body["student"])
     # print(body)
     try:
@@ -233,7 +227,19 @@ def SubmitExamView(request, exam_id):
 
     return JsonResponse({"savage":"piris"})
 
+@api_view(['GET'])
+def getStudentAnswers(request,std_id):
+    try:
+        answers = ExamQuestionAnswers.objects.filter(student=std_id)
+    except ExamQuestionAnswers.DoesNotExist:
+        answers = None
+    if answers:
+        serializer = StudentAnswers(answers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_404_NOT_FOUND)
 
+# the views below work with the first mcq exam prototype which is 
+# not used in the project but the idea was used in our project
 
 # url: <id>/
 def examView(request,id):

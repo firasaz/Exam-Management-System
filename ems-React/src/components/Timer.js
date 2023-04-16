@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function Timer() {
   const [time, setTime] = useState({ minutes: 30, seconds: 0 });
-  const [intervalId, setIntervalId] = useState(null);
+  // const [intervalId, setIntervalId] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Timer() {
         }));
       }
     }, 1000);
-    setIntervalId(newIntervalId);
+    // setIntervalId(newIntervalId);
     return () => clearInterval(newIntervalId);
   }, [time]);
 

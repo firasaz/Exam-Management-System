@@ -59,7 +59,7 @@
 #     # path('fetch-enrolled-courses/<int:student_id>/', EnrolledStudentList.as_view()),
 # ]
 from django.urls import path
-from .views import getExamData, getQuestionsData, getAnswerData, addExamData, deleteQuestion, add_question
+from .views import getExamData, getQuestionsData, getAnswerData, addExamData, deleteQuestion, add_question, edit_question_view
 from teachers.views import (
     TeacherList, TeacherDetail, TeacherDashboard, TeacherCourseList, TeacherCourseDetail,
     teacher_students_view, teacher_login, teacher_change_password, TeacherView, TeacherExamList, TeacherCourseEdit, assign_exam,
@@ -72,13 +72,15 @@ from students.views import (
 )
 from exams.views import (
     ExamDetailView, ExamsListView, AttemptExamList, 
-    fetch_exam_assign_status, exam_edit, fetch_exam_attempt_status, exam_question_list, SubmitExamView
+    fetch_exam_assign_status, exam_edit, fetch_exam_attempt_status, exam_question_list, SubmitExamView, getStudentAnswers
 )
 
 app_name = 'API'
 
 urlpatterns = [
     path('answer/', getAnswerData),
+    path('answer/<int:answer_id>/', getAnswerData),
+    path('student-answers/<int:std_id>/', getStudentAnswers),
     # # chairman
     # path('chairman/', ChairmanList.as_view()),
     # path('chairman/<int:pk>/', ChairmanDetail.as_view()),
@@ -151,6 +153,7 @@ urlpatterns = [
     # path('exam-questions/<int:exam_id>/<int:question_id>/', exam_question_list),
     # path('quiz-assign-course/', CourseQuizList.as_view()), # i am using the below path instead
     path('add-question/', add_question),
+    path('add-question/<int:question_id>/', add_question),
     # path('quiz-questions/<int:quiz_id>/<int:limit>/',QuizQuestionList.as_view()),
     path('fetch-quiz-assign-status/<int:exam_id>/<int:course_id>/',fetch_exam_assign_status),
     path('fetch-assigned-quiz/<int:course_id>/', CourseExamList.as_view()),
@@ -174,4 +177,5 @@ urlpatterns = [
     path('send-group-message-from-student/<int:student_id>/', save_teacher_student_group_msg_from_student),
 
     path('fetch-my-teachers/<int:student_id>/', StudentTeacherList),
+    path('get-question/<int:question_id>/', edit_question_view, name='edit-question'),
 ]

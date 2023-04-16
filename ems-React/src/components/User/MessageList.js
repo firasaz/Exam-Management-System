@@ -47,7 +47,7 @@ function MessageList(props) {
       </p>
       <div style={msgList} id="msgList">
         {msgData.map((row, index) => (
-          <div className="row mb-4">
+          <div className="row mb-4" key={index}>
             {row.msg_from !== "student" && (
               <div className="col-5">
                 <div className="alert alert-primary mb-1">{row.msg_text}</div>

@@ -2,7 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from Users.admin import UserAdmin
-from .models import MCQExam, Exam, ExamQuestions, AttemptExam
+from .models import Exam, AttemptExam
+# from .models import ExamQuestions, ExamQuestions
 
 # class ExamAdminConfig():
 #     list_display = ('name','number_of_questions','duration','course','teacher')

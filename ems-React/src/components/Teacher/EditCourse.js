@@ -51,27 +51,28 @@ function EditCourse() {
     // // _formData.append('techs',courseData.techs);
 
     try {
-      axios.put(`${baseUrl }/teacher-course-edit/${course_id}/`, _formData, {
+      axios.put(`${baseUrl }/teacher-course-edit/${course_id}/`, _formData, 
+      {
           headers: {
             "Content-Type": "multipart/form-data",
             // "Content-Type": "application/json",
           },
-        }).then((res) => {
-          if (res.status === 200 || res.status === 201) {
-            Swal.fire({
-              title: "Data has been updated",
-              icon: "success",
-              toast: true,
-              timer: 3000,
-              position: "top-right",
-              timerProgressBar: true,
-              showConfirmButton: false,
-            });
-          } else {
-            console.log(res.status);
-            console.log(res.status.error);
-          }
-        });
+      }).then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          Swal.fire({
+            title: "Data has been updated",
+            icon: "success",
+            toast: true,
+            timer: 3000,
+            position: "top-right",
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        } else {
+          console.log(res.status);
+          console.log(res.status.error);
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -157,9 +158,9 @@ function EditCourse() {
                     Title
                   </label>
                   <input
-                    type="text"
                     value={courseData.title}
                     onChange={handleChange}
+                    type="text"
                     name="title"
                     id="title"
                     className="form-control"

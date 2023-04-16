@@ -8,16 +8,11 @@ function Sidebar() {
   useEffect(() => {
     // Fetch Courses
     try {
-      axios
-        .get(`${baseUrl}/student/fetch-all-notifications/${studentId}/`)
-        .then((res) => {
-          console.log(res);
-          setnotifData(res.data);
-        });
+      axios.get(`${baseUrl}/student/fetch-all-notifications/${studentId}/`).then(res => setnotifData(res.data)); // (res) => {setnotifData(res.data)}
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [studentId]);
   return (
     <div className="card">
       <div className="list-group list-group-flush">

@@ -18,7 +18,7 @@ class TeacherNameSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ["text","correct","question"]
+        fields = ["id","text","correct","question"]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -244,3 +244,8 @@ class NotificationSerializer(serializers.ModelSerializer):
         self.Meta.depth = 0
         if request and request.method == 'GET':
             self.Meta.depth = 2
+
+class StudentAnswers(serializers.ModelSerializer):
+    class Meta:
+        model = ExamQuestionAnswers
+        fields = '__all__'

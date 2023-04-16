@@ -14,7 +14,6 @@ function QuizQuestions() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/exam-questions/${quiz_id}/`).then((res) => {
-        console.log(res.data)
         settotalResult(res.data.length);
         setquestionData(res.data);
       });
@@ -65,8 +64,8 @@ function QuizQuestions() {
             <h5 className="card-header">
               All Questions ({totalResult}){" "}
               <Link
+                to={`/add-quiz-question/${quiz_id}`}
                 className="btn btn-success btn-sm float-end"
-                to={`/add-quiz-question/` + quiz_id}
               >
                 Add Question
               </Link>
@@ -81,24 +80,24 @@ function QuizQuestions() {
                 </thead>
                 <tbody>
                   {questionData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
-                        <Link to={`/edit-question/` + row.id}>
+                        <Link to={`/edit-question/${row.id}`}>
                           {row.question}
                         </Link>
                       </td>
                       <td>
                         <Link
-                          to={`/edit-question/` + row.id}
+                          to={`/edit-question/${row.id}`}
                           className="btn btn-sm text-white btn-info"
                         >
-                          <i class="bi bi-pencil-square"></i>
+                          <i className="bi bi-pencil-square"></i>
                         </Link>
                         <button
                           onClick={() => handleDeleteClick(row.id)}
                           className="btn btn-sm btn-danger ms-1"
                         >
-                          <i class="bi bi-trash"></i>
+                          <i className="bi bi-trash"></i>
                         </button>
                       </td>
                     </tr>

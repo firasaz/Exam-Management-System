@@ -10,11 +10,7 @@ function CheckQuizinCourse(props) {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.quiz}/${props.student}/`).then((res) => {
-        // console.log(props)
-        // axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.course}/`).then((res) => {
-          console.log("res.data:",res.data);
           setquizData(res.data);
-          console.log("quizData:",quizData);
         });
     } catch (error) {
       console.log(error);
@@ -23,9 +19,9 @@ function CheckQuizinCourse(props) {
 
   return (
     <td>
-      {quizData.bool == true && <span className="text-success">Attempted</span>}
+      {quizData.bool === true && <span className="text-success">Attempted</span>}
 
-      {quizData.bool == false && (
+      {quizData.bool === false && (
       <Link
         to={`/take-quiz/${props.quiz}`}
         className="btn btn-success btn-sm ms-2"

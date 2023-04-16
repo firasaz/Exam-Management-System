@@ -46,7 +46,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username']
 
     class Meta:
-        verbose_name_plural = "Custom User Model"
+        verbose_name_plural = "My Custom User Model"
 
     def __str__(self):
         return self.full_name

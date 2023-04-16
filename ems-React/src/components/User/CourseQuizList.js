@@ -12,7 +12,6 @@ function CoursequizList() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-assigned-quiz/${course_id}/`).then((res) => {
-        console.log(res.data);
         setquizData(res.data);
       });
     } catch (error) {
@@ -39,7 +38,7 @@ function CoursequizList() {
                 </thead>
                 <tbody>
                   {quizData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>{row?.name}</td>
                       <CheckquizStatusForStudent
                         quiz={row?.id}

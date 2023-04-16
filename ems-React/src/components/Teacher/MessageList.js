@@ -47,14 +47,14 @@ function MessageList(props) {
           <div className="row mb-4" key = {index}>
             {row.msg_from !== "teacher" && (
               <div className="col-5">
-                <div class="alert alert-primary mb-1">{row.msg_text}</div>
+                <div className="alert alert-primary mb-1">{row.msg_text}</div>
                 <small className="text-muted">{row.msg_time}</small>
               </div>
             )}
 
             {row.msg_from === "teacher" && (
               <div className="col-5 offset-7">
-                <div class="alert alert-success mb-1">{row.msg_text}</div>
+                <div className="alert alert-success mb-1">{row.msg_text}</div>
                 <small className="text-muted">{row.msg_time}</small>
               </div>
             )}

@@ -187,7 +187,7 @@ function UserList() {
                 </thead>
                 <tbody>
                   {StudentData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>{row?.full_name}</td>
                       <td>{row?.email}</td>
                       <td>{row?.username}</td>

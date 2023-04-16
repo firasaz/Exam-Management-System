@@ -12,7 +12,6 @@ function AllQuiz() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/teacher-exam/${teacherId}/`).then((res) => {
-        console.log(res.data)
         setquizData(res.data);
       });
     } catch (error) {
@@ -31,11 +30,10 @@ function AllQuiz() {
     }).then((result) => {
       if (result.isConfirmed) {
         try {
-          axios.delete(baseUrl + "/exam/" + quiz_id).then((res) => {
+          axios.delete(`${baseUrl}/exam/${quiz_id}/`).then((res) => {
             Swal.fire("success", "Data has been deleted.");
             try {
               axios.get(`${baseUrl}/teacher-exam/${teacherId}/`).then((res) => {
-                console.log(res.data);
                 settotalResult(res.data.length);
                 setquizData(res.data);
               });
@@ -74,7 +72,7 @@ function AllQuiz() {
                 </thead>
                 <tbody>
                   {quizData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         <Link to={`/all-questions/` + row?.id}>{row?.name}</Link>
                       </td>

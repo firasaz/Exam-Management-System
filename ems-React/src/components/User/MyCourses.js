@@ -10,7 +10,6 @@ function MyCourses() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-enrolled-courses/${studentId}/`).then((res) => {
-        console.log(res.data)
         setcourseData(res.data);
         });
     } catch (error) {
@@ -38,7 +37,7 @@ function MyCourses() {
                 </thead>
                 <tbody>
                   {courseData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
                         <Link to={`/detail/` + row?.id}>
                           {row?.title}

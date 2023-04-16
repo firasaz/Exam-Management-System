@@ -13,24 +13,6 @@ function ProfileSetting() {
     // p_img: "",
   });
   const studentId = localStorage.getItem("studentId");
-  // Fetch categories when page load
-  useEffect(() => {
-    // Fetch current teacher data
-    try {
-      axios.get(`${baseUrl}/student/${studentId}/`).then((res) => {
-        setstudentData({
-          full_name: res.data.full_name,
-          email: res.data.email,
-          username: res.data.username,
-          // profile_img: res.data.profile_img,
-          // p_img: "",
-          // login_via_otp: res.data.login_via_otp,
-        });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
 
   // Change Element value
   const handleChange = (event) => {
@@ -65,13 +47,11 @@ function ProfileSetting() {
     // }
 
     try {
-      axios
-        .put(`${baseUrl}/student/${studentId}/`, studentFormData, {
+      axios.put(`${baseUrl}/student/${studentId}/`, studentFormData, {
           headers: {
             "content-type": "application/json",
           },
-        })
-        .then((response) => {
+        }).then((response) => {
           if (response.status === 201) {
             Swal.fire({
               title: "Data has been updated",
@@ -89,10 +69,26 @@ function ProfileSetting() {
       setstudentData({ status: "error" });
     }
   };
-  // End
 
+  // Fetch categories when page load
   useEffect(() => {
     document.title = "My Profile";
+
+    // Fetch current teacher data
+    try {
+      axios.get(`${baseUrl}/student/${studentId}/`).then((res) => {
+        setstudentData({
+          full_name: res.data.full_name,
+          email: res.data.email,
+          username: res.data.username,
+          // profile_img: res.data.profile_img,
+          // p_img: "",
+          // login_via_otp: res.data.login_via_otp,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   const studentLoginStatus = localStorage.getItem("studentLoginStatus");
@@ -110,40 +106,40 @@ function ProfileSetting() {
           <div className="card">
             <h5 className="card-header">Profile Setting</h5>
             <div className="card-body">
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">
+              <div className="mb-3 row">
+                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
                   Full Name
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="text"
                     name="full_name"
                     value={studentData.full_name}
                     onChange={handleChange}
-                    class="form-control"
-                    id="staticEmail"
-                  />
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">
-                  Email
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    value={studentData.email}
-                    onChange={handleChange}
-                    type="email"
-                    class="form-control"
+                    className="form-control"
                     id="staticEmail"
                   />
                 </div>
               </div>
               <div className="mb-3 row">
-                <label for="video" class="col-sm-2 col-form-label">
+                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
+                  Email
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    value={studentData.email}
+                    onChange={handleChange}
+                    type="email"
+                    className="form-control"
+                    id="staticEmail"
+                  />
+                </div>
+              </div>
+              <div className="mb-3 row">
+                <label htmlFor="video" className="col-sm-2 col-form-label">
                   Profile Image
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -162,11 +158,11 @@ function ProfileSetting() {
                   )}
                 </div>
               </div>
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">
+              <div className="mb-3 row">
+                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
                   Username
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="text"
                     className="form-control"

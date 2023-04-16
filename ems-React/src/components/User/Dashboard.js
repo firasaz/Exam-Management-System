@@ -12,7 +12,6 @@ function Dashboard() {
     try {
       if(studentLoginStatus) {
         axios.get(`${baseUrl}/student/dashboard/${studentId}/`).then((res) => {
-          console.log(res);
           setdashboardData(res.data);
         });
       } else {window.location.href="/login"}
