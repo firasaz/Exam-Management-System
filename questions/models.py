@@ -49,7 +49,7 @@ class ClassicalAnswer(models.Model):
 
 
 class ExamQuestionAnswers(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student_ans')
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     question_points = models.IntegerField(help_text='question holds how many points.')
@@ -59,4 +59,4 @@ class ExamQuestionAnswers(models.Model):
     add_time = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f'Student: {self.student} | Exam: {self.exam} | Question: {self.question} | Answer: {self.answer_mcq} |'
+        return f'{self.student} answers for {self.exam}'

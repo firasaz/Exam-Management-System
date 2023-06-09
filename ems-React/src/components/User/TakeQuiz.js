@@ -27,6 +27,7 @@ function TakeQuiz() {
 
 const handleChange = (event) => {
   console.log(event.target.name)
+  console.log(dataDict)
   // setanswerData({
   //   ...answerData,
   //   [event.target.id]: event.target.value, // set the id of each answer to the checked value of it
@@ -86,38 +87,38 @@ const handleChange = (event) => {
             <form method="POST">
               {questionData.map((row, index) => (
                 <>
-                  {/* {console.log(questionData)} */}
-                    <div className="card" key={index}>
-                      <h5 className="card-header">{row?.question}</h5>
-                      <div className="card-body">
-                        <table className="table table-bordered">
-                          <tbody>
-                            <>
+                  {console.log(index)}
+                  <div className="card" key={index}>
+                    <h5 className="card-header">{row?.question}</h5>
+                    <div className="card-body">
+                      <table className="table table-bordered">
+                        <tbody>
+                          <>
                             {/* {row.type === "MCQ" ? () : ()} */}
-                              {row.answers.map((ans,index2) => {
-                                return (
-                                  <tr key={index2}>
-                                    <td>
-                                      {/* 'input' tag must be self closed */}
-                                      <input
-                                        type='radio'
-                                        id={ans?.id} // set the id of each answer(or choice) to be the id of it in the backend
-                                        points={row.points}
-                                        // name={ans.question} // set the name of each answer to be the question this answer is for
-                                        name={row.id} // set the name of each answer to be the question this answer is for
-                                        // onClick = {() => submitAnswer(ans?.id, ans?.ans1)}
-                                        onClick={handleChange}
-                                        value={ans.text}
-                                        className = "btn btn-outline-secondary ans" />
-                                        <label htmlFor={ans?.id}>{ans.text}</label>
-                                    </td>
-                                  </tr>)
-                                })}
-                            </>
-                          </tbody>
-                        </table>
-                      </div>
+                            {row.answers.map((ans,index2) => {
+                              return (
+                                <tr key={index2}>
+                                  <td>
+                                    {/* 'input' tag must be self closed */}
+                                    <input
+                                      type='radio'
+                                      id={ans?.id} // set the id of each answer(or choice) to be the id of it in the backend
+                                      points={row.points}
+                                      // name={ans.question} // set the name of each answer to be the question this answer is for
+                                      name={row.id} // set the name of each answer to be the question this answer is for
+                                      // onClick = {() => submitAnswer(ans?.id, ans?.ans1)}
+                                      onClick={handleChange}
+                                      value={ans.text}
+                                      className = "btn btn-outline-secondary ans" />
+                                      <label htmlFor={ans?.id}>{ans.text}</label>
+                                  </td>
+                                </tr>)
+                              })}
+                          </>
+                        </tbody>
+                      </table>
                     </div>
+                  </div>
                 </>
               ))}
 

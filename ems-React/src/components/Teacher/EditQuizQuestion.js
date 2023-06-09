@@ -45,7 +45,7 @@ function EditQuizQuestion() {
       {
         headers: { "Content-Type": "application/json" }
       }).then((res) => {
-        if (res.status === 201) {
+        if ( res.status === 200 || res.status === 201 ) {
           Swal.fire
           ({
             title: "Answer has been updated",
@@ -89,7 +89,7 @@ function EditQuizQuestion() {
       {
         headers: {'Content-Type': 'application/json'}
       }).then((res) => {
-        if (res.status === 200 || res.status === 201) {
+        if ( res.status === 200 || res.status === 201 ) {
           Swal.fire({
             title: "Data has been updated",
             icon: "success",
@@ -200,50 +200,10 @@ function EditQuizQuestion() {
                       />
                     </div>
                   ))}
-                  {/* <div id="choice-div-1" className="mb-3">
-                    <label htmlFor="title" className="form-label" >
-                      Ans 1
-                    </label>
-                    <input
-                      type="text"
-                    //   onChange={handleChange}
-                      name="ans"
-                      id="choice 1"
-                      placeholder="Type correct answer here"
-                      className="form-control"
-                    />
-                  </div>
-
-                  <div id="choice-div-2" className="mb-3">
-                    <label htmlFor="title" className="form-label">
-                      Ans 2
-                    </label>
-                    <input
-                      type="text"
-                    //   onChange={handleChange}
-                      name="ans"
-                      id="choice 2"
-                      className="form-control"
-                    />
-                  </div> */}
                 </div>
-
-                {/* <div id="btns" ref={btns}>
-                  <button
-                    className="btn btn-secondary mb-3 me-3"
-                    ref={add}
-                    onClick={addChoice}
-                  >+</button>
-                  <button
-                    className="btn btn-secondary mb-3 me-3"
-                    ref={del}
-                    onClick={delChoice}
-                  >-</button>
-                </div> */}
 
                 <button
                   type="submit"
-                  // onClick={formSubmit}
                   className="btn btn-primary"
                 >
                   Submit

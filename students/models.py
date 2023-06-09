@@ -29,14 +29,28 @@ class Student(NewUser):
                 teachers.append(_teacher)
         return teachers
     
-    # def get_exams(self):
-    #     courses = self.enrolled_courses() # get all courses for student
-    #     exams={}
-    #     for course in courses: # iterate over every course
-    #         exam_lst=[] # create an exam list for every course
-    #         for exam in course.course_exams(): # iterate over every exam in every course
-    #             exams[course] = exam_lst.append(exam) # store a key/value pair of course and exam list for that course
-    #     return exams
+    def get_exams(self):
+        courses = self.enrolled_courses() # get all courses for student
+        exams=[]
+        for course in courses: # iterate over every course
+            for exam in course.course_exams(): # iterate over every exam in every course
+                exams.append(exam) # add each exam in each course to the 'exams' list
+        return exams
+
+    def total_exams(self):
+        courses = self.enrolled_courses() # get all courses for student
+        # print("get_exams:",courses)
+        exams=[]
+        for course in courses: # iterate over every course
+            for exam in course.course_exams():
+                exams.append(exam)
+        return len(exams)
+    
+    def student_answers(self):
+        return self.student_ans.all()
+    
+    def total_student_answers(self):
+        return self.student_ans.all().count()
     
     def enrolled_courses(self):
         return self.course_student.all() # course_student is the related name for the Student-Course relation
@@ -51,24 +65,7 @@ class Student(NewUser):
     def pending_assignments(self):
         pending_assignments=StudentAssignment.objects.filter(student=self, student_status=False).count()
         return pending_assignments
-    
-    def get_exams(self):
-        courses = self.enrolled_courses() # get all courses for student
-        # print("get_exams:",courses)
-        exams=[]
-        for course in courses: # iterate over every course
-            for exam in course.course_exams():
-                exams.append(exam)
-        return exams
 
-    def total_exams(self):
-        courses = self.enrolled_courses() # get all courses for student
-        # print("get_exams:",courses)
-        exams=[]
-        for course in courses: # iterate over every course
-            for exam in course.course_exams():
-                exams.append(exam)
-        return len(exams)
 
 # student course enrollment
 # class StudentCourseEnrollment(models.Model):

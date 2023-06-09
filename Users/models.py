@@ -49,4 +49,6 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = "My Custom User Model"
 
     def __str__(self):
+        if not self.full_name:
+            return self.username
         return self.full_name

@@ -222,7 +222,8 @@ def SubmitExamView(request, exam_id):
                 except Question.DoesNotExist:
                     question_answered = None
                 
-                ExamQuestionAnswers.objects.create(student=student, exam=exam, question=question_answered, question_points=question_answered.points, answer_mcq=body[q])
+                obj=ExamQuestionAnswers.objects.create(student=student, exam=exam, question=question_answered, question_points=question_answered.points, answer_mcq=body[q])
+                print(obj)
 
 
     return JsonResponse({"savage":"piris"})

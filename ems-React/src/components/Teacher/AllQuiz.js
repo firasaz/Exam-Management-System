@@ -74,7 +74,7 @@ function AllQuiz() {
                   {quizData.map((row, index) => (
                     <tr key={index}>
                       <td>
-                        <Link to={`/all-questions/` + row?.id}>{row?.name}</Link>
+                        <Link to={`/all-questions/${row?.id}`}>{row?.name}</Link>
                       </td>
 
                       <td>

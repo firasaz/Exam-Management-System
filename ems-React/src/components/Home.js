@@ -32,7 +32,7 @@ function Home() {
       <div className="row mb-4">
         {courseData &&
           courseData.map((course, index) => (
-            <div className="col-md-3 mb-4">
+            <div className="col-md-3 mb-4" key={index}>
               <div className="card">
                 <Link to={`/detail/${course.id}`}>
                   <img

@@ -63,7 +63,7 @@ from .views import getExamData, getQuestionsData, getAnswerData, addExamData, de
 from teachers.views import (
     TeacherList, TeacherDetail, TeacherDashboard, TeacherCourseList, TeacherCourseDetail,
     teacher_students_view, teacher_login, teacher_change_password, TeacherView, TeacherExamList, TeacherCourseEdit, assign_exam,
-    CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView,
+    CategoryList, CourseList, CourseDetailView, CourseExamList, CourseView, delete_course
 )
 from students.views import (
     StudentList, student_login, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
@@ -104,6 +104,7 @@ urlpatterns = [
     # Course
     path('course/', CourseList.as_view()),
     path('search-courses/<str:searchstring>/', CourseList.as_view()),
+    path('delete-course/<int:c_id>/', delete_course, name='delete-course'),# path by firas
     # Course Detail
     path('course/<int:pk>/', CourseDetailView.as_view()),
 

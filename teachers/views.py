@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -265,3 +266,20 @@ class CourseExamList(generics.ListCreateAPIView):
             return Exam.objects.filter(course=course)
         except Course.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+    
+# 5)
+# Delete Course View
+@api_view(['GET','DELETE'])
+def delete_course(request,c_id):
+    try:
+        course = Course.objects.get(id=c_id)
+    except Course.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        serializer = CourseEditSerializer(course)
+        return Response(serializer.data)
+    elif request.method == "DELETE":
+        course.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    

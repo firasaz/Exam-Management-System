@@ -54,9 +54,9 @@ function AllQuiz() {
                 </thead>
                 <tbody>
                   {quizData.map((row, index) => (
-                    <tr>
+                    <tr key={index}>
                       <td>
-                        <Link to={`/all-questions/` + row?.id}>{row?.name}</Link>
+                        <Link to={ `/all-questions/${row?.id}` }>{row?.name}</Link>
                       </td>
                       <CheckQuizinCourse quiz={row?.id} course={course_id} />
                     </tr>

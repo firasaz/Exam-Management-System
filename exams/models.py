@@ -46,6 +46,7 @@ class Exam(models.Model):
     class Meta:
         verbose_name_plural="1.Exams"
 
+    # the __str__ method does not do anything since we customized it in admin.py
     def __str__(self):
         return f"Exam: {self.name}"
         # return "Exam "+str(self.id)
