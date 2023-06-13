@@ -43,8 +43,6 @@ function AddCourse() {
     e.preventDefault();
 
     try {
-      console.log(courseData);
-      console.log(courseData.f_img);
       // if(courseData.f_img === "") {
       //   courseData.f_img = null
       // }
@@ -109,7 +107,6 @@ function AddCourse() {
 
     try {
       axios.get(`${baseUrl}/course/`).then((res) => {
-        console.log(res.data);
         setPrereq(res.data)
       });
     } catch(error) {

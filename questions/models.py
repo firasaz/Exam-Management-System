@@ -23,6 +23,9 @@ class Question(models.Model):
     def get_answers(self):
         return self.answers.all() # used the related_name variable assigned in the Answer model below
     
+    def get_correct_answer(self):
+        return self.answers.get(correct=True) 
+    
     def get_classical(self):
         return self.classical_answer.all()
     
@@ -52,11 +55,13 @@ class ExamQuestionAnswers(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='student_ans')
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    question_points = models.IntegerField(help_text='question holds how many points.')
-    answer_mcq = models.CharField(max_length=100, null=True, blank=True)
-    # answer_mcq = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
-    answer_classical = models.ImageField(upload_to='static/images/answers_imgs', null=True, blank=True)
+    # question_points = models.IntegerField(help_text='question holds how many points.')
+    # answer_mcq = models.CharField(max_length=100, null=True, blank=True)
+    answer_mcq = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
+    # answer_classical = models.ImageField(upload_to='static/images/answers_imgs', null=True, blank=True)
     add_time = models.DateTimeField(auto_now_add=True)
+    # correct_ans = models.ForeignKey(Answer, on_delete=models.CASCADE , null=True, blank=True)
+    ans_status = models.BooleanField(verbose_name='answered choice is correct or not')
     
     def __str__(self):
         return f'{self.student} answers for {self.exam}'

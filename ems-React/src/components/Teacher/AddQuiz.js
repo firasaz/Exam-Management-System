@@ -33,7 +33,6 @@ function AddQuiz() {
     _formData.append("course", quizData.course);
 
     try {
-      console.log(quizData)
       axios.post(`${baseUrl}/add-exam/`, _formData, {}).then((res) => {
         if (res.status === 200 || res.status ===201) {
           Swal.fire({
@@ -54,15 +53,12 @@ function AddQuiz() {
     } catch (error) {
       console.log(error);
     }
-    
-  console.log(_formData)
   };
 
   useEffect(() => {
     try {
       const teacherId = localStorage.getItem("teacherId");
       axios.get(`${baseUrl}/teacher-courses/${teacherId}/`).then((res) => {
-        console.log(res.data);
         setCats(res.data);
         setquizData({
           ...quizData,
@@ -77,7 +73,6 @@ function AddQuiz() {
     try {
       const teacherId = localStorage.getItem("teacherId");
       axios.get(`${baseUrl}/teacher/`).then((res) => {
-        console.log(res.data);
         setTeach(res.data);
         
       });
@@ -154,7 +149,7 @@ function AddQuiz() {
                     name="course"
                     // value={courseData.category}
                     onChange={handleChange}
-                    class="form-control"
+                    className="form-control"
                   >
                     {cats.map((course, index) => {
                       return (
@@ -169,7 +164,7 @@ function AddQuiz() {
                   <label htmlFor="teacher" className="form-label">
                     Teacher
                   </label>
-                  <input className="form-control" type="text" value={teacherName} readonly />
+                  <input className="form-control" type="text" value={teacherName} readOnly />
                 </div>
 
                 <button

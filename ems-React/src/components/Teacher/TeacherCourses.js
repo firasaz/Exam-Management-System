@@ -24,7 +24,6 @@ function MyCourses() {
             /* we all the backend again if deletion was a success to refresh the page */
             try {
               axios.get(`${baseUrl}/teacher-courses/${teacherId}/`).then((res) => {
-                console.log(res.data)
                 setCourseData(res.data);
               });
             } catch (error) {
@@ -43,14 +42,12 @@ function MyCourses() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/teacher-courses/${teacherId}/`).then((res) => {
-        console.log(res.data)
         setCourseData(res.data);
       });
     } catch (error) {
       console.log(error);
     }
   }, [teacherId]);
-  console.log(courseData)
 
   return (
     <div className="container mt-4">

@@ -3,6 +3,7 @@ import TeacherSidebar from "./TeacherSidebar";
 import MessageList from "./MessageList";
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 const baseUrl = "http://127.0.0.1:8000/api";
 function UserList() {
   const [StudentData, setStudentData] = useState([]);
@@ -11,7 +12,6 @@ function UserList() {
   useEffect(() => {
     try {
       axios.get(`${baseUrl}/fetch-all-enrolled-students/${teacherId}/`).then((res) => {
-        console.log(res.data);
         setStudentData(res.data);
         });
         
@@ -19,7 +19,6 @@ function UserList() {
       console.log(error);
     }
   }, []);
-  console.log(StudentData);
 
   // Send Message
   const [groupMsgData, setgroupMsgData] = useState({
@@ -182,7 +181,7 @@ function UserList() {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Username</th>
-                    <th>Assignments</th>
+                    <th>Exams</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -194,17 +193,17 @@ function UserList() {
 
                       <td>
                         <Link
-                          to={`/show-assignment/${row?.id}/${teacherId}`}
+                          to={`/show-exams/${row?.id}/${teacherId}`}
                           className="btn btn-sm btn-warning mb-2 me-2"
                         >
-                          Assignments
+                          Exams
                         </Link>
-                        <Link
+                        {/* <Link
                           to={`/add-assignment/${row?.id}/${teacherId}`}
                           className="btn btn-sm btn-success mb-2 me-2"
                         >
                           Add Assignment
-                        </Link>
+                        </Link> */}
                         <button
                           data-bs-toggle="modal"
                           data-bs-target={`#msgModal${index}`}

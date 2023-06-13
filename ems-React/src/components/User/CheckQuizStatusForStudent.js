@@ -9,7 +9,7 @@ function CheckQuizinCourse(props) {
   // Fetch courses when page load
   useEffect(() => {
     try {
-      axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.quiz}/${props.student}/`).then((res) => {
+      axios.get(`${baseUrl}/fetch-quiz-attempt-status/${props.exam}/${props.student}/`).then((res) => {
           setquizData(res.data);
         });
     } catch (error) {
@@ -19,16 +19,39 @@ function CheckQuizinCourse(props) {
 
   return (
     <td>
-      {quizData.bool === true && <span className="text-success">Attempted</span>}
+      {quizData.bool === true && 
+        <Link 
+          to={`/show-student-answers/${props.student}/${props.exam}`}
+          className="text-success ms-2">
+            Attempted
+        </Link>}
+      {/* {quizData.bool === true && !props.student ? (
+        <Link 
+          to={`/show-student-answers/${props.student}/${props.exam}`}
+          className="text-success ms-2">
+            Attempted
+        </Link>) : (
+        <span className="text-success ms-2">
+          Attempted
+        </span>
+      )} */}
 
-      {quizData.bool === false && (
-      <Link
-        to={`/take-quiz/${props.quiz}`}
-        className="btn btn-success btn-sm ms-2"
-      >
-        Take Quiz
-      </Link>
-)}
+      {quizData.bool === false && !props.teacher && (
+        <Link
+          to={`/take-quiz/${props.exam}`}
+          className="btn btn-success btn-sm ms-2"
+        >
+          Take Exam
+        </Link>
+      )}
+
+      {quizData.bool === false && props.teacher && props.student && (
+        <Link 
+        to={`#`}
+        className="text-danger text-decoration-none text-select ms-2">
+          Not Attempted
+        </Link>
+      )}
     </td>
   );
 }

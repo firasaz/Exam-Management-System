@@ -62,17 +62,17 @@ function ChangePassword() {
           <div className="card">
             <h5 className="card-header">Change Password</h5>
             <div className="card-body">
-              <div class="mb-3 row">
-                <label for="inputPassword" class="col-sm-2 col-form-label">
+              <div className="mb-3 row">
+                <label htmlFor="inputPassword" className="col-sm-2 col-form-label">
                   New Password
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="text"
                     name="password"
                     value={teacherData.password}
                     onChange={handleChange}
-                    class="form-control"
+                    className="form-control"
                     id="inputPassword"
                   />
                 </div>

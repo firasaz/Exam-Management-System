@@ -26,13 +26,14 @@ function TakeQuiz() {
   }, []);
 
 const handleChange = (event) => {
-  console.log(event.target.name)
+  console.log(event.target.value)
   console.log(dataDict)
   // setanswerData({
   //   ...answerData,
   //   [event.target.id]: event.target.value, // set the id of each answer to the checked value of it
   dataDict[event.target.name] = event.target.value
 }
+
 
   const submitAnswer = (e) => {
     e.preventDefault();
@@ -102,13 +103,13 @@ const handleChange = (event) => {
                                     {/* 'input' tag must be self closed */}
                                     <input
                                       type='radio'
-                                      id={ans?.id} // set the id of each answer(or choice) to be the id of it in the backend
+                                      id={ans?.id}
                                       points={row.points}
                                       // name={ans.question} // set the name of each answer to be the question this answer is for
                                       name={row.id} // set the name of each answer to be the question this answer is for
                                       // onClick = {() => submitAnswer(ans?.id, ans?.ans1)}
                                       onClick={handleChange}
-                                      value={ans.text}
+                                      value={ans.id}
                                       className = "btn btn-outline-secondary ans" />
                                       <label htmlFor={ans?.id}>{ans.text}</label>
                                   </td>

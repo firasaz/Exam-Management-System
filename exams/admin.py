@@ -36,4 +36,4 @@ class ExamAdminConfig(admin.ModelAdmin):
 
 admin.site.register(Exam, ExamAdminConfig) # , ExamAdminConfig
 # admin.site.register(ExamQuestions)
-admin.site.register(AttemptExam)
+# admin.site.register(AttemptExam)

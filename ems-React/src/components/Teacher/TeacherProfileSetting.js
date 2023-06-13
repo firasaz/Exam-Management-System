@@ -111,40 +111,40 @@ function ProfileSetting() {
           <div className="card">
             <h5 className="card-header">Profile Setting</h5>
             <div className="card-body">
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">
+              <div className="mb-3 row">
+                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
                   Full Name
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="text"
                     name="full_name"
                     value={teacherData.full_name}
                     onChange={handleChange}
-                    class="form-control"
-                    id="staticEmail"
-                  />
-                </div>
-              </div>
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">
-                  Email
-                </label>
-                <div class="col-sm-10">
-                  <input
-                    value={teacherData.email}
-                    onChange={handleChange}
-                    type="email"
-                    class="form-control"
+                    className="form-control"
                     id="staticEmail"
                   />
                 </div>
               </div>
               <div className="mb-3 row">
-                <label for="video" class="col-sm-2 col-form-label">
+                <label htmlFor="staticEmail" className="col-sm-2 col-form-label">
+                  Email
+                </label>
+                <div className="col-sm-10">
+                  <input
+                    value={teacherData.email}
+                    onChange={handleChange}
+                    type="email"
+                    className="form-control"
+                    id="staticEmail"
+                  />
+                </div>
+              </div>
+              <div className="mb-3 row">
+                <label htmlFor="video" className="col-sm-2 col-form-label">
                   Profile Image
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -164,22 +164,22 @@ function ProfileSetting() {
                 </div>
               </div>
 
-              <div class="mb-3 row">
+              <div className="mb-3 row">
                 <label
-                  for="staticEmail"
+                  htmlFor="staticEmail"
                   name="qualification"
-                  class="col-sm-2 col-form-label"
+                  className="col-sm-2 col-form-label"
                 >
                   Qualification
                 </label>
-                <div class="col-sm-10">
+                <div className="col-sm-10">
                   <textarea
                     className="form-control"
                     name="qualification"
                     value={teacherData.qualification}
                     onChange={handleChange}
                   ></textarea>
-                  <div id="emailHelp" class="form-text">
+                  <div id="emailHelp" className="form-text">
                     BCA | MCA
                   </div>
                 </div>

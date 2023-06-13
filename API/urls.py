@@ -68,7 +68,7 @@ from teachers.views import (
 from students.views import (
     StudentList, student_login, StudentDashboard, student_change_password, CourseStudentList, TeacherStudentList,
     EnrolledStudentList, StudentTeacherList, MessageList, NotificationList, save_teacher_student_msg,
-    save_teacher_student_group_msg_from_student, fetch_enroll_status, student_detail_view#, StudentDetail
+    save_teacher_student_group_msg_from_student, fetch_enroll_status, student_detail_view, student_exams_view, student_answers_view #, StudentDetail
 )
 from exams.views import (
     ExamDetailView, ExamsListView, AttemptExamList, 
@@ -179,4 +179,6 @@ urlpatterns = [
 
     path('fetch-my-teachers/<int:student_id>/', StudentTeacherList),
     path('get-question/<int:question_id>/', edit_question_view, name='edit-question'),
+    path('student-exams/<int:student_id>/<int:teacher_id>/', student_exams_view),
+    path('student-exams-ans/<int:student_id>/<int:exam_id>/', student_answers_view)
 ]

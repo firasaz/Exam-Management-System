@@ -60,6 +60,23 @@ def getExamData(request):
     serializer = ExamSerializer(exams, many=True)
     return Response(serializer.data)
 
+# POST request on this view returns:
+# Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+# update; 
+# turned out for the POST method i wrote: request == "POST" instead of request.method == "POST"
+@api_view(["GET","POST"])
+def addExamData(request):
+    if request.method == "GET":
+        exams = Exam.objects.all()
+        serializer=AddExamSerializer(exams, many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = AddExamSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET','POST','PUT'])
 def add_question(request, question_id=None):
@@ -111,21 +128,4 @@ def edit_question_view(request, question_id):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# POST request on this view returns:
-# Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
-# update; 
-# turned out for the POST method i wrote: request == "POST" instead of request.method == "POST"
-@api_view(["GET","POST"])
-def addExamData(request):
-    if request.method == "GET":
-        exams = Exam.objects.all()
-        serializer=AddExamSerializer(exams, many=True)
-        return Response(serializer.data)
-    elif request.method == "POST":
-        serializer = AddExamSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

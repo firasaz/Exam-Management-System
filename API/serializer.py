@@ -245,7 +245,41 @@ class NotificationSerializer(serializers.ModelSerializer):
         if request and request.method == 'GET':
             self.Meta.depth = 2
 
+class StudentNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['full_name']
+
+class AnswerNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['text']
+
+class QuestionNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['question','points']
+
 class StudentAnswers(serializers.ModelSerializer):
+    student = StudentNameSerializer()
+    answer_mcq = AnswerSerializer()
+    question = QuestionNameSerializer()
+
+    # student_name = serializers.SerializerMethodField()
+    # exam_name = serializers.SerializerMethodField()
+    # question_text = serializers.SerializerMethodField()
+
     class Meta:
         model = ExamQuestionAnswers
         fields = '__all__'
+    
+    # def get_student_name(self, obj):
+    #     return obj.student.full_name
+    
+    # def get_exam_name(self, obj):
+    #     return obj.exam.name
+    
+    # def get_question_text(self, obj):
+    #     return obj.question.question
+
+    

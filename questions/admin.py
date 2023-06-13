@@ -18,14 +18,14 @@ admin.site.register(Answer)
 admin.site.register(ClassicalAnswer)
 
 class ExamQuestionAnswersAdmin(admin.ModelAdmin):
-    list_display = ('student','exam','id')
+    list_display = ('student','exam','question','id')
     list_filter = ('student','exam','add_time')
     search_fields = ('exam',)
     readonly_fields = ('add_time',)
     # ordering = ('add_time',)
 
     fieldsets = (
-        (None, {'fields': ('exam','student','question','question_points','answer_mcq')}),
+        (None, {'fields': ('exam','student','question','ans_status')}),
     )
 
 admin.site.register(ExamQuestionAnswers,ExamQuestionAnswersAdmin)

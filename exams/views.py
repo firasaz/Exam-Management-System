@@ -187,13 +187,13 @@ def exam_question_list(request,exam_id):
 @csrf_exempt
 def SubmitExamView(request, exam_id):
     body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode) #this returns a dictionary of question and the student's answer
-    body_keys = body.keys()
-    print(body_keys)
-    print(body)
+    dict = json.loads(body_unicode) #this returns a dictionary of question and the student's answer
+    dict_keys = dict.keys()
+    print(dict_keys)
+    print(dict)
 
-    student_id= int(body["student"])
-    # print(body)
+    student_id= int(dict["student"])
+    # print(dict)
     try:
         exam = Exam.objects.get(id = exam_id)
     except Exam.DoesNotExist:
@@ -206,23 +206,28 @@ def SubmitExamView(request, exam_id):
     
     # print(exam)
     if exam:
-        questions = list(exam.get_questions()) # returns a list of exam objects instead of a queryset
+        # questions = list(exam.get_questions()) # returns a list of exam objects instead of a queryset
         # questions_answered = []
         # print(questions)
         
         # for q in questions:
         #     question_names.append(q.question)
 
-        for q in body_keys:
+        for q in dict_keys:
             if q != 'exam' and q!= 'student':
                 print(q)
+                print(dict[q])
                 try:
                     question_answered = Question.objects.get(id=q)
-                    print(question_answered.type)
-                except Question.DoesNotExist:
+                    answer = Answer.objects.get(id=dict[q])
+                    ans_status = answer.id == question_answered.get_correct_answer().id
+                    print(answer.id)
+                    print(question_answered.get_correct_answer().id)
+                    print(ans_status)
+                except Question.DoesNotExist or Answer.DoesNotExist:
                     question_answered = None
                 
-                obj=ExamQuestionAnswers.objects.create(student=student, exam=exam, question=question_answered, question_points=question_answered.points, answer_mcq=body[q])
+                obj=ExamQuestionAnswers.objects.create(student=student, exam=exam, question=question_answered, answer_mcq=answer, ans_status=ans_status) # 
                 print(obj)
 
 

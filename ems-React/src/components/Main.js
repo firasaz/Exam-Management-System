@@ -28,6 +28,8 @@ import AddAssignment from "./Teacher/AddAssignment";
 import ShowAssignment from "./Teacher/ShowAssignment";
 import TeacherProfileSetting from "./Teacher/TeacherProfileSetting";
 import TeacherChangePassword from "./Teacher/TeacherChangePassword";
+import ShowExams from "./Teacher/ShowExam";
+import ShowStudentAnswers from "./Teacher/ShowStudentAnswers";
 
 import UserForgotPassword from "./User/UserForgotPassword";
 import UserForgotChangePassword from "./User/UserForgotChangePassword";
@@ -93,6 +95,8 @@ function Main() {
         <Route path="/edit-course/:course_id" element={<EditCourse />} />
         <Route path="/add-assignment/:student_id/:teacher_id" element={<AddAssignment />} />
         <Route path="/show-assignment/:student_id/:teacher_id" element={<ShowAssignment />} />
+        <Route path="/show-exams/:student_id/:teacher_id" element={<ShowExams />} />
+        <Route path="/show-student-answers/:student_id/:exam_id" element={<ShowStudentAnswers />} />
         <Route path="/my-assignments/" element={<StudentAssignments />} />
         <Route path="/quiz" element={<AllQuiz />} />
         <Route path="/add-quiz" element={<AddQuiz />} />

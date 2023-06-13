@@ -25,7 +25,6 @@ function EditQuiz() {
   };
 
   const formSubmit = () => {
-    console.log(quizData)
     const _formData = new FormData();
     // _formData.append("teacher", teacherId);
     // _formData.append("name", quizData.name);
@@ -46,7 +45,6 @@ function EditQuiz() {
             "Content-Type": "application/json",
           },
         }).then((res) => {
-          console.log(res.status)
           if (res.status === 200 || res.status ===201) {
             Swal.fire({
               title: "Data has been updated",
@@ -69,7 +67,6 @@ function EditQuiz() {
     // Fetch current quiz data
     try {
       axios.get(`${baseUrl}/teacher-exam-detail/${quiz_id}/`).then((res) => {
-        console.log(res.data)
         setquizData({
           name: res.data.name,
           description: res.data.description,

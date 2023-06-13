@@ -9,9 +9,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from API.serializer import (
-    StudentSerializer, StudentDashboardSerializer, StudentDetailSerializer,
-    CourseDetailSerializer, TeacherSerializer, TeacherEditSerializer,
-    TeacherStudentChatSerializer, NotificationSerializer
+    StudentSerializer, StudentDashboardSerializer, StudentDetailSerializer, StudentAnswers,
+    CourseDetailSerializer, NotificationSerializer,
+    TeacherStudentChatSerializer, TeacherSerializer, TeacherEditSerializer,
+    ExamEditSerializer
     ) #, StudentCourseEnrollSerializer
 
 from .models import Student #, StudentCourseEnrollment
@@ -208,6 +209,33 @@ def save_teacher_student_group_msg_from_student(request, student_id):
         return JsonResponse({'bool': True, 'msg': 'Message has been send'})
     else:
         return JsonResponse({'bool': False, 'msg': 'Oops... Some Error Occured!!'})
+
+@api_view(['GET'])
+def student_exams_view(request, student_id, teacher_id):
+    try:
+        std = Student.objects.get(id=student_id)
+        teach = Teacher.objects.get(id=teacher_id)
+    except Student.DoesNotExist or Teacher.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    exams = []
+    for exam in std.get_exams():
+        if exam.teacher.id == teacher_id:
+            exams.append(exam)
+    serializer = ExamEditSerializer(exams, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def student_answers_view(request, student_id,exam_id):
+    try:
+        std = Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    std_answers = [exam_ans for exam_ans in std.student_answers() if exam_ans.exam.id == exam_id]
+    serializer = StudentAnswers(std_answers, many=True)
+    return Response(serializer.data)
+    
+
 
 # @csrf_exempt
 # def student_answers_view(request):

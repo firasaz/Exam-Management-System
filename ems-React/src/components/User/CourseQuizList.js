@@ -41,7 +41,7 @@ function CoursequizList() {
                     <tr key={index}>
                       <td>{row?.name}</td>
                       <CheckquizStatusForStudent
-                        quiz={row?.id}
+                        exam={row?.id}
                         student={studentId}
                       />
                     </tr>
