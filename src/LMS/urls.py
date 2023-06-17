@@ -13,18 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from webbrowser import get
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 
-from accounts.views import homePage
-from API.views import getExamData, getQuestionsData, getAnswerData
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="index.html")),
+    re_path('^$', TemplateView.as_view(template_name="index.html")),
     path('admin/', admin.site.urls),
     
     path('account/',include('accounts.urls')),
@@ -33,4 +30,4 @@ urlpatterns = [
     # path('api/question/', getQuestionsData, name='questionAPI'),
     # path('api/answer/', getAnswerData, name='answerAPI'),
     path("user/exam/", include('exams.urls'))
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, )

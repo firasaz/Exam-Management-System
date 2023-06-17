@@ -69,7 +69,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'ems_frontend/build'),
+            'EMS_Frontend/dist',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -131,12 +131,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+# to locate any static files, django applies this value to the root url then adds the static file being requested and 
+# for this to work any reference to a staitc file should be preceded with the value of the STATIC_URL variable
+#  e.g. 127.0.0.1:8000/static/bootstrap-icons.css/
 STATIC_URL = '/static/'
-# STATIC_URL = '/ems_frontend/build/static/'
 
+# this list on the other hand instructs django where to look for these static files inside the project
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    # os.path.join(BASE_DIR, 'ems_frontend/build/static'),
+    'EMS_Frontend/dist/',
+    'static/',
 ]
 
 # MEDIA_URL='/media/'
@@ -148,11 +151,12 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # sometimes cors error happens if the requests in react do not end with a slash '/' in the end of a url.
-CORS_ALLOW_ALL_ORIGINS=True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = True
-
-# CSRF_TRUSTED_ORIGINS=["http://localhost:3001"]
+# CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS=["http://localhost:3000", "http://localhost:3001"]
+CORS_ORIGIN_WHITELIST = ["http://localhost:3000"]
+# CORS_TRUSTED_ORIGINS=["http://localhost:3001"]
 
 # to use the custom 'User' model i built and inherit from it for other users in the 
 # project we probably will need to delete our database and recover it back somehow
@@ -161,5 +165,3 @@ AUTH_USER_MODEL = 'Users.NewUser'
 #     'django.contrib.auth.backends.ModelBackend'
 # )
 
-# if we decided to use csrf tokens in our react app we will need to uncomment this line
-CSRF_TRUSTED_ORIGINS=["http://localhost:3000", "http://localhost:3001"]
