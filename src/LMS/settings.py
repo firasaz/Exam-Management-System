@@ -138,8 +138,8 @@ STATIC_URL = '/static/'
 
 # this list on the other hand instructs django where to look for these static files inside the project
 STATICFILES_DIRS = [
-    'EMS_Frontend/dist/',
-    'static/',
+    BASE_DIR / 'EMS_Frontend/dist/',
+    BASE_DIR / 'static/',
 ]
 
 # MEDIA_URL='/media/'

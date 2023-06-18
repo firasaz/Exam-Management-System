@@ -21,7 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    re_path('^$', TemplateView.as_view(template_name="index.html")),
     path('admin/', admin.site.urls),
     
     path('account/',include('accounts.urls')),
@@ -29,5 +28,6 @@ urlpatterns = [
     # path('api/exam/', getExamData, name='examAPI'),
     # path('api/question/', getQuestionsData, name='questionAPI'),
     # path('api/answer/', getAnswerData, name='answerAPI'),
-    path("user/exam/", include('exams.urls'))
-] + static(settings.STATIC_URL, )
+    path("user/exam/", include('exams.urls')),
+    re_path('.*', TemplateView.as_view(template_name="index.html")),
+]+ static(settings.STATIC_URL, )

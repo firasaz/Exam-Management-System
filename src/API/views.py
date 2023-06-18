@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -55,7 +55,12 @@ def deleteQuestion(request,question_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(["GET","PUT"])
-def getExamData(request):
+def getExamData(request, exam_id=None):
+    if exam_id:
+        exam=get_object_or_404(Exam, id=exam_id)
+        if exam:
+            serializer=ExamSerializer(exam)
+            return Response(serializer.data)
     exams = Exam.objects.all()
     serializer = ExamSerializer(exams, many=True)
     return Response(serializer.data)

@@ -117,31 +117,21 @@ urlpatterns = [
 
     # Student
     path('student/', StudentList.as_view()),
-    # path('teacher-forgot-password/', teacher_forgot_password),
     path('teacher-change-password/<int:teacher_id>/', teacher_change_password),
-    # path('user-forgot-password/', user_forgot_password),
-    # path('user-change-password/<int:student_id>/', user_change_password),
     path('student/<int:pk>/', student_detail_view),
     path('student/dashboard/<int:pk>/', StudentDashboard.as_view()),
     path('student/change-password/<int:student_id>/',student_change_password),
     path('user-login/', student_login),
-    # path('student-enroll-course/', StudentEnrollCourseList.as_view()),
     path('fetch-enroll-status/<int:student_id>/<int:course_id>/', fetch_enroll_status),
     path('fetch-all-enrolled-students/<int:teacher_id>/', teacher_students_view),
-    # path('fetch-enrolled-students/<int:course_id>/',EnrolledStudentList.as_view()),
     path('fetch-enrolled-courses/<int:student_id>/',EnrolledStudentList),
 
-    # path('student-assignment/<int:teacher_id>/<int:student_id>/',AssignmentList.as_view()),
-    # path('my-assignments/<int:student_id>/', MyAssignmentList.as_view()),
-    # path('update-assignment/<int:pk>/', UpdateAssignment.as_view()),
     path('student/fetch-all-notifications/<int:student_id>/', NotificationList.as_view()),
     # path('save-notification/', NotificationList.as_view()),
 
     # Quiz Start
-    # path('exam/', QuizList.as_view()),
-    # path('teacher-exam/<int:teacher_id>', TeacherExamList.as_view()),
     path('exam/', ExamsListView.as_view()),
-    path('exams/', getExamData),
+    path('exams/<int:exam_id>/', getExamData),
     path('teacher-exam/<int:teacher_id>/', TeacherExamList),
     path('teacher-exams/<int:teacher_id>/', TeacherExamList),
     path('add-exam/', addExamData, name='addExamAPI'), # path by firas

@@ -6,34 +6,6 @@ from students.models import Student
 
 # Create your models here.
 
-# class MCQExam(models.Model):
-#     question = models.CharField(max_length=100)
-#     option1 = models.CharField(max_length=100,null=True)
-#     option2 = models.CharField(max_length=100,null=True)
-#     option3 = models.CharField(max_length=100,null=True)
-#     option4 = models.CharField(max_length=100,null=True)
-#     answer = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return "Question "+str(self.id)
-
-#     class Meta:
-#         verbose_name_plural="MCQ Exams"
-
-
-# class ExamQuestions(models.Model):
-#     exam = models.ForeignKey(Exam, on_delete=models.CASCADE, null=True)
-#     question = models.CharField(max_length=200)
-#     ans1 = models.CharField(max_length=200)
-#     ans2 = models.CharField(max_length=200)
-#     ans3 = models.CharField(max_length=200)
-#     ans4 = models.CharField(max_length=200)
-#     right_ans = models.CharField(max_length=200)
-#     add_time = models.DateTimeField(auto_now_add=True)
-
-#     class Meta:
-#         verbose_name_plural = "2.Exam Questions"
-
 class Exam(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)

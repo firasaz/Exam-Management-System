@@ -1,0 +1,2 @@
+URI malformed:
+   - Remove "%PUBLIC_URL%" from index.html file	
